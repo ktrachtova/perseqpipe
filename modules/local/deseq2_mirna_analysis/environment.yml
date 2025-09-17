@@ -1,0 +1,7 @@
+channels:
+- conda-forge
+- bioconda
+dependencies:
+- bioconda::bioconductor-deseq2=1.46.0
+- bioconda::bioconductor-edger=4.4.0
+- conda-forge::r-dplyr=1.1.4

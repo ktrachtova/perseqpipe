@@ -1,0 +1,4 @@
+.nextflow.log*
+resources
+.DS_Store
+work/
