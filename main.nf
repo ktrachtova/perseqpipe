@@ -17,8 +17,8 @@
 
 include { PERSEQPIPE  }                from './workflows/perseqpipe'
 include { DOWNLOAD_REFERENCES }       from './subworkflows/local/download_references/main.nf'
-include { PIPELINE_INITIALISATION }   from './subworkflows/local/utils_nfcore_srnaseq_pipeline'
-include { PIPELINE_COMPLETION     }   from './subworkflows/local/utils_nfcore_srnaseq_pipeline'
+include { PIPELINE_INITIALISATION }   from './subworkflows/local/utils_perseqpipe'
+include { PIPELINE_COMPLETION     }   from './subworkflows/local/utils_perseqpipe'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,7 +88,7 @@ workflow {
             .empty()
             .set { ch_star_genome_index }
 
-            // Conditionally run rRNA index download
+        // Conditionally download rRNA index
         if (params.download_reference_rrna) {
             ch_star_rrna_index = DOWNLOAD_REFERENCES(
                 params.index_rrna_url,
@@ -97,6 +97,7 @@ workflow {
             ).out.star_index_dir
         }
 
+        // Conditionally download genome index
         if (params.download_reference_genome) {
             ch_star_genome_index = DOWNLOAD_REFERENCES(
                 params.index_genome_url,
@@ -116,16 +117,9 @@ workflow {
             params.plaintext_email,
             params.outdir,
             params.monochrome_logs,
-            params.hook_url,
             PERSEQPIPE_WF.out.multiqc_report
         )
     }
-    //
-    // SUBWORKFLOW: Run completion tasks
-    //
-
-    // !FILLIN!
-
 }
 
 /*

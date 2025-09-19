@@ -145,7 +145,6 @@
           "email_on_fail": { "type": ["string", "null"] },
           "plaintext_email": { "type": "boolean" },
           "monochrome_logs": { "type": "boolean" },
-          "hook_url": { "type": ["string", "null"] },
           "help": { "type": "boolean" },
           "help_full": { "type": "boolean" },
           "show_hidden": { "type": "boolean" },

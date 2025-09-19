@@ -6,15 +6,15 @@
 
     <meta
       name="description"
-      content="nf-core/srnaseq: Pipeline for sequence-oriented quantification of various sRNAs from NGS data"
+      content="PerSeqPIPE: Pipeline for sequence-oriented quantification of various sncRNAs from NGS data"
     />
-    <title>nf-core/srnaseq Pipeline Report</title>
+    <title>PerSeqPIPE Pipeline Report</title>
   </head>
   <body>
     <div style="font-family: Helvetica, Arial, sans-serif; padding: 30px; max-width: 800px; margin: 0 auto">
       <img src="cid:nfcorepipelinelogo" />
 
-      <h1>nf-core/srnaseq ${version}</h1>
+      <h1>PerSeqPIPE ${version}</h1>
       <h2>Run Name: $runName</h2>
 
       <% if (!success){ out << """
@@ -29,7 +29,7 @@
           border-radius: 4px;
         "
       >
-        <h4 style="margin-top: 0; color: inherit">nf-core/srnaseq execution completed unsuccessfully!</h4>
+        <h4 style="margin-top: 0; color: inherit">PerSeqPIPE execution completed unsuccessfully!</h4>
         <p>The exit status of the task that caused the workflow execution to fail was: <code>$exitStatus</code>.</p>
         <p>The full error message was:</p>
         <pre style="white-space: pre-wrap; overflow: visible; margin-bottom: 0">${errorReport}</pre>
@@ -46,7 +46,7 @@
           border-radius: 4px;
         "
       >
-        nf-core/srnaseq execution completed successfully!
+        PerSeqPIPE execution completed successfully!
       </div>
       """ } %>
 
@@ -106,8 +106,8 @@ $commandLine</pre
         </tbody>
       </table>
 
-      <p>nf-core/srnaseq</p>
-      <p><a href="https://github.com/nf-core/srnaseq">https://github.com/nf-core/srnaseq</a></p>
+      <p>PerSeqPIPE</p>
+      <p><a href="https://github.com/ktrachtova/perseqpipe">https://github.com/ktrachtova/perseqpipe</a></p>
     </div>
   </body>
 </html>
