@@ -121,65 +121,77 @@ Other outputs of **SRNA_QUANTIFICATION** module are:
 
 ### Module 6: DE_ANALYSIS
 
-
+Outputs of DE analysis are described separately in section [Differential Expression Analysis](de_analysis.md).
 
 ## Reads statistics
 
-TO-DO: Describe the file with read statistics and its individual fields
+A comprehensive read statistics is automatically generated at the end of PerSeqPIPE analtsis, using results from all executed modules. It contains following columns:
+
+1. From **FIRSTQC** module
+  * **raw_reads** number of reads in raw FASTA file for each sample
+2. From **PREPROCESSING** module (depends on library preparation kit)
+  * **adapt1_trim_reads** number of reads after initial 3' adapter trimming
+  * **adapt1_trim_reads_%** percentage of reads after initial 3' adapter trimming (compared to raw reads)
+  * **adapt1_short_reads** number of reads after initial 3' adapter trimming that were too short (threshold unless changed by user is 15nt)
+  * **adapt1_short_reads_%** percentage of too short reads after initial 3' adapter trimming (compared to raw reads)
+  * **adapt1_untrim_reads** number of reads that did not have adapter and hence were discarded
+  * **adapt1_untrim_reads_%** percentage of untrimmed reads (compared to raw reads)
+  * (QIAGEN-specific) **collapsed_reads** number of reads after collapsing based on UMIs
+  * (QIAGEN-specific) **collapsed_reads_%** percentage of reads after collapsing based on UMIs (compared to raw reads)
+  * (QIAGEN-specific) **adapt2_trim_reads** number of reads after second trimming of 3' adapter
+  * (QIAGEN-specific) **adapt2_trim_reads_%** percentage of reads after second 3' adapter trimming
+  * (QIAGEN-specific) **adapt2_short_reads** number of too short reads after second adapter trimming (threshold unless changed by user is 15nt)
+  * (QIAGEN-specific) **adapt2_short_reads_%** percentage of too short reads after second adapter trimming
+  * (QIAGEN-specific) **adapt2_untrim_reads** number of reads that did not have second 3' adapter and hence were discarded
+  * (QIAGEN-specific) **adapt2_untrim_reads_%** percentage of untrimmed reads from second 3' adapter trimming
+3. From **RRNA_QUANTIFICATION** module
+  * **rrna_multimapped_reads** number of reads multi-mapping to rRNA database
+  * **rrna_multimapped_reads_%** percentage of rRNA multi-mapping reads (compared to cleaned reads used as an input for rRNA alignment)
+  * **rrna_unique_reads** number of uniquely aligned reads to rRNA database
+  * **rrna_unique_reads_%** percentage of rRNA uniquely aligned reads (compared to cleaned reads used as an input for rRNA alignment)
+  * **rrna_unmapped_reads** number of rRNA unmapped reads
+  * **rrna_unmapped_reads_%** percentage of rRNA unmapped reads
+4. From **MIRNA_QUANTIFICATION** module
+  * **mirna_mapped_reads** number of reads aligning to miRNA precursors
+  * **mirna_mapped_reads_%** percentage of reads aligning to miRNA precursors
+  * **mirna_unmapped_reads** number of miRNA unmapped reads
+  * **mirna_unmapped_reads_%** percentage of miRNA unmapped reads
+5. From **GENOME_QUANTIFICATION** module
+  * **genome_multimapped_reads** number of reads multi-mapping to genome
+  * **genome_multimapped_reads_%** percentage of reads multi-mapping to genome
+  * **genome_unique_reads** number of reads uniquely aligning to genome
+  * **genome_unique_reads_%** percentage of reads uniquely aligning to genome
+  * **genome_unmapped_reads** number of reads not aligning to genome
+  * **genome_unmapped_reads%** percentage of reads not aligning to genome
+
+When examining the reads statistics file, keep in mind that altough last step of preprocessing is collapsing of all cleaned sequences (to speed up subsequent quantification steps), actual  statistics always reports non-collapsed number of reads! 
+
+File with generated statistics is in path `my_project/all_stats/read_counts_summary.csv`.
 
 ## sncRNA quantification output file format
 
-TO-DO: Desribe what is inside out custom TSV files from quantification
+Per-sample tab-separated files containing results from quantification of sncRNA (apart from miRNA/isomiRs) have following columns:
 
+* **sequence** contains read sequence
+* **expression** raw counts (number of a specific read)
+* **pirna** list of all piRNA that overlap alignment loci of given read
+* **trna** list of all tRNA that overlap alignment loci of given read
+* **snorna** list of all snoRNA that overlap alignment loci of given read
+* **srna** list of all other sncRNA that overlap alignment loci of given read
+* **mrna** list of mRNA that overlap alignment loci of given read
+* **lncrna** list of lncRNA that overlap alignment loci of given read
+* **genome_alignments** number of individual genomic loci to which given read aligned to
+* **MINT_plate** MINT plate for specific read
 
+For all annotation columns, user can see none, one or multiple RNAs reported, separated by comma. Each RNA annotation value however can consist of multiple IDs, separated by "|". This means that when creating of annnotation GTF file, multiple small non-coding RNAs of the exactly the same sequence were identified across different constituend databases. For example 1 piRNA sequence present in 3 resource databases but with a different ID will be shown as `hsa-piR-1|piR-1|URS00000X`.
 
+IDs inside annotation columns can also contain suffix `_loc{x}`. This denotes specific genomic position of annotation feature. For example, 1 piRNA is located at 2 different places inside genome. We cannot determine from which position this piRNA originated, hence both positions are reported. In practice read aligning to this specific piRNA will have `pirna` column with value `hsa-piR-1_loc1,hsa-piR-1_loc2`. It is an identical piRNA feature, but it shows there are 2 positions for it and also for the read in question. 
 
-## Introduction
+## Pipeline information
 
-This document describes the output produced by the PerSeqPIPE pipeline. Most of the plots are taken from the MultiQC report, which summarises results at the end of the pipeline.
+TO-DO: Check this section and adjust
 
-The directories listed below will be created in the results directory after the pipeline has finished. All paths are relative to the top-level results directory.
-
-<!-- TODO nf-core: Write this documentation describing your workflow's output -->
-
-## Pipeline overview
-
-The pipeline is built using [Nextflow](https://www.nextflow.io/) and processes data using the following steps:
-
-- [FastQC](#fastqc) - Raw read QC
-- [MultiQC](#multiqc) - Aggregate report describing results and QC from the whole pipeline
-- [Pipeline information](#pipeline-information) - Report metrics generated during the workflow execution
-
-### FastQC
-
-<details markdown="1">
-<summary>Output files</summary>
-
-- `fastqc/`
-  - `*_fastqc.html`: FastQC report containing quality metrics.
-  - `*_fastqc.zip`: Zip archive containing the FastQC report, tab-delimited data file and plot images.
-
-</details>
-
-[FastQC](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/) gives general quality metrics about your sequenced reads. It provides information about the quality score distribution across your reads, per base sequence content (%A/T/G/C), adapter contamination and overrepresented sequences. For further reading and documentation see the [FastQC help pages](http://www.bioinformatics.babraham.ac.uk/projects/fastqc/Help/).
-
-### MultiQC
-
-<details markdown="1">
-<summary>Output files</summary>
-
-- `multiqc/`
-  - `multiqc_report.html`: a standalone HTML file that can be viewed in your web browser.
-  - `multiqc_data/`: directory containing parsed statistics from the different tools used in the pipeline.
-  - `multiqc_plots/`: directory containing static images from the report in various formats.
-
-</details>
-
-[MultiQC](http://multiqc.info) is a visualization tool that generates a single HTML report summarising all samples in your project. Most of the pipeline QC results are visualised in the report and further statistics are available in the report data directory.
-
-Results generated by MultiQC collate pipeline QC from supported tools e.g. FastQC. The pipeline has special steps which also allow the software versions to be reported in the MultiQC output for future traceability. For more information about how to use MultiQC reports, see <http://multiqc.info>.
-
-### Pipeline information
+[Nextflow](https://www.nextflow.io/docs/latest/tracing.html) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.
 
 <details markdown="1">
 <summary>Output files</summary>
@@ -191,5 +203,3 @@ Results generated by MultiQC collate pipeline QC from supported tools e.g. FastQ
   - Parameters used by the pipeline run: `params.json`.
 
 </details>
-
-[Nextflow](https://www.nextflow.io/docs/latest/tracing.html) provides excellent functionality for generating various reports relevant to the running and execution of the pipeline. This will allow you to troubleshoot errors with the running of the pipeline, and also provide you with other information such as launch commands, run times and resource usage.
