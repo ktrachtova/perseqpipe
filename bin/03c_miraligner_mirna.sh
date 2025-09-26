@@ -38,5 +38,3 @@ rm mapped.names all.names nomap.names
 
 sed '1d' ./${sample}.mirna | cut -f2 | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ./${sample}.mirna.mapped.counts.txt
 zgrep '@seq' ${sample}.mirna.unmapped.fastq.gz | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${sample}.mirna.unmapped.counts.txt
-
-#done

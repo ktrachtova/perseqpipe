@@ -9,7 +9,6 @@ import logging
 import os
 from collections import defaultdict
 
-
 from MINTplates_module import *
 from utils import *
 
@@ -420,9 +419,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-#genes = HTSeq.GenomicArrayOfSets("auto", stranded=True)
-#feature = HTSeq.GenomicInterval(str(1), 100, 150, '+')
-#interval = HTSeq.GenomicInterval(str(1), 90, 120, "+")
-#for iv, val in genes[interval].steps():
-#   print(iv, val)

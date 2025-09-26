@@ -36,11 +36,3 @@ STAR --runMode alignReads \
 mv ${sample}.genome.Unmapped.out.mate1 ${sample}.genome.unmapped.out.fastq
 sed -i 's/0:N://g' ${sample}.genome.unmapped.out.fastq
 gzip ${sample}.genome.unmapped.out.fastq
-
-# get number of counts -> take from BAM file based on read names that contain real number of reads before pre-alignment collapsing
-# genome unmapped
-#samtools view ${input_file%.fastq.gz}.genome.Aligned.*.bam | grep -w "NH:i:0" | cut -f1 | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${input_file%.fastq.gz}.genome.unmapped.counts.txt
-# genome uniq
-#samtools view ${input_file%.fastq.gz}.genome.Aligned.*.bam | grep -w "NH:i:1" | cut -f1 | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${input_file%.fastq.gz}.genome.uniq.counts.txt
-# genome multi
-#samtools view ${input_file%.fastq.gz}.genome.Aligned.*.bam | grep -v -w "NH:i:1" | grep -v -w "NH:i:0" | cut -f1 | sort | uniq | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${input_file%.fastq.gz}.genome.multi.counts.txt

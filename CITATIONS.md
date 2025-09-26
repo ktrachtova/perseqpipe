@@ -1,4 +1,4 @@
-# nf-core/srnaseq: Citations
+# General
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 
@@ -18,6 +18,46 @@
 
 > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
 
+- [Cutadapt](https://pubmed.ncbi.nlm.nih.gov/28715235/)
+
+> Kechin A, Boyarskikh U, Kel A, Filipenko M. cutPrimers: A New Tool for Accurate Cutting of Primers from Reads of Targeted Next Generation Sequencing. J Comput Biol. 2017 Nov;24(11):1138-1143. doi: 10.1089/cmb.2017.0096. Epub 2017 Jul 17. PMID: 28715235.
+
+- [BBMap](https://bbmap.org)
+
+> Bushnell, B. (2014) BBMap: A Fast, Accurate, Splice-Aware Aligner. 9th Annual Genomics of Energy & Environment Meeting, Walnut Creek, CA. https://orcid.org/0000-0002-8140-0131. 
+
+- [STAR](https://pubmed.ncbi.nlm.nih.gov/23104886/)
+
+> Dobin A, Davis CA, Schlesinger F, Drenkow J, Zaleski C, Jha S, Batut P, Chaisson M, Gingeras TR. STAR: ultrafast universal RNA-seq aligner. Bioinformatics. 2013 Jan 1;29(1):15-21. doi: 10.1093/bioinformatics/bts635. Epub 2012 Oct 25. PMID: 23104886; PMCID: PMC3530905.
+
+- [SeqBuster](https://pubmed.ncbi.nlm.nih.gov/20008100/)
+
+> Pantano L, Estivill X, Martí E. SeqBuster, a bioinformatic tool for the processing and analysis of small RNAs datasets, reveals ubiquitous miRNA modifications in human embryonic cells. Nucleic Acids Res. 2010 Mar;38(5):e34. doi: 10.1093/nar/gkp1127. Epub 2009 Dec 11. PMID: 20008100; PMCID: PMC2836562.
+
+- [isomiRs](https://doi.org/10.18129/B9.bioc.isomiRs)
+
+> Pantano L, Escaramis G (2025). isomiRs: Analyze isomiRs and miRNAs from small RNA-seq. doi:10.18129/B9.bioc.isomiRs, R package version 1.36.1, https://bioconductor.org/packages/isomiRs.
+
+- [MINTbase](https://pubmed.ncbi.nlm.nih.gov/27153631/)
+
+> Pliatsika V, Loher P, Telonis AG, Rigoutsos I. MINTbase: a framework for the interactive exploration of mitochondrial and nuclear tRNA fragments. Bioinformatics. 2016 Aug 15;32(16):2481-9. doi: 10.1093/bioinformatics/btw194. Epub 2016 Apr 13. PMID: 27153631; PMCID: PMC4978933.
+
+- [HTSeq](https://pubmed.ncbi.nlm.nih.gov/35561197/)
+
+> Putri GH, Anders S, Pyl PT, Pimanda JE, Zanini F. Analysing high-throughput sequencing data in Python with HTSeq 2.0. Bioinformatics. 2022 May 13;38(10):2943-2945. doi: 10.1093/bioinformatics/btac166. PMID: 35561197; PMCID: PMC9113351.
+
+- [DESeq2](https://pubmed.ncbi.nlm.nih.gov/25516281/)
+
+> Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. Genome Biol. 2014;15(12):550. doi: 10.1186/s13059-014-0550-8. PMID: 25516281; PMCID: PMC4302049.
+
+- [edgeR](https://pubmed.ncbi.nlm.nih.gov/19910308/)
+
+> Robinson MD, McCarthy DJ, Smyth GK. edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. Bioinformatics. 2010 Jan 1;26(1):139-40. doi: 10.1093/bioinformatics/btp616. Epub 2009 Nov 11. PMID: 19910308; PMCID: PMC2796818.
+
+- [limma](https://pubmed.ncbi.nlm.nih.gov/25605792/)
+
+> Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res. 2015 Apr 20;43(7):e47. doi: 10.1093/nar/gkv007. Epub 2015 Jan 20. PMID: 25605792; PMCID: PMC4402510.
+
 ## Software packaging/containerisation tools
 
 - [Anaconda](https://anaconda.com)
@@ -35,7 +75,3 @@
 - [Docker](https://dl.acm.org/doi/10.5555/2600239.2600241)
 
   > Merkel, D. (2014). Docker: lightweight linux containers for consistent development and deployment. Linux Journal, 2014(239), 2. doi: 10.5555/2600239.2600241.
-
-- [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
-
-  > Kurtzer GM, Sochat V, Bauer MW. Singularity: Scientific containers for mobility of compute. PLoS One. 2017 May 11;12(5):e0177459. doi: 10.1371/journal.pone.0177459. eCollection 2017. PubMed PMID: 28494014; PubMed Central PMCID: PMC5426675.

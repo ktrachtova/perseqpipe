@@ -38,11 +38,3 @@ STAR --runMode alignReads \
 mv ${sample}.rrna.Unmapped.out.mate1 ${sample}.rrna.Unmapped.out.fastq
 sed -i 's/ .*//g' ${sample}.rrna.Unmapped.out.fastq
 gzip ${sample}.rrna.Unmapped.out.fastq
-
-# get number of counts -> take from BAM file based on read names that contain real number of reads before pre-alignment collapsing
-# rrna unmapped
-#samtools view ${input_file%.fastq.gz}.rrna.Aligned.out.bam | grep -w "NH:i:0" | cut -f1 | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${input_file%.fastq.gz}.rrna.unmapped.counts.txt
-# rrna uniq
-#samtools view ${input_file%.fastq.gz}.rrna.Aligned.out.bam | grep -w "NH:i:1" | cut -f1 | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${input_file%.fastq.gz}.rrna.uniq.counts.txt
-# rrna multi
-#samtools view ${input_file%.fastq.gz}.rrna.Aligned.out.bam | grep -v -w "NH:i:1" | grep -v -w "NH:i:0" | cut -f1 | sort | uniq | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${input_file%.fastq.gz}.rrna.multi.counts.txt
