@@ -2,6 +2,7 @@
 # Script for STAR alignment of cleaned FASTQ files to rRNA sequences
 # @author: Karolina Trachtova
 # @script: 03a_star_rrna.sh
+set -euo pipefail
 
 index=$1            # STAR rRNA index
 input_file=$2       # input .fastq.gz file

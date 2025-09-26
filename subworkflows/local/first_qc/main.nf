@@ -4,7 +4,6 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { methodsDescriptionText } from '../utils_nfcore_srnaseq_pipeline'
 include { paramsSummaryMultiqc   } from '../../nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML } from '../../nf-core/utils_nfcore_pipeline'
 

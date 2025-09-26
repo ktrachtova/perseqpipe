@@ -2,6 +2,8 @@
 #
 # Module 1: FirstQC -> FastQC
 #
+set -euo pipefail
+
 ###############################
 # Input: $1=fastq_file $2=output_directory $3=threads
 

@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/srnaseq/master/nextflow_schema.json",
+    "$id": "https://raw.githubusercontent.com/ktrachtova/perseqpipe/master/nextflow_schema.json",
     "title": "PerSeqPIPE",
     "description": "Pipeline for sequence-centered quantification of various small non-coding RNAs (sncRNAs) from NGS data",
     "type": "object",
@@ -17,86 +17,60 @@
             "type": "string",
             "format": "directory-path",
             "description": "Output directory for pipeline results."
-          },
-          "publish_dir_mode": {
-            "type": "string",
-            "enum": ["copy", "symlink", "move"],
-            "default": "copy",
-            "description": "Mode for publishing results."
           }
         }
       },
-      "reference_genome_options": {
+      "reference_options": {
         "type": "object",
         "properties": {
-          "genome_fasta_file": {
+          "index_rrna_url": {
             "type": "string",
-            "format": "file-path",
-            "description": "Genome FASTA file."
-          },
-          "index_genome_path": {
-            "type": "string",
-            "format": "directory-path",
-            "description": "Path to STAR genome index."
-          },
-          "rrna_fasta_file": {
-            "type": "string",
-            "format": "file-path",
-            "description": "FASTA file of rRNA sequences."
+            "format": "uri",
+            "description": "URL to download prebuilt rRNA STAR index."
           },
           "index_rrna_path": {
             "type": "string",
             "format": "directory-path",
             "description": "Path to STAR rRNA index."
           },
-          "index_rrna_url": {
+          "miraligner_db_url": {
             "type": "string",
             "format": "uri",
-            "description": "URL to download prebuilt rRNA STAR index."
+            "description": "URL to download miRBase database for miraligner."
           },
-          "index_rrna_name": {
+          "index_genome_url": {
             "type": "string",
-            "description": "Name of the downloaded rRNA index directory."
+            "format": "uri",
+            "description": "URL to download prebuilt genome STAR index."
+          },
+          "index_genome_path": {
+            "type": "string",
+            "format": "directory-path",
+            "description": "Path to STAR genome index."
+          },
+          "sncrna_gtf_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to download prebuilt sncRNA GTF file."
+          },
+          "sncrna_gtf_path": {
+            "type": "string",
+            "format": "file-path",
+            "description": "Path to sncRNA GTF file."
           }
         }
       },
-      "quantification_flags": {
+      "preprocessing_options": {
         "type": "object",
         "properties": {
-          "run_firstqc": { "type": "boolean" },
-          "run_preprocessing": { "type": "boolean" },
-          "run_rrna": { "type": "boolean" },
-          "run_mirna": { "type": "boolean" },
-          "run_genome": { "type": "boolean" },
-          "run_full": { "type": "boolean" }
-        },
-        "description": "Flags to enable or disable individual pipeline stages."
-      },
-      "preprocessing_parameters": {
-        "type": "object",
-        "properties": {
+          "lib_type": { "type": "string"},
           "error_rate": { "type": "number" },
           "min_overlap": { "type": "integer" },
           "disc_short": { "type": "integer" },
-          "num_adapt_to_remove": { "type": "integer" },
+          "quality_filter": {"type": "integer"},
           "adapter3_seq": { "type": ["string", "null"] },
           "adapter3_qiaseq_seq1": { "type": "string" },
           "adapter3_qiaseq_seq2": { "type": "string" }
-        }
-      },
-      "mirna_options": {
-        "type": "object",
-        "properties": {
-          "miraligner_db": {
-            "type": "string",
-            "format": "directory-path",
-            "description": "Path to miRAligner database."
-          },
-          "miraligner_jar": {
-            "type": "string",
-            "format": "file-path",
-            "description": "Path to miraligner.jar."
-          }
         }
       },
       "de_analysis_options": {
@@ -107,10 +81,10 @@
             "format": "file-path",
             "description": "Design file for differential expression analysis."
           },
-          "srna_expression_threshold": {
+          "sncrna_expression_threshold": {
             "type": "string",
             "pattern": "^\\d+\\,\\d+$",
-            "description": "Expression thresholds for samples fpr sRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples."
+            "description": "Expression thresholds for samples for sncRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples."
           },
           "mirna_expression_threshold": {
             "type": "string",
@@ -124,11 +98,24 @@
           }
         }
       },
+      "module_flags": {
+        "type": "object",
+        "properties": {
+          "download_reference_rrna": { "type": "boolean" },
+          "download_reference_genome": { "type": "boolean" },
+          "run_firstqc": { "type": "boolean" },
+          "run_preprocessing": { "type": "boolean" },
+          "run_rrna": { "type": "boolean" },
+          "run_mirna": { "type": "boolean" },
+          "run_sncrna": { "type": "boolean" },
+          "run_full": { "type": "boolean" }
+        },
+        "description": "Flags to enable or disable individual pipeline stages."
+      },
       "multiqc_options": {
         "type": "object",
         "properties": {
           "multiqc_config": { "type": ["string", "null"] },
-          "multiqc_title": { "type": ["string", "null"] },
           "multiqc_logo": { "type": ["string", "null"] },
           "max_multiqc_email_size": { "type": "string" },
           "multiqc_methods_description": { "type": ["string", "null"] }
@@ -137,10 +124,17 @@
       "generic_execution_options": {
         "type": "object",
         "properties": {
-          "download_reference_rrna": { "type": "boolean" },
-          "download_reference_genome": { "type": "boolean" },
-          "lib_type": { "type": "string" },
-          "srna_gtf": { "type": "string" },
+          "publish_dir_mode": {
+            "type": "string",
+            "enum": ["copy", "symlink", "move"],
+            "default": "copy",
+            "description": "Mode for publishing results."
+          },
+          "miraligner_jar": {
+            "type": "string",
+            "format": "file-path",
+            "description": "Path to miraligner.jar."
+          },
           "email": { "type": ["string", "null"] },
           "email_on_fail": { "type": ["string", "null"] },
           "plaintext_email": { "type": "boolean" },
@@ -159,10 +153,9 @@
     },
     "allOf": [
       { "$ref": "#/$defs/input_output_options" },
-      { "$ref": "#/$defs/reference_genome_options" },
-      { "$ref": "#/$defs/quantification_flags" },
-      { "$ref": "#/$defs/preprocessing_parameters" },
-      { "$ref": "#/$defs/mirna_options" },
+      { "$ref": "#/$defs/reference_options" },
+      { "$ref": "#/$defs/module_flags" },
+      { "$ref": "#/$defs/preprocessing_options" },
       { "$ref": "#/$defs/de_analysis_options" },
       { "$ref": "#/$defs/multiqc_options" },
       { "$ref": "#/$defs/generic_execution_options" }
@@ -179,7 +172,7 @@
           { "properties": { "run_genome": { "const": true } } },
           { "properties": { "run_full": { "const": true } } }
         ],
-        "errorMessage": "You must specify which modules of PerSeqPIPE to run! Options: --download_reference_rrna, --download_reference_genome, --run_firstqc, --run_preprocessing, --run_rrna, --run_mirna, --run_genome, --run_full"
+        "errorMessage": "You must specify which modules of PerSeqPIPE to run! Options: --download_reference_rrna, --download_reference_genome, --run_firstqc, --run_preprocessing, --run_rrna, --run_mirna, --run_sncrna, --run_full"
       }
   }
   

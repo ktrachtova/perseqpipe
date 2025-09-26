@@ -1,4 +1,4 @@
-process QUANTIFICATION_SRNA {
+process QUANTIFICATION_SNCRNA {
     tag "$meta.id"
     label 'process_low'
 

@@ -4,24 +4,33 @@ process DOWNLOAD_STAR_INDEX {
 
     input:
     val index_url
-    val index_name
-    val output_dir
+    val index_path
+    val gtf_url
+    val gtf_path
 
     output:
-    path "${output_dir}", emit: star_index_dir
+    path "${index_path}", emit: star_index_dir
+    path "${gtf_path}", optional: true, emit: gtf_file
 
     script:
+
+    def index_folder = index_path.toString().tokenize('/').last()
+    def gtf_file_name = gtf_path.toString().tokenize('/').last()
+
     """
     mkdir -p resources
     cd resources
 
-    if [ ! -d "${index_name}" ]; then
-        echo "Downloading STAR index from ${index_url}"
-        wget -q ${index_url} -O ${index_name}.tar.gz
-        tar -xzf ${index_name}.tar.gz
-        rm ${index_name}.tar.gz
-    else
-        echo "Index already exists, skipping download."
+    echo "Downloading STAR index from ${index_url}"
+    wget -q ${index_url} -O ${index_folder}.tar.gz
+    tar -xzf ${index_folder}.tar.gz
+    rm ${index_folder}.tar.gz
+
+    if [ ! -z "${gtf_url}" ]; then
+        echo "Downloading GTF from ${gtf_url}"
+        wget -q ${gtf_url} -O ${gtf_file_name}.tar.gz
+        tar -zxf ${gtf_file_name}
+        rm ${gtf_file_name}.tar.gz
     fi
     """
 }
@@ -29,9 +38,10 @@ process DOWNLOAD_STAR_INDEX {
 workflow DOWNLOAD_REFERENCES {
     take:
         index_url
-        index_name
-        reference_type
+        index_path
+        gtf_url
+        gtf_path
 
     main:
-    DOWNLOAD_STAR_INDEX(index_url, index_name, reference_type)
+    DOWNLOAD_STAR_INDEX(index_url, index_path, gtf_url, gtf_path)
 }

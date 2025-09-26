@@ -101,8 +101,9 @@ workflow {
         if (params.download_reference_genome) {
             ch_star_genome_index = DOWNLOAD_REFERENCES(
                 params.index_genome_url,
-                params.index_genome_name,
-                'resources/star_genome'
+                params.index_genome_path,
+                params.sncrna_gtf_url,
+                params.sncrna_gtf_path
             ).out.star_index_dir
         }
 

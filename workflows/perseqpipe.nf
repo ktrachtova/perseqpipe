@@ -14,7 +14,7 @@ include { FIRSTQC                } from '../subworkflows/local/first_qc/main.nf'
 include { PREPROCESSING          } from '../subworkflows/local/preprocessing/main.nf'
 include { RRNA_QUANTIFICATION    } from '../subworkflows/local/rrna_quantification/main.nf'
 include { MIRNA_QUANTIFICATION   } from '../subworkflows/local/mirna_quantification/main.nf'
-include { GENOME_QUANTIFICATION  } from '../subworkflows/local/genome_quantification/main.nf'
+include { SNCRNA_QUANTIFICATION  } from '../subworkflows/local/sncrna_quantification/main.nf'
 include { DE_ANALYSIS            } from '../subworkflows/local/de_analysis/main.nf'
 
 include { CALCULATE_ALL_STATS    } from '../modules/local/calculate_all_stats/main.nf'
@@ -30,7 +30,7 @@ def do_firstqc          = params.run_firstqc
 def do_preprocessing    = params.run_preprocessing
 def do_rrna             = params.run_rrna
 def do_mirna            = params.run_mirna
-def do_genome           = params.run_genome
+def do_sncrna           = params.run_sncrna
 def do_full             = params.run_full
 
 
@@ -49,7 +49,7 @@ if (do_mirna) {
     do_rrna = true
 }
 
-if (do_genome) {
+if (do_sncrna) {
     do_firstqc = true
     do_preprocessing = true
     do_rrna = true
@@ -61,7 +61,7 @@ if (do_full) {
     do_preprocessing = true
     do_rrna = true
     do_mirna = true
-    do_genome = true
+    do_sncrna = true
 }
 
 workflow PERSEQPIPE {
@@ -95,9 +95,9 @@ workflow PERSEQPIPE {
         )
     }
     
-    if (do_genome) {
-        GENOME_QUANTIFICATION (
-            MIRNA_QUANTIFICATION.out.mirna_unmapped_files
+    if (do_sncrna) {
+        SNCRNA_QUANTIFICATION (
+            MIRNA_QUANTIFICATION.out.mirna_unmapped_files,
         )
     }
 
@@ -105,18 +105,18 @@ workflow PERSEQPIPE {
         DE_ANALYSIS (
             MIRNA_QUANTIFICATION.out.mirna_canonical_tsv,
             MIRNA_QUANTIFICATION.out.mirna_isomirs_tsv,
-            GENOME_QUANTIFICATION.out.genome_srna_counts.collect({it[1]})
+            SNCRNA_QUANTIFICATION.out.genome_srna_counts.collect({it[1]})
         )
     }
 
-    if (do_genome || do_full) {
+    if (do_sncrna || do_full) {
 
         ch_counts_files = 
             FIRSTQC.out.fastqc_counts.collect({it[1]})
             .mix(PREPROCESSING.out.preprocessed_counts.collect({it[1]}))
             .mix(RRNA_QUANTIFICATION.out.rrna_counts.collect({it[1]}))
             .mix(MIRNA_QUANTIFICATION.out.mirna_counts.collect({it[1]}))
-            .mix(GENOME_QUANTIFICATION.out.genome_counts.collect({it[1]})).flatten().collect()
+            .mix(SNCRNA_QUANTIFICATION.out.genome_counts.collect({it[1]})).flatten().collect()
 
         CALCULATE_ALL_STATS (
             ch_counts_files

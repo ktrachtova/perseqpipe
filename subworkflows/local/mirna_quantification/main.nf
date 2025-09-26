@@ -7,9 +7,7 @@ workflow MIRNA_QUANTIFICATION {
         cleaned_reads
 
     main:
-        ch_miraligner_db = Channel.fromPath(params.miraligner_db).collect()
-
-        MIRALIGNER_MIRNA(ch_miraligner_db, cleaned_reads)
+        MIRALIGNER_MIRNA(params.miraligner_db_url, cleaned_reads)
         // fastqc_mirna(mirna_alignment.out.mirna_unmapped_fastq, 'rna_quantification/mirna/qc')
 
         // multiqc_mirna(fastqc_mirna.out.fastqc_results.collect(), 'rna_quantification/mirna/qc')

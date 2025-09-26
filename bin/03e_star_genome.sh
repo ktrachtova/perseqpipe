@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # main inputs
 index=$1

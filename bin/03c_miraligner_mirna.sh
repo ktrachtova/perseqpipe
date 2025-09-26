@@ -12,6 +12,8 @@
 # TODO Merge contamination removal with the mapping script to keep miRNA reads which map with 0 mismatch but with 1 mismatch to contaminants
 #
 ################################################################################################################
+set -euo pipefail
+
 miraligner_db=$1
 input_file=$2
 sample=$3           # sample name

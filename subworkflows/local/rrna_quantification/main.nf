@@ -9,7 +9,7 @@ workflow RRNA_QUANTIFICATION {
 
     main:
         // Use the pre-defined STAR index path from the parameters
-        ch_rrna_index = Channel.value("${workflow.projectDir}/resources/star_rrna")
+        ch_rrna_index = Channel.value("${workflow.projectDir}/${params.index_rrna_path}")
         STAR_RRNA ( ch_rrna_index , cleaned_reads)
 
         ALIGNMENT_STATS ( STAR_RRNA.out.rrna_aligned_bam )

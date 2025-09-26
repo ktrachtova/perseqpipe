@@ -4,6 +4,7 @@
 #
 # Requires Cutadapt, fastx-toolkit, FastQC, multiQC
 #
+set -euo pipefail
 
 SAMPLE=$1
 THREADS=$2
@@ -13,7 +14,7 @@ THREADS=$2
 ERROR_RATE=${3:-0.10}                       # Allowed error rate or adapters
 MIN_OVERLAP=${4:-5}                         # Minimal overlap of adapter for first adapter trimming; cutadapt uses this overlap as a "seed" and then tries to align the rest of the adapter. It doesn't remove the random hits in the middle of the sequence. We could go even lower if we would be interested in RNA/RNA fragments which could be approximately same length as the sequencing read length
 DISC_SHORT=${5:-15}                         # Discard shorter reads
-NUM_ADAPT_TO_REMOVE=${6:-1}                 # Maximal number of adapters to remove
+QUALITY_FILTER=${6:-10}                      # Quality filter for trimming
 ADAPTER3_SEQ1=${7:-"TGGAATTCTCGGGTGCCAAGG"} # Default Truseq 3' adapter
 
 echo "####################################################"
@@ -49,9 +50,9 @@ echo "####################################################"
 echo "$(date +%s) Started trimming sample $SAMPLE"
 
 cutadapt -a $ADAPTER3_SEQ1 \
-         --times $NUM_ADAPT_TO_REMOVE \
+         --times 1 \
 	     --max-n=0 \
-         -q 10 \
+         -q $QUALITY_FILTER \
          -e $ERROR_RATE \
          -O $MIN_OVERLAP \
          -m $DISC_SHORT \

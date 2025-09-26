@@ -1,6 +1,6 @@
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/logo_dark.png">
-    <img alt="" src="docs/images/logo_light.png" style="margin-bottom: 20px;">
+    <img alt="" src="docs/images/logo_light.png" style="margin-bottom: 50px;">
 </picture>
 
 
@@ -21,10 +21,7 @@ For detailed information about individual modules, please refere to [Module desc
 
 ## Usage
 
-> [!NOTE]
-> If you are new to Nextflow, please refer to [this page](https://www.nextflow.io/docs/latest/install.html) on how to set-up Nextflow. Make sure to test you setup with `-profile test` before running the workflow on actual data.
-
-For instructions on how to execute the pipeline, plese refer to [Usage](docs/usage.md) documentation.
+For instructions on how to execute the PerSeqPIPE pipeline, plese refer to [Usage](docs/usage.md) documentation.
 
 ## Pipeline outputs
 
