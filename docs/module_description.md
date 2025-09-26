@@ -8,11 +8,11 @@ The PerSeqPIPE consists of **6 main modules** (which correspond to subworkflows 
 5. Other sncRNA quantification (SNCRNA_QUANTIFICATION)  
 6. DE analysis (DE_ANALYSIS)  
 
-## Module 1: FirstQC  
+## Module 1️⃣: FirstQC  
 
 The FIRSTQC module checks the quality of raw sequencing data. It uses FastQC to scan each sample for various quality metrics and MultiQC to aggregate all results from FastQC into one HTML report.  
 
-## Module 2: Preprocessing  
+## Module 2️⃣: Preprocessing  
 
 The PREPROCESSING module cleans raw sequencing reads and prepares FASTQ files with collapsed reads for subsequent alignment. Based on the library preparation kit specified by the user through the parameter `--lib_type`, the following set of preprocessing steps will be executed:  
 
@@ -34,15 +34,15 @@ Currently supported library preparation kits:
 * Small RNA-Seq Library Prep Kit (Lexogen)  
 * Small RNA Sequencing Novogene  
 
-## Module 3: rRNA quantification  
+## Module 3️⃣: rRNA quantification  
 
 Cleaned reads from preprocessing are aligned to a custom set of rRNA sequences (see [Annotation preparation](annotation_preparation.md)) using STAR, with parameters adjusted for the alignment of short reads that can originate from several hundred similar rRNA sequences.
 
-## Module 4: miRNA/isomiR quantification  
+## Module 4️⃣: miRNA/isomiR quantification  
 
 Reads unmapped to rRNA are aligned to miRNA precursor sequences using the miraligner tool (by default miRBase v22; alternatively, v21 can be chosen using the parameter `--mirbase_version`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
 
-## Module 5: Other sncRNA quantification  
+## Module 5️⃣: Other sncRNA quantification  
 
 Reads not aligning to miRNA are aligned to the human genome (GRCh38) using STAR, with several parameters adjusted for short-read alignment. BAM files from alignment and our GTF file for all sncRNA classes are used as input for a custom in-house Python quantification script. This script counts all reads, including multimapping ones, and creates a table where, for each read sequence, a list of all possible annotations is provided.  
 
@@ -58,7 +58,7 @@ Other RNA classes included in the reference, and therefore also quantified if fr
 * mRNA  
 * lncRNA  
 
-## Module 6: Differential expression analysis  
+## Module 6️⃣: Differential expression analysis  
 
 Currently, there are two modes for running the DE analysis module (DE_ANALYSIS). If the user does not provide a design file (option `--design`), only raw and normalized counts (edgeR TMM, VST, and DESeq2 normalized) will be produced. If a design file is provided, full DE analysis using DESeq2 will be performed.  
 
