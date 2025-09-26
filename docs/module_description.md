@@ -10,19 +10,19 @@ The PerSeqPIPE consists of **6 main modules** (which correspond to subworkflows 
 
 ## Module 1️⃣: FirstQC  
 
-The FIRSTQC module checks the quality of raw sequencing data. It uses FastQC to scan each sample for various quality metrics and MultiQC to aggregate all results from FastQC into one HTML report.  
+The FIRSTQC module checks the quality of raw sequencing data. It uses `FastQC` to scan each sample for various quality metrics and `MultiQC` to aggregate all results from `FastQC` into one HTML report.  
 
 ## Module 2️⃣: Preprocessing  
 
 The PREPROCESSING module cleans raw sequencing reads and prepares FASTQ files with collapsed reads for subsequent alignment. Based on the library preparation kit specified by the user through the parameter `--lib_type`, the following set of preprocessing steps will be executed:  
 
-1. Remove adapters from the 3’ end (cutadapt)  
-2. (Optional: QIAseq) Collapse reads using UMIs (fastx_collapser, bbmap)  
-3. (Optional: QIAseq) Remove second 3’ end adapters and UMIs (cutadapt)  
-4. (Optional: Nextflex V3) Remove the first 4 and last 4 bases from each read (cutadapt)  
-5. Collapse cleaned reads (fastx_collapser, bbmap)  
+1. Remove adapters from the 3’ end (`cutadapt`)  
+2. (Optional: QIAseq) Collapse reads using UMIs (`fastx_collapser`, `bbmap`)  
+3. (Optional: QIAseq) Remove second 3’ end adapters and UMIs (`cutadapt`)  
+4. (Optional: Nextflex V3) Remove the first 4 and last 4 bases from each read (`cutadapt`)  
+5. Collapse cleaned reads (`fastx_collapser`, `bbmap`)  
 
-The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). Each type of preprocessed read also undergoes post-processing checks with FastQC, and an overall MultiQC HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
+The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). Each type of preprocessed read also undergoes post-processing checks with `FastQ`C, and an overall `MultiQC` HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
 
 Currently supported library preparation kits:  
 * QIAseq miRNA Library Kit (QIAGEN)  
@@ -36,15 +36,15 @@ Currently supported library preparation kits:
 
 ## Module 3️⃣: rRNA quantification  
 
-Cleaned reads from preprocessing are aligned to a custom set of rRNA sequences (see [Annotation preparation](annotation_preparation.md)) using STAR, with parameters adjusted for the alignment of short reads that can originate from several hundred similar rRNA sequences.
+Cleaned reads from preprocessing are aligned to a custom set of rRNA sequences (see [Annotation preparation](annotation_preparation.md)) using `STAR`, with parameters adjusted for the alignment of short reads that can originate from several hundred similar rRNA sequences.
 
 ## Module 4️⃣: miRNA/isomiR quantification  
 
-Reads unmapped to rRNA are aligned to miRNA precursor sequences using the miraligner tool (by default miRBase v22; alternatively, v21 can be chosen using the parameter `--mirbase_version`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
+Reads unmapped to rRNA are aligned to miRNA precursor sequences using the `miraligner` tool (by default miRBase v22; alternatively, v21 can be chosen using the parameter `--mirbase_version`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
 
 ## Module 5️⃣: Other sncRNA quantification  
 
-Reads not aligning to miRNA are aligned to the human genome (GRCh38) using STAR, with several parameters adjusted for short-read alignment. BAM files from alignment and our GTF file for all sncRNA classes are used as input for a custom in-house Python quantification script. This script counts all reads, including multimapping ones, and creates a table where, for each read sequence, a list of all possible annotations is provided.  
+Reads not aligning to miRNA are aligned to the human genome (GRCh38) using `STAR`, with several parameters adjusted for short-read alignment. BAM files from alignment and our GTF file for all sncRNA classes are used as input for a custom in-house Python quantification script (which uses `HTSeq` Python library). This script counts all reads, including multimapping ones, and creates a table where, for each read sequence, a list of all possible annotations is provided.  
 
 Users can change thresholds such as the minimum number of identical reads required for a sequence to be reported, or the minimum length of overlap between a read and an annotation feature for it to be assigned.  
 
@@ -60,7 +60,7 @@ Other RNA classes included in the reference, and therefore also quantified if fr
 
 ## Module 6️⃣: Differential expression analysis  
 
-Currently, there are two modes for running the DE analysis module (DE_ANALYSIS). If the user does not provide a design file (option `--design`), only raw and normalized counts (edgeR TMM, VST, and DESeq2 normalized) will be produced. If a design file is provided, full DE analysis using DESeq2 will be performed.  
+Currently, there are two modes for running the DE analysis module (DE_ANALYSIS). If the user does not provide a design file (option `--design`), only raw and normalized counts (`edgeR` TMM, VST, and `DESeq2` normalized) will be produced. If a design file is provided, full DE analysis using `DESeq2` will be performed.  
 
 The DE_ANALYSIS module is run once for miRNAs/isomiRs (counts obtained through the **MIRNA_QUANTIFICATION** module) and once for all other RNA classes (counts obtained through the **SNCRNA_QUANTIFICATION** module).  
 
