@@ -1,66 +1,67 @@
 # PerSeqPIPE: Module description
 
-The PerSeqPIPE consists of 6 main modules:
-1. FirstQC
-2. Preprocessing
-3. rRNA quantification (contamination removal)
-4. miRNA/isomiR quantification
-5. Other sncRNA quantification
-6. DE analysis
+The PerSeqPIPE consists of **6 main modules** (which correspond to subworkflows in Nextflow syntax):  
+1. FirstQC (FIRSTQC)  
+2. Preprocessing (PREPROCESSING)  
+3. rRNA quantification / contamination removal (RRNA_QUANTIFICATION)  
+4. miRNA / isomiR quantification (MIRNA_QUANTIFICATION)  
+5. Other sncRNA quantification (SNCRNA_QUANTIFICATION)  
+6. DE analysis (DE_ANALYSIS)  
 
-## Module 1: FirstQC
+## Module 1: FirstQC  
 
-The FIRSTQC module checks the quality of raw sequencing data. It uses FastQC to scan each samples for various quality metrics and MultiQC to aggregate all results from FastQC into one HTML report. 
+The FIRSTQC module checks the quality of raw sequencing data. It uses FastQC to scan each sample for various quality metrics and MultiQC to aggregate all results from FastQC into one HTML report.  
 
-## Module 2: Preprocessing
+## Module 2: Preprocessing  
 
-The PREPROCESSING module cleans raw sequencing reads and prepares FASTQ files with collapsed reads for subsequent alignment. Based on library preparation kit that user specifies through parameter `--lib_type`, following set of preprocessing steps will be executed:
+The PREPROCESSING module cleans raw sequencing reads and prepares FASTQ files with collapsed reads for subsequent alignment. Based on the library preparation kit specified by the user through the parameter `--lib_type`, the following set of preprocessing steps will be executed:  
 
-1. Remove adapters from 3’ end (cutadapt)
-2. (Optional: QIAseq) Collapsing reads using UMIs (fastx_collapser, bbmap)
-3. (Optional: QIAseq) Removing second 3’ end adapters and UMIs (cutadapt)
-4. (Optional: Nextflex V3) Removing first 4 and last 4 bases from each reads (cutadapt)
-5. Collapsing cleaned reads (fastx_collapser, bbmap)
+1. Remove adapters from the 3’ end (cutadapt)  
+2. (Optional: QIAseq) Collapse reads using UMIs (fastx_collapser, bbmap)  
+3. (Optional: QIAseq) Remove second 3’ end adapters and UMIs (cutadapt)  
+4. (Optional: Nextflex V3) Remove the first 4 and last 4 bases from each read (cutadapt)  
+5. Collapse cleaned reads (fastx_collapser, bbmap)  
 
-Output of the PREPROCESSING module are cleaned collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). Each type of preprocessed reads also undergoes post-processing checks with FastQC and an overall MultiQC HTML report is produced summarizing the quality of all samples after each preprocessing step.
+The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). Each type of preprocessed read also undergoes post-processing checks with FastQC, and an overall MultiQC HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
 
-Currently supported library preparation kits:
-* QIAseq miRNA Library Kit (QIAGEN)
-* TruSeq Small RNA Library Preparation Kit
-* NEBNext Small RNA Library Prep Set for Illumina
-* NEXTFLEX Small RNA-Seq Kit V3
-* NEXTFLEX Small RNA-Seq Kit V4
-* CleanTag Small RNA Library Preparation Kit (TriLink)
-* Small RNA-Seq Library Prep Kit (Lexogen)
-* Small RNA Sequencing Novogene
+Currently supported library preparation kits:  
+* QIAseq miRNA Library Kit (QIAGEN)  
+* TruSeq Small RNA Library Preparation Kit  
+* NEBNext Small RNA Library Prep Set for Illumina  
+* NEXTFLEX Small RNA-Seq Kit V3  
+* NEXTFLEX Small RNA-Seq Kit V4  
+* CleanTag Small RNA Library Preparation Kit (TriLink)  
+* Small RNA-Seq Library Prep Kit (Lexogen)  
+* Small RNA Sequencing Novogene  
 
-## Module 3: rRNA quantification
-Cleaned reads from preprocessing are aligned to a custom set of rRNA sequences (see chapter [Annotation preparation](annotation_preparation.md)) using STAR with parameters adjusted for alignment of short reads that can originate from several hundred similar rRNA sequences.
+## Module 3: rRNA quantification  
 
-## Module 4: miRNA/isomiR quantification
+Cleaned reads from preprocessing are aligned to a custom set of rRNA sequences (see [Annotation preparation](annotation_preparation.md)) using STAR, with parameters adjusted for the alignment of short reads that can originate from several hundred similar rRNA sequences.
 
-rRNA unmapped reads are aligned to miRNA precursor sequences using miraligner tool (by default miRBase v22, but using parameter `-–mirbase_version` user can choose also v21). R package `isomiRs` is then used to produce raw counts for both canonical miRNA and isomiRs. 
+## Module 4: miRNA/isomiR quantification  
 
-## Module 5: Other sncRNA quantification
+Reads unmapped to rRNA are aligned to miRNA precursor sequences using the miraligner tool (by default miRBase v22; alternatively, v21 can be chosen using the parameter `--mirbase_version`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
 
-Reads not aligning to miRNA are aligned to the human genome GRCh38 using STAR. Several parameters of STAR are adjusted for alignment of short reads. BAM files from alignment and our GTF file for all sncRNAs classes are used as an input for custom in-house Python quantification script. Our quantification script counts all, even multimapping reads and creates a table where for each read sequence a list of all possible annotations is provided.
+## Module 5: Other sncRNA quantification  
 
-User can change thresholds such as minimal number of identical reads for a read sequence to be reported or length of overlap between a read and annotation feature for an annotation to be assigned to a specific read sequence. 
+Reads not aligning to miRNA are aligned to the human genome (GRCh38) using STAR, with several parameters adjusted for short-read alignment. BAM files from alignment and our GTF file for all sncRNA classes are used as input for a custom in-house Python quantification script. This script counts all reads, including multimapping ones, and creates a table where, for each read sequence, a list of all possible annotations is provided.  
 
-Distinct sncRNA classes currently quantified:
-* tRNA
-* piRNA
-* snoRNA
-* sncRNA_other (snRNA, scaRNA, scRNA, sRNA, misc_RNA)
+Users can change thresholds such as the minimum number of identical reads required for a sequence to be reported, or the minimum length of overlap between a read and an annotation feature for it to be assigned.  
 
-Other RNA classes that are also part of a reference and hence fragments originating from them are also quantified:
-* mRNA
-* lncRNA
+Distinct sncRNA classes currently quantified:  
+* tRNA  
+* piRNA  
+* snoRNA  
+* sncRNA_other (snRNA, scaRNA, scRNA, sRNA, misc_RNA)  
 
-## Module 4: Differential expression analysis
+Other RNA classes included in the reference, and therefore also quantified if fragments originate from them:  
+* mRNA  
+* lncRNA  
 
-Currently, there are 2 modes for running the DE analysis module (DE_ANALYSIS). If user does not provide a design file (option `--design`), then only raw and normalized counts (edgeR TMM, VST, and DESeq2 normalized) will be produced. If a user provides a design file, full DE analysis using DESeq2 will be performed.
+## Module 6: Differential expression analysis  
 
-Differential expression analysis module (**DE_ANALYSIS**) is run once for miRNA/isomiRs (counts obtained through **MIRNA_QUANTIFICATION** module) and once for all other RNA classes (counts obtained through **GENOME_QUANTIFICATION** module).
+Currently, there are two modes for running the DE analysis module (DE_ANALYSIS). If the user does not provide a design file (option `--design`), only raw and normalized counts (edgeR TMM, VST, and DESeq2 normalized) will be produced. If a design file is provided, full DE analysis using DESeq2 will be performed.  
 
-For more information about the statistical analysis please refer to specical section on [DE analysis](de_analysis.md).
+The DE_ANALYSIS module is run once for miRNAs/isomiRs (counts obtained through the **MIRNA_QUANTIFICATION** module) and once for all other RNA classes (counts obtained through the **SNCRNA_QUANTIFICATION** module).  
+
+For more information about the statistical analysis, please refer to the dedicated section on [DE analysis](de_analysis.md).  
