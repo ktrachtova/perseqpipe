@@ -9,14 +9,14 @@
 
 ## ⭐ Introduction
 
-**PerSeqPIPE** is a bioinformatics pipeline for analysis of small RNA-sequencing datasets focusing of various small non-coding RNAs using a sequence-centric quantification.
+**PerSeqPIPE** is a bioinformatics pipeline for analysis of small RNA-sequencing datasets with focus on quantification of various small non-coding RNAs using a sequence-centric approach. 
 
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/PerSeqPIPE.png">
     <img alt="" src="docs/images/PerSeqPIPE.png" style="margin-bottom: 20px;">
 </picture>
 
-For detailed information about individual modules, please refere to [Module description](docs/module_description.md) documentation. Annotation GTF file used for sncRNA quantification was create as described in [Annotation preparation](docs/annotation_preparation.md) using databases specified in [Reference databases](docs/reference_databases.md).
+For detailed information about individual PerSeqPIPE modules, please refere to [Module description](docs/module_description.md) documentation. Annotation GTF file used for sncRNA quantification was create as described in [Annotation preparation](docs/annotation_preparation.md) using databases specified in [Reference databases](docs/reference_databases.md).
 
 ## 💻 Usage
 
