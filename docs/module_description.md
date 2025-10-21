@@ -22,7 +22,7 @@ The PREPROCESSING module cleans raw sequencing reads and prepares FASTQ files wi
 4. (Optional: Nextflex V3) Remove the first 4 and last 4 bases from each read (`cutadapt`)  
 5. Collapse cleaned reads (`fastx_collapser`, `bbmap`)  
 
-The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). Each type of preprocessed read also undergoes post-processing checks with `FastQ`C, and an overall `MultiQC` HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
+The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). Each type of preprocessed read also undergoes post-processing checks with `FastQC`, and an overall `MultiQC` HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
 
 Currently supported library preparation kits:  
 * QIAseq miRNA Library Kit (QIAGEN)  

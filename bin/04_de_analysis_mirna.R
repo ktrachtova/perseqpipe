@@ -469,13 +469,13 @@ if (!is.null(design_file)) {
       arrange(padj_lrt)
     
     # Save result
-    output_file <- paste0("DE_analysis_", name, "_", paste(levels(dds$condition), collapse = "_"), "_results.tsv")
+    output_file <- paste0("DE_analysis_", name, "_results.tsv")
     write.table(final_results, file = output_file, sep = "\t", quote = FALSE, row.names = FALSE)
 
     # Obtain raw and normalized counts - order of rows==sequences('gene' column)
     # will be identical to the DE table so its easy to merge
     counts_table <- create_raw_norm_counts(dds)
-    output_file <- paste0("DE_analysis_", name, "_", paste(levels(dds$condition), collapse = "_"), "_counts.tsv")
+    output_file <- paste0("DE_analysis_", name, "_counts.tsv")
     write.table(counts_table, file = output_file, sep = "\t", quote = FALSE, row.names = FALSE)
     
     message("All pairwise DE comparisons for ", name, " completed.\n")

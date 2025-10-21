@@ -462,13 +462,13 @@ if (!is.null(design_file)) {
     arrange(padj_lrt)
   
   # Save result
-  output_file <- paste0("DE_analysis_sncrna_", paste(levels(dds$condition), collapse = "_"), "_results.tsv")
+  output_file <- paste0("DE_analysis_sncrna_results.tsv")
   write.table(final_results_annot, file = output_file, sep = "\t", quote = FALSE, row.names = FALSE)
   
   # Obtain raw and normalized counts - order of rows==sequences('gene' column)
   # will be identical to the DE table so its easy to merge
   counts_table <- create_raw_norm_counts(dds)
-  output_file <- paste0("DE_analysis_sncrna_", paste(levels(dds$condition), collapse = "_"), "_counts.tsv")
+  output_file <- paste0("DE_analysis_sncrna_counts.tsv")
   write.table(counts_table, file = output_file, sep = "\t", quote = FALSE, row.names = FALSE)
   
   

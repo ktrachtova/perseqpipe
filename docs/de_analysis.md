@@ -1,11 +1,14 @@
 # PerSeqPIPE: Differential Expression Analysis
 
-Currently, there are 2 modes for running the DE analysis module (DE_ANALYSIS). If user does not provide a design file (option `--design`), then only raw and normalized counts (edgeR TMM, VST, and DESeq2 normalized) will be produced. If a user provides a design file, full DE analysis using DESeq2 will be performed.
-Differential expression analysis module (DE_ANALYSIS) is run once for miRNA/isomiRs (counts obtained through MIRNA_QUANTIFICATION module) and once for all other RNA classes (counts obtained through GENOME_QUANTIFICATION module).
+The Differential Expression Analysis module (**DE_ANALYSIS**) can be executed in two modes. If no design file is provided (using the `--design` option), the module generates only raw and normalized counts (including edgeR TMM, VST, and DESeq2-normalized values). If a design file is supplied, a full differential expression analysis is performed using DESeq2.
+
+The **DE_ANALYSIS** module is executed separately for miRNAs/isomiRs (using counts obtained from the **MIRNA_QUANTIFICATION** module) and for all other RNA classes (using counts obtained from the **SNCRNA_QUANTIFICATION** module).
 
 ## Design file specification
 
-Design file must have minimally 2 columns (**sample** and **condition**) and max 3 columns (**sample**, **condition**, **batch**). Sample names stated in column sample **MUST MATCH** sample names in input samplesheet file! Pipeline will fail if this requirement is not fulfilled. Separator can be comma or tabulator. Please be aware that providing sample names, conditions or batch effects values with characters such as space, hash, slash etc. might cause the analysis to fail! It is recommended to check that the design file only contains strings with characters, numbers, hyphens or underscores.
+The design file must contain at least two columns (`sample` and `condition`) and may include an optional third column (`batch`). The sample names specified in the **sample column must exactly match the sample names listed in the input samplesheet file**; otherwise, the pipeline will fail.
+
+The file can be comma- or tab-delimited. Please note that using special characters (such as spaces, hashes, slashes, etc.) in sample names, conditions, or batch values may cause the analysis to fail. It is strongly recommended that the design file only contain alphanumeric characters, hyphens, and underscores.
 
 Example design file with only sample and condition columns:
 ```
@@ -92,21 +95,21 @@ It is highly recommended to use this filtering when running sncRNA DE analysis a
 
 Main outputs from miRNA/isomiRs DE analysis if design file provided by user:
 
-* **DE_analsis_{mirna|isomirs}\_{condX}_{condY}_results.tsv** is a main file with DE results for miRNA and isomiRs (separately). This file contains following columns:
+* **DE_analsis_{mirna|isomirs}\_results.tsv** is a main file with DE results for miRNA and isomiRs (separately). This file contains following columns:
 
-    * **gene** column with miRNA/isomiR name
-    * **baseMean** is the average of the normalized count values, dividing by size factors, taken over all samples
-    * **stat_lrt** (optional) is the value of the test statistic from LRT; present only if more there are more than 2 conditions in the design file
-    * **pvalue_lrt** (optional) is the p-value of from LRT; present only if more there are more than 2 conditions in the design file
-    * **padj_lrt** (optional) is the adjusted p-value from LRT; present only if more there are more than 2 conditions in the design file
-    * **logFC_cond{X}_vs_cond{Y}** is log2 fold change from comparing condX VS condY
-    * **stat_cond{X}_vs_cond{Y}** is the value of the test statistics from comparing condX VS condY
-    * **pval_cond{X}_vs_cond{Y}** is the p-value of comparing condX VS condY
-    * **padj_cond{X}_vs_cond{Y}** is the adjusted p-value of comparing condX VS condY
+    * `gene` column with miRNA/isomiR name
+    * `baseMean` is the average of the normalized count values, dividing by size factors, taken over all samples
+    * `stat_lrt` (optional) is the value of the test statistic from LRT; present only if more there are more than 2 conditions in the design file
+    * `pvalue_lrt` (optional) is the p-value of from LRT; present only if more there are more than 2 conditions in the design file
+    * `padj_lrt` (optional) is the adjusted p-value from LRT; present only if more there are more than 2 conditions in the design file
+    * `logFC_cond{X}_vs_cond{Y}` is log2 fold change from comparing condX vs condY
+    * `stat_cond{X}_vs_cond{Y}` is the value of the test statistics from comparing condX vs condY
+    * `pval_cond{X}_vs_cond{Y}` is the p-value of comparing condX vs condY
+    * `padj_cond{X}_vs_cond{Y}` is the adjusted p-value of comparing condX vs condY
 
-* **DE_analysis_{mirna|isomirs}\_{condX}_{condY}_counts.tsv** contains raw and normalized counts for all samples. Each column in the file is a sample. Column header format is following:
+* **DE_analysis_{mirna|isomirs}\_counts.tsv** contains raw and normalized counts for all samples. Each column in the file is a sample. Column header format is following:
 
-    * **{sample_id}\_{raw|norm|vst}_{condX|condY}** where raw=raw counts, norm=DESeq2 normalized counts and vst=VST counts, first column is **gene** and corresponds to the first column of the table with DE analysis results, hence both tables can be easily merged
+    * `{sample_id}\_{raw|norm|vst}_{condX|condY}` where raw=raw counts, norm=DESeq2 normalized counts and vst=VST counts, first column is **gene** and corresponds to the first column of the table with DE analysis results, hence both tables can be easily merged
  
     If design file contains column `batch`, function `removeBatchEffect()` from limma package will be used to remove that batch effect from counts, hence the columns **norm** and **vst** will contain counts suitable for creating plots such as heatmaps
 
@@ -124,30 +127,30 @@ Additional outputs from miRNA/isomiRs DE analysis:
 
 Main outputs from sncRNA DE analysis if design file provided by user:
 
-* **DE_analsis_sncrna\_{condX}_{condY}_results.tsv** is a main file with DE results. This file contains following columns:
+* **DE_analsis_sncrna\_results.tsv** is a main file with DE results. This file contains following columns:
 
-    * **sequence** column with sncRNA sequence
-    * **pirna** column with known piRNA annotation
-    * **trna** column with known tRNA annotation
-    * **snorna** column with known snoRNA annotation
-    * **srna** column with other known small non-coding RNAs annotation (TO-DO: add link to documentation about reference preparation)
-    * **mrna** column with known mRNA annotation
-    * **lncrna** column with known lncRNA annotation
-    * **genome_alignments** number of genomic alignments of a sequence
-    * **MINT_plate**
-    * **baseMean** is the average of the normalized count values, dividing by size factors, taken over all samples
-    * **stat_lrt** (optional) is the value of the test statistic from LRT; present only if more there are more than 2 conditions in the design file
-    * **pvalue_lrt** (optional) is the p-value of from LRT; present only if more there are more than 2 conditions in the design file
-    * **padj_lrt** (optional) is the adjusted p-value from LRT; present only if more there are more than 2 conditions in the design file
-    * **logFC_cond{X}_vs_cond{Y}** is log2 fold change from comparing condX VS condY
-    * **stat_cond{X}_vs_cond{Y}** is the value of the test statistics from comparing condX VS condY
-    * **pval_cond{X}_vs_cond{Y}** is the p-value of comparing condX VS condY
-    * **padj_cond{X}_vs_cond{Y}** is the adjusted p-value of comparing condX VS condY
+    * `sequence` column with sncRNA sequence
+    * `pirna` column with known piRNA annotation
+    * `trna` column with known tRNA annotation
+    * `snorna` column with known snoRNA annotation
+    * `srna` column with other known small non-coding RNAs annotation (TO-DO: add link to documentation about reference preparation)
+    * `mrna` column with known mRNA annotation
+    * `lncrna` column with known lncRNA annotation
+    * `genome_alignments` number of genomic alignments of a sequence
+    * `MINT_plate`
+    * `baseMean` is the average of the normalized count values, dividing by size factors, taken over all samples
+    * `stat_lrt` (optional) is the value of the test statistic from LRT; present only if more there are more than 2 conditions in the design file
+    * `pvalue_lrt` (optional) is the p-value of from LRT; present only if more there are more than 2 conditions in the design file
+    * `padj_lrt` (optional) is the adjusted p-value from LRT; present only if more there are more than 2 conditions in the design file
+    * `logFC_cond{X}_vs_cond{Y}` is log2 fold change from comparing condX VS condY
+    * `stat_cond{X}_vs_cond{Y}` is the value of the test statistics from comparing condX VS condY
+    * `pval_cond{X}_vs_cond{Y}` is the p-value of comparing condX VS condY
+    * `padj_cond{X}_vs_cond{Y}` is the adjusted p-value of comparing condX VS condY
 
 
-* **DE_analysis_sncrna\_{condX}_{condY}_counts.tsv** contains raw and normalized counts for all samples. Each column in the file is a sample. Column header format is following:
+* **DE_analysis_sncrna_counts.tsv** contains raw and normalized counts for all samples. Each column in the file is a sample. Column header format is following:
 
-    * **{sample_id}\_{raw|norm|vst}_{condX|condY}** where raw=raw counts, norm=DESeq2 normalized counts and vst=VST counts, first column is **gene** and corresponds to the first column of the table with DE analysis results, hence both tables can be easily merged
+    * `{sample_id}\_{raw|norm|vst}_{condX|condY}` where raw=raw counts, norm=DESeq2 normalized counts and vst=VST counts, first column is **gene** and corresponds to the first column of the table with DE analysis results, hence both tables can be easily merged
  
     If design file contains column `batch`, function `removeBatchEffect()` from limma package will be used to remove that batch effect from counts, hence the columns **norm** and **vst** will contain counts suitable for creating plots such as heatmaps
 

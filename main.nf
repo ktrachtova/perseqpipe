@@ -92,8 +92,9 @@ workflow {
         if (params.download_reference_rrna) {
             ch_star_rrna_index = DOWNLOAD_REFERENCES(
                 params.index_rrna_url,
-                params.index_rrna_name,
-                'resources/star_rrna'
+                params.index_rrna_path,
+                '',
+                ''
             ).out.star_index_dir
         }
 
