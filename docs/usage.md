@@ -1,9 +1,9 @@
 # PerSeqPIPE: Usage
 
 > [!NOTE]
-> If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section Running tests) first before processing actual data.
+> If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section **Running tests**) first before processing actual data.
 
-## General execution and pipeline versioning
+## TO-DO: General execution and pipeline versioning -> waiting for actual release to finish
 
 To run the PerSeqPIPE, you can download and execute it with one command:
 ```
@@ -56,7 +56,7 @@ The specified path can either be local or point to accessible external storage.
 To run a full PerSeqPIPE workflow (assuming you already downlaoded all reference files required and these are now located in `resources/` folder), following command can be used:
 
 ```
-nextflow run main.nf ktrachtova/perseqpipe -r v1.0.0 -profile [docker,conda] --input_samplesheet /path/to/input/samplesheet --outdir /path/to/project/outputs --design_file /path/to/design --run_full 
+nextflow run main.nf -profile [docker,conda] --input_samplesheet /path/to/input/samplesheet --outdir /path/to/project/outputs --design_file /path/to/design --run_full 
 ```
 
 As mentioned in section [Module description](module_description.md), PerSeqPIPE consists of 6 modules that can be executed separately. Which module is executed can be controlled with following parameters:
@@ -84,7 +84,7 @@ If you wish to repeatedly use the same parameters for multiple runs, rather than
 
 Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
 
-## Updating the pipeline
+## TO-DO: Updating the pipeline (unfinished)
 
 When you run the above command, Nextflow automatically pulls the pipeline code from GitHub and stores it as a cached version. When running the pipeline after this, it will always use the cached version if available - even if the pipeline has been updated since. To make sure that you're running the latest version of the pipeline, make sure that you regularly update the cached version of the pipeline:
 
@@ -161,3 +161,23 @@ The Nextflow `-bg` flag launches Nextflow in the background, detached from your 
 
 Alternatively, you can use `screen` / `tmux` or similar tool to create a detached session which you can log back into at a later time.
 Some HPC setups also allow you to run nextflow within a cluster job submitted your job scheduler (from where it submits more jobs).
+
+## Running tests
+
+To test the workflow, user can select from several small test profiles, one for each library preparation kit.
+
+| profile name | library preparation kit |
+| -------------|-------------------------|
+| test_qiaseq  | QIAseq miRNA Library Kit (QIAGEN) |
+| test_truseq  | TruSeq Small RNA Library Preparation Kit |
+| test_nebnext | NEBNext Small RNA Library Prep Set for Illumina |
+| test_nextflexV3 | NEXTFLEX Small RNA-Seq Kit V3 |
+| test_nextflexV4 | NEXTFLEX Small RNA-Seq Kit V4 |
+| test_trilink | CleanTag Small RNA Library Preparation Kit (TriLink) |
+| test_lexogen | Small RNA-Seq Library Prep Kit (Lexogen) |
+| test_novogene | Small RNA Sequencing Novogene |
+
+To execute a specific minimal test, run following command:
+```
+nextflow run main.nf -profile <docker/conda>,test_qiaseq
+```
