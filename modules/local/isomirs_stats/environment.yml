@@ -1,6 +1,0 @@
-channels:
-  - conda-forge
-  - bioconda
-dependencies:
-  - bioconda::bioconductor-isomirs=1.34.0
-  - conda-forge::r-dplyr=1.1.4

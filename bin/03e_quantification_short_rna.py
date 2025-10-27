@@ -1,214 +1,77 @@
 #!/usr/bin/env python3
 
-import HTSeq
-import pandas as pd
+"""
+Quantification of small non-coding RNAs from BAM alignments using GTF annotations.
+
+This script counts read alignments overlapping annotated RNA loci (tRNA, piRNA, snoRNA, etc.),
+filters overlaps based on a minimum overlap length or fraction, and generates a merged count table.
+Optionally, sequences with identical annotation sets can be merged.
+"""
+
+import os
 import time
-import collections
 import argparse
 import logging
-import os
+import collections
 from collections import defaultdict
+
+import HTSeq
+import pandas as pd
 
 from MINTplates_module import *
 from utils import *
 
-# input_gtf = ['gencode.v47.annotation.gtf', 'piRNA_db_custom_genomeMap.gtf', 'snoRNA_db_custom_genomeMap.gtf', 'tRNA_db_custom_genomeMap.gtf']
-# source activate /mnt/ssd/ssd_1/conda_envs/kaja_rna_quantification
-# python quantify_v8.py /mnt/nfs/home/422653/000000-My_Documents/smallRNA-Seq/pipeline_dev/mock_project_v8_franta_pirna/rna_quantification/genome_star/alignment/4NC1.genome.Aligned.sortedByCoord.out.filtered.bam /mnt/nfs/home/422653/000000-My_Documents/smallRNA-Seq/smallRNA-seq/data/reference/gencode.v43.pirna.trna.snorna.gtf merge
+# Example usage:
+# 03e_quantification_short_rna.py \
+#      SRR12899270_VOVP02_50k.genome.Aligned.sortedByCoord.out.bam \
+#      perseqpipe_all_sncrna_v1.0.gtf \
+#      --sample_name SRR12899270_VOVP02_50k.genome
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s', datefmt='%d/%m/%Y:%H:%M')
-
-
-# Function to sort genes in a cell -> to sort gene names inside columns like pirna, snorna,....
-def sort_genes(cell):
-    if pd.isna(cell):  # Skip NaN values
-        return cell
-    genes = [gene.strip() for gene in cell.split(',')]
-    genes.sort()
-    return ','.join(genes)
-
-
-def merge_dfs_on_sequence(dfs):
-    """
-    Merges multiple DataFrames on the 'Sequence' column and fills missing values with an empty string.
-    
-    Parameters:
-    - dfs (list of pd.DataFrame): List of DataFrames to merge.
-    
-    Returns:
-    - pd.DataFrame: Merged DataFrame with sequences as rows and feature columns.
-    """
-    # Start merging with the first DataFrame
-    merged_df = dfs[0]
-    
-    # Merge the remaining DataFrames one by one on 'Sequence'
-    for df in dfs[1:]:
-        merged_df = pd.merge(merged_df, df, on='sequence', how='outer')
-    
-    # Fill any missing values with an empty string
-    merged_df.fillna('', inplace=True)
-    
-    return merged_df
-
-
-def filter_features_by_overlap(final_result, overlap_threshold):
-    """
-    Filters features for each sequence in the final_result based on a minimum overlap threshold.
-    
-    Parameters:
-    - final_result (dict): A dictionary with sequences as keys and a list of feature-overlap pairs as values.
-    - overlap_threshold (int): The minimum total overlap for a feature to be included in the result.
-    
-    Returns:
-    - dict: A filtered dictionary with sequences and features whose total overlap >= threshold.
-    """
-    filtered_results = {}
-
-    for seq, features in final_result.items():
-        filtered_features = []
-        
-        for feature_dict in features:
-            for feature, overlaps in feature_dict.items():
-                total_overlap = sum(overlaps)
-                
-                # Include feature if total_overlap is greater than or equal to the threshold
-                if total_overlap >= overlap_threshold:
-                    filtered_features.append({feature: overlaps})
-        
-        # Only add to the result if there are any valid features
-        if filtered_features:
-            filtered_results[seq] = filtered_features
-
-    return filtered_results
-
-
-def convert_to_dataframe(filtered_results, feature_name):
-    """
-    Converts the filtered results into a pandas DataFrame where rows are sequences 
-    and columns are a comma-separated list of features.
-    
-    Parameters:
-    - filtered_results (dict): A dictionary with sequences as keys and a list of feature-overlap pairs as values.
-    
-    Returns:
-    - pd.DataFrame: A DataFrame with sequences as rows and comma-separated list of features as columns.
-    """
-    # Initialize a list to store rows for the DataFrame
-    data = []
-    
-    # Iterate over filtered_results to create rows
-    for seq, features in filtered_results.items():
-        # Extract feature names from the list of feature dictionaries
-        feature_names = [list(feature.keys())[0] for feature in features]
-        
-        # Join feature names with commas to create a single string
-        feature_list = ','.join(feature_names)
-        
-        # Append the sequence and its features to the data list
-        data.append([seq, feature_list])
-    
-    # Create the DataFrame
-    df = pd.DataFrame(data, columns=['sequence', feature_name])
-    
-    return df
+# Logging setup
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%d/%m/%Y:%H:%M"
+)
 
 
 def add_mint_plates(df):
     """
-    Add MINT licence plates for every sequence (https://cm.jefferson.edu/license-plates-download/)
-    
-    INPUT: DataFrame where index is a sequence
+    Add MINT license plates for every sequence.
 
-    OUTPUT: DataFrame with added column with licence plates
+    Each sequence is converted into a unique license plate using the
+    Jefferson MINTplate generator (https://cm.jefferson.edu/license-plates-download/).
+
+    Parameters
+    ----------
+    df : pandas.DataFrame
+        DataFrame with a 'sequence' column.
+
+    Returns
+    -------
+    pandas.DataFrame
+        Input DataFrame with an additional 'MINT_plate' column.
     """
-
     mint_plates = []
-    # go over rownames/index of the data frame and add licence plate
+    # Go over rownames/index of the data frame and add licence plate
     # by default, 'seq' is added as a prefix
     for sequence in df['sequence']:
         mint_plates.append(run_as_script(sequence, 'en', 'seq'))
     df['MINT_plate'] = mint_plates
     return df
 
-# run_as_script(
-#    "AACTTAACTTGACCGCTCTGAC", 'en',
-#    'tRF')
-
-
-def merge_identical_loci(df_final):
-    """
-    Merges expression of sequences with identical annotations.
-    
-    This function takes a DataFrame as input containing sequence counts and annotations,
-    and merges sequences that have identical annotations, combining their expression counts.
-    
-    Parameters:
-        df_final (DataFrame): Input DataFrame containing sequence counts and annotations.
-        
-    Returns:
-        DataFrame: DataFrame with merged sequences and combined expression counts.
-    """
-
-    # Create a unique identifier for each group based on index and expression
-    df_final['grouped_seq'] = df_final.apply(lambda row: f"{row['index']}_{row['expression']}", axis=1)
-
-    # List of columns representing different types of annotations
-    annotation_columns = ['mrna', 'lncrna', 'snorna', 'trna', 'pirna']
-
-    # Extract rows without any annotation -> we do not want to merge these!
-    empty_rows = df_final[df_final[annotation_columns].apply(lambda row: all(not bool(x) for x in row), axis=1)]
-
-    # Remove rows without any annotation from the table
-    df_final = df_final[df_final[annotation_columns].apply(lambda row: any(bool(x) for x in row), axis=1)]
-
-    # Convert annotation columns to lists
-    for col in annotation_columns:
-        df_final[col] = df_final[col].apply(lambda x: x.split(','))
-        df_final[f'{col}_tuple'] = df_final[col].apply(tuple)
-
-    # Group columns for merging based on annotation tuples
-    group_columns = [f'{col}_tuple' for col in annotation_columns]
-
-    # Group by the annotation tuples and aggregate the results
-    result_df = df_final.groupby(group_columns, as_index=False).agg({
-        'index': lambda x: max(x, key=len),
-        'grouped_seq': lambda x: ','.join(x),
-        'expression': 'sum'
-    })
-
-    # Convert back to lists from tuples
-    for col in annotation_columns:
-        result_df[col] = result_df[f'{col}_tuple'].apply(list)
-
-    # Drop intermediate columns
-    result_df.drop(columns=[f'{col}_tuple' for col in annotation_columns], inplace=True)
-
-    # Concatenate the merged DataFrame with the rows without annotations
-    final_result_df = pd.concat([result_df, empty_rows[['index','grouped_seq', 'expression', 'mrna', 'lncrna', 'snoRNA', 'tRNA', 'piRNA']]], ignore_index=True)
-
-    return final_result_df
-
-
-def _flatten(value):
-    if isinstance(value, (list, set)):
-        return ','.join(value)
-    return value
-
 
 def main():
-
+    """Main entry point for small RNA quantification."""
     start_time = time.time()
     logging.info("Script execution started.")
 
-    def parse_gtf_list(value):
-        """
-        Splits the input string of comma-separated GTF file paths into a list.
-        """
-        return value.split(',')
-
+    # -------------------------------------------------------------------------
+    # Argument parsing
+    # -------------------------------------------------------------------------
     parser = argparse.ArgumentParser(description="Script for counting short sequences from small RNA sequencing data.")
     parser.add_argument("input_bam", help="Input BAM file")
-    parser.add_argument("input_gtf", type=parse_gtf_list, help="Comma-separated list of GTF files with annotations")
+    parser.add_argument("input_gtf", help="Input GTF file")
     parser.add_argument("--merge_identical", action="store_true", help="Merge sequences with identical annotations")
     parser.add_argument("--sample_name", help="Sample name for output files (optional)")
     parser.add_argument("--output_dir", help="Output directory (optional)")
@@ -216,36 +79,38 @@ def main():
                         type=int,
                         help="Reads thresholds, any read with expression lower than this value will not be counted, default 1 (all reads are counted)",
                         default=1)
+    parser.add_argument("--overlap_bp", type=int, default=5,
+        help="Minimum total bp of overlap with a feature to keep it (default 5)")
+    parser.add_argument("--overlap_frac", type=float, default=None,
+        help="Minimum fraction of read length (0-1) that must overlap a feature (optional)")
+
 
     args = parser.parse_args()
 
-    # Load BAM file
+   # -------------------------------------------------------------------------
+    # Load input files
+    # -------------------------------------------------------------------------
+    logging.info("Loading BAM file: %s", args.input_bam)
     bamfile = HTSeq.BAM_Reader(args.input_bam)
 
-    # Load GTF with annotations
-    logging.info("Reading the GTF file(s)...")
+    logging.info("Reading and parsing GTF annotations...")
     gene_df, trna_df, snorna_df, srna_df, pirna_df, mrna_df, lncrna_df = parse_rna_classes(args.input_gtf)
-    logging.info("Reading GTF(s) %s ended.", args.input_gtf)
-
-
-    # Parse GTF file into HTSeq objects used during quantification
-    logging.info("Parsing the GTF file...")
     rna_arrays = parse_gtf_for_quantification(gene_df, trna_df, snorna_df, srna_df, pirna_df, mrna_df, lncrna_df)
-    logging.info("Parsing GTF %s ended.", args.input_gtf)
+    logging.info("Finished parsing GTF annotations.")
 
+    # -------------------------------------------------------------------------
+    # Initialize containers
+    # -------------------------------------------------------------------------
     trna = rna_arrays['trna']
     snorna = rna_arrays['snorna']
-    srna = rna_arrays['srna']
+    srna = rna_arrays['other_sncrna']
     pirna = rna_arrays['pirna']
     mrna = rna_arrays['mrna']
     lncrna = rna_arrays['lncrna']
 
     # Prepare collections for counting sequences for individual RNA classes
     counts = collections.Counter()
-
     multimappings = collections.Counter()
-
-    logging.info("Counting reads...")
 
     read_overlaps_trna = defaultdict(lambda: defaultdict(list))
     read_overlaps_pirna = defaultdict(lambda: defaultdict(list))
@@ -254,6 +119,11 @@ def main():
     read_overlaps_mrna = defaultdict(lambda: defaultdict(list))
     read_overlaps_lncrna = defaultdict(lambda: defaultdict(list))
 
+    logging.info("Counting reads...")
+
+    # -------------------------------------------------------------------------
+    # Iterate over all read bundles (multi-mapping reads)
+    # -------------------------------------------------------------------------
     # Go over every bundle (=iterator over multiple alignments of one specific read)
     for bundle in HTSeq.bundle_multiple_alignments(bamfile):
 
@@ -279,7 +149,7 @@ def main():
 
                 read_start = min(almnt.iv.start, almnt.iv.end)
                 read_end = max(almnt.iv.start, almnt.iv.end)
-                read_iv = HTSeq.GenomicInterval(almnt.iv.chrom, read_start, read_end, ".")
+                # read_iv = HTSeq.GenomicInterval(almnt.iv.chrom, read_start, read_end, ".")
 
                 for iv, val in trna[almnt.iv].steps():
                     feat_start = min(iv.start, iv.end)
@@ -338,82 +208,82 @@ def main():
 
 
         if count_alignment:
-            counts[seqs] = int(almnt.read.name.split("_x")[1])
+            counts[seqs] = read_expression
 
     logging.info("Counting ended.")
-    logging.info("Writing counts...")
-    # write_counts(counts, annotations, df)
 
-    final_result_pirna = {seq: [{feat: overlaps} for feat, overlaps in features.items()] for seq, features in read_overlaps_pirna.items()}
-    final_result_snorna = {seq: [{feat: overlaps} for feat, overlaps in features.items()] for seq, features in read_overlaps_snorna.items()}
-    final_result_srna = {seq: [{feat: overlaps} for feat, overlaps in features.items()] for seq, features in read_overlaps_srna.items()}
-    final_result_trna = {seq: [{feat: overlaps} for feat, overlaps in features.items()] for seq, features in read_overlaps_trna.items()}
-    final_result_mrna = {seq: [{feat: overlaps} for feat, overlaps in features.items()] for seq, features in read_overlaps_mrna.items()}
-    final_result_lncrna = {seq: [{feat: overlaps} for feat, overlaps in features.items()] for seq, features in read_overlaps_lncrna.items()}
+    # -------------------------------------------------------------------------
+    # Post-processing: filtering and merging
+    # -------------------------------------------------------------------------
+    logging.info("Filtering features by overlap...")
 
-    overlap_threshold = 5
-    filtered_results_pirna = filter_features_by_overlap(final_result_pirna, overlap_threshold)
-    filtered_results_trna = filter_features_by_overlap(final_result_trna, overlap_threshold)
-    filtered_results_snorna = filter_features_by_overlap(final_result_snorna, overlap_threshold)
-    filtered_results_srna = filter_features_by_overlap(final_result_srna, overlap_threshold)
-    filtered_results_mrna = filter_features_by_overlap(final_result_mrna, overlap_threshold)
-    filtered_results_lncrna = filter_features_by_overlap(final_result_lncrna, overlap_threshold)
+    # Prepare intermediate dicts
+    def to_result_dict(overlaps):
+        return {seq: [{f: ov} for f, ov in feats.items()] for seq, feats in overlaps.items()}
 
-    df_pirna = convert_to_dataframe(filtered_results_pirna, 'pirna')
-    df_trna = convert_to_dataframe(filtered_results_trna, 'trna')
-    df_snorna = convert_to_dataframe(filtered_results_snorna, 'snorna')
-    df_srna = convert_to_dataframe(filtered_results_srna, 'srna')
-    df_mrna = convert_to_dataframe(filtered_results_mrna, 'mrna')
-    df_lncrna = convert_to_dataframe(filtered_results_lncrna, 'lncrna')
+    final_result_pirna = to_result_dict(read_overlaps_pirna)
+    final_result_trna = to_result_dict(read_overlaps_trna)
+    final_result_snorna = to_result_dict(read_overlaps_snorna)
+    final_result_srna = to_result_dict(read_overlaps_srna)
+    final_result_mrna = to_result_dict(read_overlaps_mrna)
+    final_result_lncrna = to_result_dict(read_overlaps_lncrna)
 
-    df_multimappings = pd.DataFrame(multimappings.items(), columns=['sequence', 'genome_alignments'])
-    df_counts = pd.DataFrame(counts.items(), columns=['sequence', 'expression'])
 
-    # List of DataFrames
-    dfs = [df_counts, df_pirna, df_trna, df_snorna, df_srna, df_mrna, df_lncrna, df_multimappings]
+    # Apply overlap filtering
+    filtered_results = {
+        "pirna": filter_features_by_overlap(final_result_pirna, args.overlap_bp, args.overlap_frac),
+        "trna": filter_features_by_overlap(final_result_trna, args.overlap_bp, args.overlap_frac),
+        "snorna": filter_features_by_overlap(final_result_snorna, args.overlap_bp, args.overlap_frac),
+        "other_sncrna": filter_features_by_overlap(final_result_srna, args.overlap_bp, args.overlap_frac),
+        "mrna": filter_features_by_overlap(final_result_mrna, args.overlap_bp, args.overlap_frac),
+        "lncrna": filter_features_by_overlap(final_result_lncrna, args.overlap_bp, args.overlap_frac),
+    }
+
+    # Convert to DataFrames
+    dfs = [
+        pd.DataFrame(counts.items(), columns=["sequence", "expression"]),
+        *(convert_to_dataframe(filtered_results[k], k) for k in filtered_results.keys()),
+        pd.DataFrame(multimappings.items(), columns=["sequence", "genome_alignments"]),
+    ]
 
     # Merge the DataFrames
-    merged_df = merge_dfs_on_sequence(dfs)
-    
+    merged_df = dfs[0]
+    for df in dfs[1:]:
+        merged_df = pd.merge(merged_df, df, on='sequence', how='outer')
+    merged_df.fillna('', inplace=True)
+
+    # Add MINTplates    
     merged_df = add_mint_plates(merged_df)
 
     # sort genes inside annotation columns
-    columns_to_process = ['pirna', 'snorna', 'srna', 'trna', 'mrna', 'lncrna']
+    columns_to_process = ['pirna', 'snorna', 'other_sncrna', 'trna', 'mrna', 'lncrna']
 
     # Apply sorting function to each column
     for col in columns_to_process:
         merged_df[col] = merged_df[col].apply(sort_genes)
 
+    # -------------------------------------------------------------------------
+    # Output
+    # -------------------------------------------------------------------------
     # Prepare output file
     input_bam_filename = os.path.splitext(os.path.basename(args.input_bam))[0]
-    # If sample_name parameter specified
-    if args.sample_name:
-        # if user gave sample_name endind with '.', remove it
-        if args.sample_name.endswith('.'):
-            output_filename = args.sample_name[:-1]
-        else:
-            output_filename = args.sample_name
-    # If no parameter sample_name given, just strip '.bam' from the input file and use the rest as output file name
-    else:
-        output_filename = input_bam_filename.replace('.bam', '')
-
-    # Determine the output file path
-    if args.output_dir:
-        output_file_path = os.path.join(args.output_dir, output_filename)
-    else:
-        output_file_path = output_filename
+    output_basename = args.sample_name or input_bam_filename.replace(".bam", "")
+    if output_basename.endswith("."):
+        output_basename = output_basename[:-1]
     
-    if args.merge_identical:
-        logging.info("Merging expression of sequences with identical annotations...")
-        df_final = merge_identical_loci(merged_df)
-        df_final.to_csv(output_file_path + ".short_rna_counts_merged.tsv", index=False, sep="\t")
-        logging.info("Wrote file: " +  output_file_path + ".short_rna_counts_merged.tsv")
-    else:
-        merged_df.to_csv(output_file_path + ".short_rna_counts.tsv", index=False, sep="\t")
-        logging.info("Wrote file: " +  output_file_path + ".short_rna_counts.tsv")
+    output_path = os.path.join(args.output_dir, output_basename) if args.output_dir else output_basename
 
-    logging.info("Writing counts ended.")
-    logging.info("Script execution ended in %s seconds.", time.time() - start_time)
+    if args.merge_identical:
+        logging.info("Merging sequences with identical annotations...")
+        df_final = merge_identical_loci(merged_df)
+        out_file = f"{output_path}.short_rna_counts_merged.tsv"
+        df_final.to_csv(out_file, index=False, sep="\t")
+    else:
+        out_file = f"{output_path}.short_rna_counts.tsv"
+        merged_df.to_csv(out_file, index=False, sep="\t")
+
+    logging.info("Wrote file: %s", out_file)
+    logging.info("Execution finished in %.2f seconds.", time.time() - start_time)
 
 
 if __name__ == "__main__":

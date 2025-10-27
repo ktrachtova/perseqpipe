@@ -56,7 +56,7 @@ The specified path can either be local or point to accessible external storage.
 To run a full PerSeqPIPE workflow (assuming you already downlaoded all reference files required and these are now located in `resources/` folder), following command can be used:
 
 ```
-nextflow run main.nf -profile [docker,conda] --input_samplesheet /path/to/input/samplesheet --outdir /path/to/project/outputs --design_file /path/to/design --run_full 
+nextflow run main.nf -profile <docker> --input_samplesheet /path/to/input/samplesheet --outdir /path/to/project/outputs --design_file /path/to/design --run_full 
 ```
 
 As mentioned in section [Module description](module_description.md), PerSeqPIPE consists of 6 modules that can be executed separately. Which module is executed can be controlled with following parameters:
@@ -109,10 +109,7 @@ This version number will be logged in reports when you run the pipeline, so that
 
 Use this parameter to choose a configuration profile. Profiles can give configuration presets for different compute environments.
 
-Two genetics profiles (Docker, Conda) are currently bundled with the pipeline which instruct the pipeline how to use software packages .
-
-> [!IMPORTANT]
-> We highly recommend the use of Docker containers for full pipeline reproducibility, however when this is not possible, Conda is also supported.
+A generic Docker profile is currently bundled with the pipeline which instruct the pipeline how to use software packages .
 
 Note that multiple profiles can be loaded, for example: `-profile docker,arm` - the order of arguments is important!
 They are loaded in sequence, so later profiles can overwrite earlier profiles.
@@ -123,8 +120,6 @@ Currently available profiles (excluding test-related profiles, for these see sec
 
 - `docker`
   - A generic configuration profile to be used with [Docker](https://docker.com/)
-- `conda`
-  - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker.
 - `arm`
   - A generic configuration profile to be used when running pipeline on ARM architecture
 
@@ -146,12 +141,6 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time. For most of the pipeline steps, if the job exits with any of the error codes specified [here](https://github.com/nf-core/rnaseq/blob/4c27ef5610c87db00c3c5a3eed10b1d161abf575/conf/base.config#L18) it will automatically be resubmitted with higher resources request (2 x original, then 3 x original). If it still fails after the third attempt then the pipeline execution is stopped.
 
 To change the resource requests, please see the [max resources](https://nf-co.re/docs/usage/configuration#max-resources) and [tuning workflow resources](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources) section of the nf-core website.
-
-### Custom Containers
-
-In some cases, you may wish to change the container or conda environment used by a pipeline steps for a particular tool. By default, nf-core pipelines use containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However, in some cases the pipeline specified version maybe out of date.
-
-To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/usage/configuration#updating-tool-versions) section of the nf-core website.
 
 ## Running in the background
 
@@ -179,5 +168,5 @@ To test the workflow, user can select from several small test profiles, one for 
 
 To execute a specific minimal test, run following command:
 ```
-nextflow run main.nf -profile <docker/conda>,test_qiaseq
+nextflow run main.nf -profile <docker>,test_qiaseq
 ```

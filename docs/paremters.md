@@ -33,6 +33,14 @@
 | `--adapter3_qiaseq_seq1` | string | First 3' end adapter sequence (QIAseq-specific!) |
 | `--adapter3_qiaseq_seq2` | string | Second 3'end adapter sequence (QIAseq-specific!) |
 
+## sncRNA quantification options
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--sncrna_overlap` | integer | Minimum total number of base pairs that a read must overlap an annotated feature for the read to be counted (e.g., 5 requires at least 5 bp of overlap). Default = 5. |
+| `--sncrna_overlap_frac` | number | Minimum fraction of a read’s length that must overlap an annotated feature for the read to be counted (e.g., 1.0 requires full-length overlap, 0.5 requires at least 50%). |
+| `--reads_threshold` | integer | Minimal expression of a read to be counted during sncRNA quantification. Any read with expression lower than this threshold will be omitted from the sncRNA quantification results. Default = 1.|
+
 ## DE analysis options
 
 | parameter              | type    | description                                    |

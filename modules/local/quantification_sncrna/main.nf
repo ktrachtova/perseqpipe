@@ -16,7 +16,18 @@ process QUANTIFICATION_SNCRNA {
 
     script:
     def prefix = bam.baseName.replaceAll(/\.Aligned\..*/, "")
+    // Include --reads_threshold only if defined
+    def reads_arg = params.reads_threshold != null ? "--reads_threshold ${params.reads_threshold}" : ""
+    // Include --overlap_bp only if defined
+    def bp_arg = params.sncrna_overlap != null ? "--overlap_bp ${params.sncrna_overlap}" : ""
+    // Include --overlap_frac only if defined
+    def frac_arg = params.sncrna_overlap_frac != null ? "--overlap_frac ${params.sncrna_overlap_frac}" : ""
+
     """
-    03e_quantification_short_rna.py ${bam} ${gtf} --sample_name ${prefix}
+    03e_quantification_short_rna.py ${bam} ${gtf} \
+        --sample_name ${prefix} \
+        ${reads_arg} \
+        ${bp_arg} \
+        ${frac_arg}
     """
 }

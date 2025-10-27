@@ -60,6 +60,13 @@
           }
         }
       },
+      "sncrna_quantification_options": {
+        "type": "object",
+        "properties": {
+          "sncrna_overlap": { "type": "integer"},
+          "sncrna_overlap_frac": { "type": "number"}
+        }
+      },
       "preprocessing_options": {
         "type": "object",
         "properties": {

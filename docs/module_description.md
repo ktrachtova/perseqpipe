@@ -10,7 +10,7 @@ The PerSeqPIPE consists of **6 main modules** (which correspond to subworkflows 
 
 ## Module 1️⃣: FirstQC  
 
-The FIRSTQC module checks the quality of raw sequencing data. It uses `FastQC` to scan each sample for various quality metrics and `MultiQC` to aggregate all results from `FastQC` into one HTML report.  
+The FIRSTQC module checks the quality of raw sequencing data. It uses `FastQC` to scan each sample for various quality metrics and `MultiQC` to aggregate all per-sample results from `FastQC` into one HTML report.  
 
 ## Module 2️⃣: Preprocessing  
 
@@ -22,7 +22,9 @@ The PREPROCESSING module cleans raw sequencing reads and prepares FASTQ files wi
 4. (Optional: Nextflex V3) Remove the first 4 and last 4 bases from each read (`cutadapt`)  
 5. Collapse cleaned reads (`fastx_collapser`, `bbmap`)  
 
-The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). Each type of preprocessed read also undergoes post-processing checks with `FastQC`, and an overall `MultiQC` HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
+The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). The new header of each collapsed read sequence contains a unique sequence ID, followed by the number of reads that have the same sequence (example: `seq_{XY}_x10` where `XY` is unique sequence ID and `x10` means there were 10 reads with identical sequence). When calculating [read statistics](outputs.md#reads-statistics), the read count for each unique sequence is added together to provide with real read count.
+
+Each type of preprocessed read also undergoes post-processing checks with `FastQC`, and an overall `MultiQC` HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
 
 Currently supported library preparation kits:  
 * QIAseq miRNA Library Kit (QIAGEN)  
@@ -44,9 +46,9 @@ Reads unmapped to rRNA are aligned to miRNA precursor sequences using the `miral
 
 ## Module 5️⃣: Other sncRNA quantification  
 
-Reads not aligning to miRNA are aligned to the human genome (GRCh38) using `STAR`, with several parameters adjusted for short-read alignment. BAM files from alignment and our GTF file for all sncRNA classes are used as input for a custom in-house Python quantification script (which uses `HTSeq` Python library). This script counts all reads, including multimapping ones, and creates a table where, for each read sequence, a list of all possible annotations is provided.  
+Reads not aligning to miRNA are aligned to the human genome (GRCh38) using `STAR`, with several parameters adjusted for short-read alignment. BAM files from alignment and our GTF file for all sncRNA classes are used as input for a custom in-house Python quantification script (which uses `HTSeq` Python library). This script counts all reads, including multimapping ones, and creates a table where, for each read sequence, a list of all possible annotations is provided.   
 
-Users can change thresholds such as the minimum number of identical reads required for a sequence to be reported, or the minimum length of overlap between a read and an annotation feature for it to be assigned.  
+Users can change thresholds such as the minimum number of identical reads required for a sequence to be reported (`--reads_threshold`), or the minimum length of overlap between a read and an annotation feature for it to be assigned (`--sncrna_overlap` and `--sncrna_overlap_frac`).  If user sets these parameteres to `null`, default values will be always used (`reads_threshold=1` and `sncrna_overlap=5`). If both `--sncrna_overlap` and `--sncrna_overlap_frac` specified, the stricter of the two will be used. 
 
 Distinct sncRNA classes currently quantified:  
 * tRNA  

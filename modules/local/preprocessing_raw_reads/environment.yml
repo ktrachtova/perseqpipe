@@ -1,9 +1,0 @@
-channels:
-  - conda-forge
-  - bioconda
-dependencies:
-  - bioconda::bbmap=39.25
-  - bioconda::cutadapt=5.0
-  - bioconda::fastx_toolkit=0.0.14
-  - conda-forge::gzip=1.14
- 

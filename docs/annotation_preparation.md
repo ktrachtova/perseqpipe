@@ -1,12 +1,14 @@
 # Annotation preparation
 
->❗**NOTE**: The main annotation GTF file to use in the PerSeqPIPE **SNCRNA_QUANTIFICATION** module is pre-build and and does NOT have to be created by the user! 
+> [!IMPORTANT]
+> The main annotation GTF file to use in the PerSeqPIPE **SNCRNA_QUANTIFICATION** module is pre-build and and does NOT have to be created by the user! 
 
 This section describes exact steps how the annotation GTF file for sncRNAs quantification was created. It can also be used to re-create the annotation GTF file from scratch.
 
 Raw files used to build databases for each ncRNA class are available at this link. These can be used to prepare a sequence database for each sncRNA class as described by instructions below, just download the compressed folder, unzip and locate appropriate files for each sncRNA class.
 
->💡**NOTE:** The annotation preparation process is not part of the main PerSeqPIPE code, as it requires a manual approach with frequent result verification after each step. Since the FASTA files used to generate the sncRNA GTF are obtained from public databases, we cannot guarantee that future releases will maintain a consistent format; therefore, a manual procedure is necessary.
+> [!CAUTION]
+> The annotation preparation process is not part of the main PerSeqPIPE code, as it requires a manual approach with frequent result verification after each step. Since the FASTA files used to generate the sncRNA GTF are obtained from public databases, we cannot guarantee that future releases will maintain a consistent format; therefore, a manual procedure is necessary.
 
 ## rRNA
 
@@ -47,7 +49,8 @@ STAR  --runMode genomeGenerate \
 
 Then, supply the created STAR index folder (in the code above folder `star_rrna_custom/`) to the PerSeqPIPE.
 
->❗**WARNING**: Be aware that versions of STAR need to be identical for both creating an index and running actual STAR aligner inside PerSeqPIPE. If you do not use provided docker image with identical version to what is currently used by PerSeqPIPE the pipeline might fail.
+> [!WARNING]
+> Be aware that versions of STAR need to be identical for both creating an index and running actual STAR aligner inside PerSeqPIPE. If you do not use provided docker image with identical version to what is currently used by PerSeqPIPE the pipeline might fail.
 
 ## tRNA
 ```
