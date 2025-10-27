@@ -1,14 +1,24 @@
 # Annotation preparation
 
+## Table of Contents
+- [Overview](#annotation-preparation)
+- [rRNA](#rrna)
+- [tRNA](#trna)
+- [snoRNA](#snorna)
+- [piRNA](#pirna)
+- [other RNA](#other-rna)
+- [Merging GTF files into final annotation GTF](#merging-gtf-files-into-final-annotation-gtf)
+- [sncRNA GTF file format](#sncrna-gtf-file-format)
+
 > [!IMPORTANT]
 > The main annotation GTF file to use in the PerSeqPIPE **SNCRNA_QUANTIFICATION** module is pre-build and and does NOT have to be created by the user! 
 
-This section describes exact steps how the annotation GTF file for sncRNAs quantification was created. It can also be used to re-create the annotation GTF file from scratch.
+This section describes the exact steps used to create the annotation GTF file for sncRNA quantification. It can also serve as a guide for re-creating the annotation GTF file from scratch.
 
-Raw files used to build databases for each ncRNA class are available at this link. These can be used to prepare a sequence database for each sncRNA class as described by instructions below, just download the compressed folder, unzip and locate appropriate files for each sncRNA class.
+The raw files used to build databases for each ncRNA class are available at the linked location [**TO-DO: Upload to Zenodo and add link**]. These files can be used to prepare sequence databases for each sncRNA class following the instructions below—simply download the compressed archive, unzip it, and locate the appropriate files for each RNA class.
 
 > [!CAUTION]
-> The annotation preparation process is not part of the main PerSeqPIPE code, as it requires a manual approach with frequent result verification after each step. Since the FASTA files used to generate the sncRNA GTF are obtained from public databases, we cannot guarantee that future releases will maintain a consistent format; therefore, a manual procedure is necessary.
+> The annotation preparation process is not part of the main PerSeqPIPE code, as it requires manual execution with frequent verification of results at each step. Because the FASTA files used to generate the sncRNA GTF are obtained from public databases, their formats may change in future releases; therefore, a manual procedure is required to ensure consistency and accuracy.
 
 ## rRNA
 
@@ -74,11 +84,11 @@ cd reference_preparation/perseqpipe/scripts
 ```
 
 The script creates a directory in the reference_preparation repository, under path `reference_preparation/perseqpipe/reference_files/tRNA/{YYYY_DD_MM}` with files:
-* **tRNA_db_custom_genomeMap.gtf**: GTF file with tRNA coordinates
-* tRNA_db_custom.fa: final FASTA with all tRNA sequences
-* tRNA_db_custom_genomeMap.bed: BED file with tRNA coordinates
-* mt_tRNA_db_genomeMap.psl: PSL file for mt-tRNA 
-* mt_tRNA_db_genomeMab.bed: BED file for mt-tRNA
+* `**tRNA_db_custom_genomeMap.gtf**`: GTF file with tRNA coordinates
+* `tRNA_db_custom.fa`: final FASTA with all tRNA sequences
+* `tRNA_db_custom_genomeMap.bed`: BED file with tRNA coordinates
+* `mt_tRNA_db_genomeMap.psl`: PSL file for mt-tRNA 
+* `mt_tRNA_db_genomeMab.bed`: BED file for mt-tRNA
 
 Exact steps in processing tRNA sequences:
 1. convert Gencode FASTA from multi-line to one-line
@@ -113,13 +123,13 @@ cd reference_preparation/perseqpipe/scripts
 ```
 
 The script creates a directory in reference_preparation repository folder, under path `reference_preparation/perseqpipe/reference_files/snoRNA/YYYY_DD_MM` with files:
-* **snoRNA_db_custom_genomeMap.gtf**: final GTF file
-* snoRNA_db_custom.fa: final FASTA file with snoRNA sequences
-* snoRNA_db_custom_genomeMap.bed: BED file
-* snoRNA_db_custom_genomeMap.psl: PSL file from BLAT
-* snorna_databases.csv: file listing databases and number of sequences
-* snorna_database_lenDist.csv: length distribution of snoRNA sequences
-* snorna_cluster_result.tsv: file with results from MMseqs2 clustering
+* `**snoRNA_db_custom_genomeMap.gtf**`: final GTF file
+* `snoRNA_db_custom.fa`: final FASTA file with snoRNA sequences
+* `snoRNA_db_custom_genomeMap.bed`: BED file
+* `snoRNA_db_custom_genomeMap.psl`: PSL file from BLAT
+* `snorna_databases.csv`: file listing databases and number of sequences
+* `snorna_database_lenDist.csv`: length distribution of snoRNA sequences
+* `snorna_cluster_result.tsv`: file with results from MMseqs2 clustering
 
 Exact steps in processing snoRNA sequences:
 1. convert resource FASTA files from multi-line to one-line
@@ -157,13 +167,13 @@ cd reference_preparation/perseqpipe/scripts
 
 The script creates a directory in reference_preparation repository folder, under path `reference_preparation/perseqpipe/reference_files/piRNA/YYYY_DD_MM` with files:
 
-* piRNA_db_custom.fa: final FASTA file with piRNA sequences
-* piRNA_db_custom_genomeMap.bed: BED file
-* **piRNA_db_custom_genomeMap.gtf**: final GTF file
-* piRNA_db_custom_genomeMap.psl: PSL file from BLAT
-* pirna_databases.csv: file listing databases and number of sequences
-* pirna_database_lenDist.csv: length distribution of piRNA sequences
-* pirna_cluster_result.tsv: file with results from MMseqs2 clustering
+* `piRNA_db_custom.fa`: final FASTA file with piRNA sequences
+* `piRNA_db_custom_genomeMap.bed`: BED file
+* `**piRNA_db_custom_genomeMap.gtf**`: final GTF file
+* `piRNA_db_custom_genomeMap.psl`: PSL file from BLAT
+* `pirna_databases.csv`: file listing databases and number of sequences
+* `pirna_database_lenDist.csv`: length distribution of piRNA sequences
+* `pirna_cluster_result.tsv`: file with results from MMseqs2 clustering
 
 Exact steps in processing piRNA sequences:
 1. merge all FASTA files together
@@ -179,7 +189,9 @@ The resulting GTF file is merged with GTF files of all other sncRNA classes to f
 
 ## other RNA
 
-Coordinates of other less abundant classes of sncRNA (such as snRNA, miscRNA etc.) as well as mRNA and lncRNA are extracted directly from the Gencode GTF file. These are merged with coordinates of all other sncRNA classes described above. Below is code to filter the Gencode GTF file for specific gene types, specifically, we remove all gene types for which we already prepared reference above such as snoRNA/scaRNA, miRNA, mt-tRNA etc. No specific tools or python packages are required, only Python3.
+Coordinates for other, less abundant classes of sncRNA (such as snRNA, miscRNA, etc.), as well as mRNA and lncRNA, are extracted directly from the Gencode GTF file. These are then merged with the coordinates of all other sncRNA classes described above.
+
+The following code demonstrates how to filter the Gencode GTF file for specific gene types by removing those for which reference files have already been prepared (e.g., snoRNA/scaRNA, miRNA, mt-tRNA, etc.). No additional tools or Python packages are required—only Python 3.
 
 ```
 # download repository with code
@@ -211,11 +223,11 @@ cat  ~/reference_preparation/perseqpipe/reference_files/piRNA/2025_08_19/piRNA_d
 
 ## sncRNA GTF file format
 
-The sncRNA GTF file used for sncRNA quantification follows the [standard GTF file format](https://www.ensembl.org/info/website/upload/gff.html). Chromosome identifiers include the `chr` prefix (e.g., `chr1`, `chrX`). Each sncRNA with a successfully determined genomic locus in the human genome is represented by three features: gene, transcript, and exon.
+The sncRNA GTF file used for quantification adheres to the [standard GTF file format](https://www.ensembl.org/info/website/upload/gff.html). Chromosome identifiers include the `chr` prefix (e.g., `chr1`, `chrX`). Each sncRNA with a defined genomic locus in the human genome is represented by three feature types: gene, transcript, and exon.
 
-If an RNA can be aligned to multiple loci within the human genome, each location is distinguished by an added suffix `_loc{x}`, where `x` is a number indicating the specific genomic position of that RNA. The `gene_id` and `gene_name` attributes (as well as `transcript_id` and `transcript_name`) are identical for all occurrences.
+If an RNA can be aligned to multiple loci within the human genome, each location record in the GTF file is distinguished by an added suffix `_loc{x}`, where `x` denotes the specific genomic occurrence of that RNA. The `gene_id` and `gene_name` attributes (as well as `transcript_id` and `transcript_name`) remain identical across all loci.
 
-When the same RNA is found in multiple databases (for example, a piRNA present in three different resources), its identifiers from all sources are merged into a single composite ID. For instance, a piRNA found in both RNAcentral and piRNAdb will have an ID/name formatted as: `URS0000000096_9606|hsa-piR-13280`.
+When the same RNA is present in multiple databases (for example, a piRNA found in both RNAcentral and piRNAdb), identifiers from all sources are merged into a single composite ID. For instance, a piRNA shared between RNAcentral and piRNAdb will be represented as: `URS0000000096_9606|hsa-piR-13280`.
 
 
 

@@ -1,5 +1,20 @@
 # PerSeqPIPE: Differential Expression Analysis
 
+## Table of Contents
+- [Overview](#perseqpipe-differential-expression-analysis)
+- [Design file specification](#design-file-specification)
+  - [Providing partial design file](#providing-partial-design-file)
+- [Generating normalized counts](#generating-normalized-counts)
+  - [Without design file](#without-design-file)
+  - [With design file](#with-design-file)
+- [Differential expression analysis](#differential-expression-analysis)
+  - [Pairwise testing](#pairwise-testing)
+  - [Likelihood ratio test (LRT)](#likelihood-ratio-test-lrt)
+- [Filtering low-expressed sequences](#filtering-low-expressed-sequences)
+- [Output files](#output-files)
+  - [miRNA / isomiRs](#mirna--isomirs)
+  - [Other sncRNA](#other-sncrna)
+
 The Differential Expression Analysis module (**DE_ANALYSIS**) can be executed in two modes. If no design file is provided (using the `--design` option), the module generates only raw and normalized counts (including edgeR TMM, VST, and DESeq2-normalized values). If a design file is supplied, a full differential expression analysis is performed using DESeq2.
 
 The **DE_ANALYSIS** module is executed separately for miRNAs/isomiRs (using counts obtained from the **MIRNA_QUANTIFICATION** module) and for all other RNA classes (using counts obtained from the **SNCRNA_QUANTIFICATION** module).

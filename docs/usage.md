@@ -1,9 +1,22 @@
 # PerSeqPIPE: Usage
 
-> [!NOTE]
-> If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section **Running tests**) first before processing actual data.
+## Table of Contents
+- [General execution and versioning](#to-do-general-execution-and-pipeline-versioning---waiting-for-actual-release-to-finish)
+- [Step 1: Download reference](#step-1-download-reference)
+- [Step 2: Running PerSeqPIPE](#step-2-running-perseqpipe)
+  - [Samplesheet input](#samplesheet-input)
+  - [PerSeqPIPE module execution](#perseqpipe-module-execution)
+- [Updating the pipeline](#to-do-updating-the-pipeline-unfinished)
+- [Core Nextflow arguments](#core-nextflow-arguments)
+- [Custom configuration](#custom-configuration)
+  - [Resource requests](#resource-requests)
+- [Running in the background](#running-in-the-background)
+- [Running tests](#running-tests)
 
 ## TO-DO: General execution and pipeline versioning -> waiting for actual release to finish
+
+> [!NOTE]
+> If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section [Running tests](#running-tests)) first before processing actual data.
 
 To run the PerSeqPIPE, you can download and execute it with one command:
 ```
@@ -92,7 +105,7 @@ When you run the above command, Nextflow automatically pulls the pipeline code f
 nextflow pull ktrachtova/perseqpipe
 ```
 
-### Reproducibility
+### TO-DO: Reproducibility (modify so its not identical to nf-core)
 
 It is a good idea to specify the pipeline version when running the pipeline on your data. This ensures that a specific version of the pipeline code and software are used when you run your pipeline. If you keep using the same tag, you'll be running the same version of the pipeline, even if there have been changes to the code since.
 
@@ -166,7 +179,7 @@ To test the workflow, user can select from several small test profiles, one for 
 | test_lexogen | Small RNA-Seq Library Prep Kit (Lexogen) |
 | test_novogene | Small RNA Sequencing Novogene |
 
-To execute a specific minimal test, run following command:
+To execute a specific minimal test, run following command (here shown example to run QIAseq-specific test):
 ```
-nextflow run main.nf -profile <docker>,test_qiaseq
+nextflow run main.nf -profile <docker>,test_qiaseq --outdir <OUTDIR>
 ```

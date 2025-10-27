@@ -1,5 +1,19 @@
 # PerSeqPIPE: Outputs
 
+## Table of Contents
+- [Output directory structure](#output-directory-structure)
+- [Module outputs](#module-outputs)
+  - [Module 1: FIRSTQC](#module-1-firstqc)
+  - [Module 2: PREPROCESSING](#module-2-preprocessing)
+  - [Module 3: RRNA_QUANTIFICATION](#module-3-rrna_quantification)
+  - [Module 4: MIRNA_QUANTIFICATION](#module-4-mirna_quantification)
+  - [Module 5: SRNA_QUANTIFICATION](#module-5-srna_quantification)
+  - [Module 6: DE_ANALYSIS](#module-6-de_analysis)
+- [Reads statistics](#reads-statistics)
+- [sncRNA quantification output file format](#sncrna-quantification-output-file-format)
+- [Pipeline information](#pipeline-information)
+
+
 ## Output directory structure
 
 Below is a general directory structure of outputs when pipeline is executed with `--full-run` (running all modules of PerSeqPIPE). In case only specific modules were run (for example, DE analysis was omitted), then output folder corresponding to that module will be missing.

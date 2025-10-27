@@ -1,5 +1,14 @@
 # PerSeqPIPE: Module description
 
+## Table of Contents
+- [Overview](#perseqpipe-module-description)
+- [Module 1️⃣: FirstQC](#module-1️⃣-firstqc)
+- [Module 2️⃣: Preprocessing](#module-2️⃣-preprocessing)
+- [Module 3️⃣: rRNA quantification](#module-3️⃣-rrna-quantification)
+- [Module 4️⃣: miRNA/isomiR quantification](#module-4️⃣-mirnaisomir-quantification)
+- [Module 5️⃣: Other sncRNA quantification](#module-5️⃣-other-sncrna-quantification)
+- [Module 6️⃣: Differential expression analysis](#module-6️⃣-differential-expression-analysis)
+
 The PerSeqPIPE consists of **6 main modules** (which correspond to subworkflows in Nextflow syntax):  
 1. FirstQC (FIRSTQC)  
 2. Preprocessing (PREPROCESSING)  

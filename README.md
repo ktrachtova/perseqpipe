@@ -19,7 +19,7 @@ For detailed information about individual PerSeqPIPE modules, please refere to [
 
 ## 💻 Usage
 
-For instructions on how to execute the PerSeqPIPE pipeline, plese refer to [Usage](docs/usage.md) documentation.
+For instructions on how to execute the PerSeqPIPE pipeline, please refer to [Usage](docs/usage.md) documentation.
 
 ## 🔍 Pipeline outputs
 
