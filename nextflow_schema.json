@@ -64,7 +64,8 @@
         "type": "object",
         "properties": {
           "sncrna_overlap": { "type": "integer"},
-          "sncrna_overlap_frac": { "type": "number"}
+          "sncrna_overlap_frac": { "type": "number"},
+          "reads_threshold": { "type": "integer"}
         }
       },
       "preprocessing_options": {

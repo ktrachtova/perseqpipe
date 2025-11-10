@@ -2,7 +2,7 @@ process DESEQ2_MIRNA_ANALYSIS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container 'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_r-dplyr:30d98bd55e24dff2'
+    container 'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_r-dplyr_r-readr:2c0e542d01296b58'
     
     input:
     path mirna_counts_table
@@ -19,15 +19,11 @@ process DESEQ2_MIRNA_ANALYSIS {
     path "normalized_vst_counts_isomirs.tsv", emit: deseq2_normalized_vst_isomits, optional: true
     path "normalized_vst_counts_mirna.tsv", emit: deseq2_normalized_vst_mirna, optional: true
     path "analysis_data_cleaned.rds", emit: deseq2_analysis_data_rds
-    //path "dds_isomirs.rds", emit: deseq2_dds_isomirs, optional: true
-    //path "dds_mirna.rds", emit: deseq2_dds_mirna, optional: true
-    //path "dds_lrt_mirna.rds", emit: deseq2_dds_lrt_mirna, optional: true
-    //path "dds_lrt_isomirs.rds", emit: deseq2_dds_lrt_isomirs, optional: true
 
     script:
 
     """
-    echo "Running DESeq2 miRNA / isomiR analysis."
+    echo "Running DESeq2 miRNA/isomiR analysis."
     04_de_analysis_mirna.r \\
         --counts_mirna ${mirna_counts_table} \\
         --counts_isomirs ${isomirs_counts_table} \\

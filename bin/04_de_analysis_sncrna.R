@@ -14,6 +14,7 @@
 library(edgeR)
 library(DESeq2)
 library(dplyr)
+library(readr)
 
 timestamp <- format(Sys.time(), "%Y%m%d_%H%M%S")
 
@@ -95,9 +96,11 @@ args <- commandArgs(trailingOnly = TRUE)
 #generate_counts_only <- TRUE
 
 # Test 2
-#input_dir <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/rna_quantification/genome/counts"
+#input_dir <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_full/rna_quantification/genome/counts"
 #design_file <- "/Users/kaja/Public/nextflow/test_data/trilink_GSE262424/design_MM_PCL_EMD.txt"
 #generate_counts_only <- FALSE
+#sncrna_exp <- 20
+#sncrna_sample <- 6
 #setwd("/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/de_analysis2")
 
 # Parse arguments
@@ -187,7 +190,6 @@ if (is.null(design_file)) {
 
 # List all files in the input directory
 input_files <- list.files(input_dir, full.names = TRUE, pattern = "short_rna_counts\\.tsv$")
-print(input_files)
 
 # Initialize a list to store the data frames
 df_list <- list()
@@ -198,7 +200,8 @@ for (file in input_files) {
   
   # Read the file, expecting at least two columns (sequence, expression) and possible annotations
   data <- tryCatch({
-    read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
+    readr::read_tsv(file, col_types = cols(.default = "c"))
+    #read.table(file, header = TRUE, sep = "\t", stringsAsFactors = FALSE)
   }, error = function(e) {
     stop("Error: Failed to read the file: ", file)
   })
@@ -278,6 +281,7 @@ saveRDS(analysis_data_cleaned, file = "analysis_data_cleaned.rds")
 # Make sequences as rownames -> required for edger, deseq2 to work properly
 rownames(merged_data) <- merged_data$sequence
 merged_data$sequence <- NULL
+merged_data[] <- lapply(merged_data, function(x) as.numeric(as.character(x)))
 
 ##### Counts normalization #####################################################
 
@@ -380,7 +384,7 @@ if (!is.null(design_file)) {
   
   # Perform DE analysis
   dds <- DESeq(dds)
-  
+
   # Create the file name using the timestamp
   dds_filename <- paste0("dds_sncrna.rds")
   # Save the dds object as an RDS file
@@ -399,7 +403,7 @@ if (!is.null(design_file)) {
       dplyr::select(gene,
                     baseMean = baseMean,
                     stat_lrt = stat,
-                    pvalue_lrt = pvalue,
+                    pval_lrt = pvalue,
                     padj_lrt = padj)
     res_lrt <- res_lrt %>%
       arrange(padj_lrt)

@@ -17,11 +17,13 @@ workflow DE_ANALYSIS {
             // Create an empty channel to represent the absence of the design file
             ch_design_file = Channel.of( [] )
         }
+
         DESEQ2_MIRNA_ANALYSIS (
             mirna_canonical_tsv,
             mirna_isomirs_tsv,
             ch_design_file
         )
+
         DESEQ2_SRNA_ANALYSIS (
             srna_counts_tsv,
             ch_design_file

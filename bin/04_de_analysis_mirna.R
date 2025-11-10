@@ -411,7 +411,7 @@ if (!is.null(design_file)) {
         dplyr::select(gene,
                       baseMean = baseMean,
                       stat_lrt = stat,
-                      pvalue_lrt = pvalue,
+                      pval_lrt = pvalue,
                       padj_lrt = padj)
       res_lrt <- res_lrt %>%
         arrange(padj_lrt)
