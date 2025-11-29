@@ -24,7 +24,7 @@ The raw files used to build databases for each ncRNA class are available at the 
 
 ```
 # download docker image with all required dependencies, the docker image is loaded inside the script automatically
-docker pull ktrachtok/reference_preparation
+docker pull ktrachtok/reference_preparation:x86_64-1.0
 
 # download repository with code
 git clone https://github.com/ktrachtova/reference_preparation.git
@@ -65,7 +65,7 @@ Then, supply the created STAR index folder (in the code above folder `star_rrna_
 ## tRNA
 ```
 # download docker image with all required dependencies, the docker image is loaded inside the script automatically
-docker pull ktrachtok/reference_preparation
+docker pull ktrachtok/reference_preparation:x86_64-1.0
 
 # download repository with code
 git clone https://github.com/ktrachtova/reference_preparation.git
@@ -106,7 +106,7 @@ The resulting GTF file is merged with GTF files of all other sncRNA classes to f
 ## snoRNA
 ```
 # download docker image with all required dependencies, the docker image is loaded inside the script automatically
-docker pull ktrachtok/reference_preparation
+docker pull ktrachtok/reference_preparation:x86_64-1.0
 
 # download repository with code
 git clone https://github.com/ktrachtova/reference_preparation.git
@@ -147,7 +147,7 @@ The resulting GTF file is merged with GTF files of all other sncRNA classes to f
 ## piRNA
 ```
 # download docker image with all required dependencies, the docker image is loaded inside the script automatically
-docker pull ktrachtok/reference_preparation
+docker pull ktrachtok/reference_preparation:x86_64-1.0
 
 # download repository with code
 git clone https://github.com/ktrachtova/reference_preparation.git
@@ -218,7 +218,7 @@ To create a final GTF file that is supplied to PerSeqPIPE and is used  within **
 cat  ~/reference_preparation/perseqpipe/reference_files/piRNA/2025_08_19/piRNA_db_custom_genomeMap.gtf \
      ~/reference_preparation/perseqpipe/reference_files/snoRNA/2025_08_19/snoRNA_db_custom_genomeMap.gtf \
      ~/reference_preparation/perseqpipe/reference_files/tRNA/2025_08_19/tRNA_db_custom_genomeMap.gtf \
-     ~/reference_preparation/perseqpipe/reference_files/other_rna/2025_08_24/gencode.v47.primary_assembly.annotation.filtered.gtf > perseqpipe_all_sncrna_v1.gtf
+     ~/reference_preparation/perseqpipe/reference_files/other_rna/2025_08_24/gencode.v47.primary_assembly.annotation.filtered.gtf > perseqpipe_all_sncrna_v{X.Y}.gtf
 ```
 
 ## sncRNA GTF file format

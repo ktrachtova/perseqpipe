@@ -15,7 +15,7 @@ process DOWNLOAD_STAR_INDEX {
     script:
 
     def index_folder = index_path.toString().tokenize('/').last()
-    def gtf_file_name = gtf_path.toString().tokenize('/').last()
+    def gtf_file_name = gtf_path ? gtf_path.toString().tokenize('/').last() : null
 
     """
     mkdir -p resources
@@ -25,12 +25,11 @@ process DOWNLOAD_STAR_INDEX {
     wget -q ${index_url} -O ${index_folder}.tar.gz
     tar -xzf ${index_folder}.tar.gz
     rm ${index_folder}.tar.gz
-
+ 
     if [ ! -z "${gtf_url}" ]; then
         echo "Downloading GTF from ${gtf_url}"
-        wget -q ${gtf_url} -O ${gtf_file_name}.tar.gz
-        tar -zxf ${gtf_file_name}
-        rm ${gtf_file_name}.tar.gz
+        wget -q ${gtf_url} -O ${gtf_file_name}.gz
+        gunzip -f ${gtf_file_name}.gz
     fi
     """
 }

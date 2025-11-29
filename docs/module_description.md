@@ -67,7 +67,17 @@ Distinct sncRNA classes currently quantified:
 
 Other RNA classes included in the reference, and therefore also quantified if fragments originate from them:  
 * mRNA  
-* lncRNA  
+* lncRNA
+
+### Quantificaiton of miRNA/isomiR VS other sncRNA
+
+miRNAs are among the best-studied classes of small non-coding RNAs. Their biogenesis is well characterized, and the mechanisms generating isomiRs—sequence variants arising from trimming, extension, or nucleotide modifications—are relatively well understood, even though their exact biological functions are still being uncovered. Historically, miRNA expression analyses aggregated all isomiRs belonging to a canonical miRNA, regardless of sequence differences. As the importance of isomiRs became clearer, specialized tools and a dedicated naming system were developed to detect, classify, and report these variants with high specificity.
+
+Other classes of sncRNAs, however, are far less studied and lack comparable tools, nomenclature, or standardized annotation practices. Because of this disparity, the quantification of other sncRNA classes requires a different approach than the quantification of miRNAs and isomiRs.
+
+When developing PerSeqPIPE, we chose to keep miRNA/isomiR quantification separate from all other sncRNAs for these reasons. To further justify this design, we generated a table summarizing overlap between miRNA genes and all other genes (coding, long non-coding and small non-coding), using the custom sncRNA GTF file used within the SNCRNA_QUANTIFCATION module. The table (available [here](FILLIN)) shows that miRNA loci overlap only minimally with other sncRNA classes—specifically, 74 piRNA genes, 18 snoRNA genes, and 1 tRNA gene—while most overlaps occur with protein-coding or lncRNA genes. This supports treating miRNA/isomiR quantification as a separate step, since potential ambiguity with other sncRNAs is limited.
+
+For users who wish to investigate possible cross-origin signals—e.g., whether sequences quantified as sncRNAs in their dataset might originate from miRNA loci, or vice versa—we provide this static overlap table. Detailed steps for generating the overlap file are described in [**Assessing overlap between miRNA and all other genes**](assessing_mirna_vs_genes_overlap.md).
 
 ## Module 6️⃣: Differential expression analysis  
 
