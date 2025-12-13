@@ -8,14 +8,16 @@
 
 ## ⭐ Introduction
 
-**PerSeqPIPE** is a bioinformatics pipeline for analysis of small RNA-sequencing datasets with focus on quantification of various small non-coding RNAs using a sequence-centric approach. 
+**PerSeqPIPE** is a bioinformatics pipeline for analysis of small RNA-sequencing data with focus on quantification of various small non-coding RNAs using a sequence-centric approach. 
 
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/PerSeqPIPE.png">
-    <img alt="" src="docs/images/PerSeqPIPE.png" style="margin-bottom: 20px;">
+    <img alt="" src="docs/images/PerSeqPIPE.png" style="margin-bottom: 40px;">
 </picture>
 
-For detailed information about individual PerSeqPIPE modules, please refere to [Module description](docs/module_description.md) documentation. Annotation GTF file used for sncRNA quantification was create as described in [Annotation preparation](docs/annotation_preparation.md) using databases specified in [Reference databases](docs/reference_databases.md).
+For detailed information about individual **PerSeqPIPE modules**, please refere to [Module description](docs/module_description.md) documentation.
+
+**Annotation GTF file** used for **sncRNA quantification** was create as described in [Annotation preparation](docs/annotation_preparation.md) using databases specified in [Reference databases](docs/reference_databases.md).
 
 > [!IMPORTANT]
 > In the context of the PerSeqPIPE workflow, the term **module** refers to a distinct analytical component implemented as a Nextflow *subworkflow* (for example, preprocessing or quality control). This usage differs from the Nextflow definition of a *module*, which typically denotes a smaller reusable wrapper around a single tool or script. We adopt the term **module** for clarity and readability when describing the major functional parts of the PerSeqPIPE workflow.
@@ -28,7 +30,9 @@ For instructions on how to execute the PerSeqPIPE pipeline, please refer to [Usa
 
 Outputs of PerSeqPIPE individual modules are desribed in [Outputs](docs/outputs.md) documentation.
 
-A full size example test run results can be downloaded here. 
+## ✅ Test data
+
+A full size example test results can be downloaded [here](). 
 
 ## 🎺 Credits
 

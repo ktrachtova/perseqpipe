@@ -57,6 +57,16 @@
             "type": "string",
             "format": "file-path",
             "description": "Path to sncRNA GTF file."
+          },
+          "mirna_overlap_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to download overlap file for miRNA."
+          },
+          "mirna_overlap_path": {
+            "type": "string",
+            "format": "file-path",
+            "description": "Path to miRNA overlap file."
           }
         }
       },

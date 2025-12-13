@@ -1,6 +1,22 @@
-include { DESEQ2_MIRNA_ANALYSIS } from '../../../modules/local/deseq2_mirna_analysis/main'
-include { DESEQ2_SRNA_ANALYSIS } from '../../../modules/local/deseq2_srna_analysis/main'
+//
+// Subworkflow with functionality specific to the ktrachtova/perseqpipe pipeline
+//
+// This subworkflow contains code to execute firstqc mofule
+//
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+include { DESEQ2_MIRNA_ANALYSIS } from '../../../modules/local/deseq2_mirna_analysis/main'
+include { DESEQ2_SRNA_ANALYSIS  } from '../../../modules/local/deseq2_srna_analysis/main'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SUBWORKFLOW TO EXECUTE DE ANALYSIS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 workflow DE_ANALYSIS {
 
     take:

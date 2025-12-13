@@ -1,7 +1,23 @@
+//
+// Subworkflow with functionality specific to the ktrachtova/perseqpipe pipeline
+//
+// This subworkflow contains code to execute preprocessing module
+//
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 include { FASTQC                  } from '../../../modules/local/fastqc/main'
 include { MULTIQC                 } from '../../../modules/nf-core/multiqc/main'
 include { PREPROCESSING_RAW_READS } from '../../../modules/local/preprocessing_raw_reads/main'
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SUBWORKFLOW TO EXECUTE PREPROCESSING
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 workflow PREPROCESSING {
     take:
         reads

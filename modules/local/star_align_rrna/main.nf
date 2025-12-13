@@ -3,7 +3,7 @@ process STAR_RRNA {
     label 'process_high'
     
     conda "${moduleDir}/environment.yml"
-    container 'biocontainers/star:2.7.11b--h5ca1c30_5'
+    container 'community.wave.seqera.io/library/star:2.7.11b--822039d47adf19a7'
 
     input:
     path rrna_index

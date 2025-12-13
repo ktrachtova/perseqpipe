@@ -3,9 +3,7 @@ process STAR_GENOME {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container 'biocontainers/star:2.7.11b--h5ca1c30_5'
-
-    maxForks 1  // Limits this process to a max of 2 concurrent instances
+    container 'community.wave.seqera.io/library/star:2.7.11b--822039d47adf19a7'
 
     input:
     path genome_index

@@ -1,7 +1,22 @@
+//
+// Subworkflow with functionality specific to the ktrachtova/perseqpipe pipeline
+//
+// This subworkflow contains code to execute rrna quantification module
+//
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 include { STAR_RRNA                     } from '../../../modules/local/star_align_rrna/main'
-include { STAR_GENOMEGENERATE           } from '../../../modules/local/star_genomegenerate/main'
 include { ALIGNMENT_STATS               } from '../../../modules/local/alignment_stats/main'
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SUBWORKFLOW TO EXECUTE RRNA QUANTIFICATION
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 workflow RRNA_QUANTIFICATION {
 
     take:
@@ -19,8 +34,4 @@ workflow RRNA_QUANTIFICATION {
         rrna_unmapped_fastq      = STAR_RRNA.out.rrna_unmapped_fastq
         rrna_logs                = STAR_RRNA.out.rrna_logs
         rrna_counts              = ALIGNMENT_STATS.out.counts
-
-        //rrna_quantification_fastqc_html         = fastqc_rrna.out.fastqc_html
-        //rrna_quantification_fastqc_zip          = fastqc_rrna.out.fastqc_zip
-        //rrna_quantification_fastqc_statistics   = fastqc_rrna.out.fastqc_statistics
 }

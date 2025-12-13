@@ -1,11 +1,3 @@
-----------------------------------------------------
-                                        ,--./,-.
-        ___     __   __   __   ___     /,-._.--~\\
-  |\\ | |__  __ /  ` /  \\ |__) |__         }  {
-  | \\| |       \\__, \\__/ |  \\ |___     \\`-._,-`-,
-                                        `._,._,'
-  nf-core/srnaseq ${version}
-----------------------------------------------------
 Run Name: $runName
 
 <% if (success){
@@ -35,5 +27,3 @@ Pipeline Configuration:
 <% out << summary.collect{ k,v -> " - $k: $v" }.join("\n") %>
 
 --
-nf-core/srnaseq
-https://github.com/nf-core/srnaseq

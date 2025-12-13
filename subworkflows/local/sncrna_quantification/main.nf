@@ -1,9 +1,24 @@
+//
+// Subworkflow with functionality specific to the ktrachtova/perseqpipe pipeline
+//
+// This subworkflow contains code to execute sncrna quantification module
+//
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 include { STAR_GENOME                     } from '../../../modules/local/star_align_genome/main'
-include { STAR_GENOMEGENERATE             } from '../../../modules/local/star_genomegenerate/main'
 include { SAMTOOLS_INDEX                  } from '../../../modules/nf-core/samtools/index/main'                                                   
 include { ALIGNMENT_STATS                 } from '../../../modules/local/alignment_stats/main'
 include { QUANTIFICATION_SNCRNA           } from '../../../modules/local/quantification_sncrna/main'
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SUBWORKFLOW TO EXECUTE SNCRNA QUANTIFICATION
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 workflow SNCRNA_QUANTIFICATION {
 
     take:
@@ -19,15 +34,16 @@ workflow SNCRNA_QUANTIFICATION {
 
         ALIGNMENT_STATS ( STAR_GENOME.out.genome_aligned_bam )
 
-        // ch_sncrna_gtf = params.sncrna_gtf
-
         ch_bam_bai = STAR_GENOME.out.genome_aligned_bam
             .join(SAMTOOLS_INDEX.out.bai)
 
         ch_gtf = Channel.value("${workflow.projectDir}/${params.sncrna_gtf_path}")
 
+        ch_mirna_overlap = Channel.value("${workflow.projectDir}/${params.mirna_overlap_path}")
+
         QUANTIFICATION_SNCRNA (
             ch_gtf,
+            ch_mirna_overlap,
             ch_bam_bai
         )
 

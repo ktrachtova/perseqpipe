@@ -24,7 +24,7 @@ process DESEQ2_MIRNA_ANALYSIS {
 
     """
     echo "Running DESeq2 miRNA/isomiR analysis."
-    04_de_analysis_mirna.r \\
+    04_de_analysis_mirna.R \\
         --counts_mirna ${mirna_counts_table} \\
         --counts_isomirs ${isomirs_counts_table} \\
         ${design_file ? "--design_file ${design_file}" : ""} \\

@@ -1,5 +1,5 @@
 //
-// Subworkflow with functionality specific to the nf-core/srnaseq pipeline
+// Subworkflow with functionality specific to the ktrachtova/perseqpipe pipeline
 //
 
 /*

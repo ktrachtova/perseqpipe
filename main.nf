@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/srnaseq
+    ktrachtova/perseqpipe
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github :        https://github.com/ktrachtova/perseqpipe
-    Documentation : !FILLIN!
-    Email :         k.trachtova@gmail.com
+    Documentation : https://github.com/ktrachtova/perseqpipe/docs
+    Email :         k.trachtova@gmail.com, karolina.trachtova@ceitec.muni.cz
 ----------------------------------------------------------------------------------------
 */
 
@@ -15,16 +15,10 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { PERSEQPIPE  }                from './workflows/perseqpipe'
-include { DOWNLOAD_REFERENCES }       from './subworkflows/local/download_references/main.nf'
+include { PERSEQPIPE              }   from './workflows/perseqpipe'
+include { DOWNLOAD_REFERENCES     }   from './subworkflows/local/download_references/main.nf'
 include { PIPELINE_INITIALISATION }   from './subworkflows/local/utils_perseqpipe'
 include { PIPELINE_COMPLETION     }   from './subworkflows/local/utils_perseqpipe'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    DOWNLOAD REFERENCES WORKFLOW
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -38,7 +32,7 @@ include { PIPELINE_COMPLETION     }   from './subworkflows/local/utils_perseqpip
 workflow PERSEQPIPE_WF {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    samplesheet
 
     main:
 
@@ -49,7 +43,7 @@ workflow PERSEQPIPE_WF {
         samplesheet
     )
     emit:
-    multiqc_report = PERSEQPIPE.out.multiqc_report // channel: /path/to/multiqc_report.html
+    multiqc_report = PERSEQPIPE.out.multiqc_report
 }
 
 /*
@@ -76,7 +70,6 @@ workflow {
     //
     // WORKFLOW: Run main workflow - either download reference or actually analyze some samples
     //
-
     if (params.download_reference_rrna || params.download_reference_genome) {
         
             // Create empty channels for optional outputs
@@ -94,6 +87,8 @@ workflow {
                 params.index_rrna_url,
                 params.index_rrna_path,
                 '',
+                '',
+                '',
                 ''
             ).out.star_index_dir
         }
@@ -104,7 +99,9 @@ workflow {
                 params.index_genome_url,
                 params.index_genome_path,
                 params.sncrna_gtf_url,
-                params.sncrna_gtf_path
+                params.sncrna_gtf_path,
+                params.mirna_overlap_url,
+                params.mirna_overlap_path
             ).out.star_index_dir
         }
 

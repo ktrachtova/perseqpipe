@@ -1,6 +1,12 @@
+//
+// Subworkflow with functionality specific to the ktrachtova/perseqpipe pipeline
+//
+// This subworkflow contains code to execute firstqc mofule
+//
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
+    IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 include { paramsSummaryMap       } from 'plugin/nf-schema'
@@ -10,6 +16,11 @@ include { softwareVersionsToYAML } from '../../nf-core/utils_nfcore_pipeline'
 include { FASTQC                 } from '../../../modules/local/fastqc/main'
 include { MULTIQC                } from '../../../modules/nf-core/multiqc/main'
 
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    SUBWORKFLOW TO EXECUTE FIRSTQC
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
 workflow FIRSTQC {
 
     take:
@@ -52,28 +63,6 @@ workflow FIRSTQC {
         Channel.fromPath(params.multiqc_logo, checkIfExists: true) :
         Channel.empty()
 
-    // !FILLIN! -> decide what to do with this portion of code?
-    //summary_params      = paramsSummaryMap(
-    //    workflow, parameters_schema: "nextflow_schema.json")
-    //ch_workflow_summary = Channel.value(paramsSummaryMultiqc(summary_params))
-    //ch_multiqc_files = ch_multiqc_files.mix(
-    //    ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    //ch_multiqc_custom_methods_description = params.multiqc_methods_description ?
-    //    file(params.multiqc_methods_description, checkIfExists: true) :
-    //    file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
-    //ch_methods_description                = Channel.value(
-    //    methodsDescriptionText(ch_multiqc_custom_methods_description))
-
-    //ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
-    //ch_multiqc_files = ch_multiqc_files.mix(
-    //    ch_methods_description.collectFile(
-    //        name: 'methods_description_mqc.yaml',
-    //        sort: true
-    //    )
-    // )
-
-    // sort input files for multiqc so that resuming workflow does not trigeer
-    // rerunning of the multiqc tool
     MULTIQC (
         ch_multiqc_files,
         ch_multiqc_config.toList(),
@@ -84,10 +73,10 @@ workflow FIRSTQC {
     )
 
     emit:
-    multiqc_report          = MULTIQC.out.report.toList() // channel: /path/to/multiqc_report.html
+    multiqc_report          = MULTIQC.out.report.toList()
     html                    = FASTQC.out.html
     zip                     = FASTQC.out.zip
     fastqc_counts           = FASTQC.out.fastqc_counts
-    versions                = ch_versions                 // channel: [ path(versions.yml) ]
+    versions                = ch_versions
 
 }

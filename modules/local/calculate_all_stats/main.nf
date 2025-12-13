@@ -2,7 +2,7 @@ process CALCULATE_ALL_STATS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container 'biocontainers/pandas:2.2.1'
+    container 'community.wave.seqera.io/library/pandas:2.3.3--5a902bf824a79745'
     
     input:
     path counts_files

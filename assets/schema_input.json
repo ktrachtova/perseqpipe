@@ -1,8 +1,7 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-core/srnaseq/master/assets/schema_input.json",
-    "title": "nf-core/srnaseq pipeline - params.input schema",
-    "description": "Schema for the file provided with params.input",
+    "title": "PerSeqPIPE pipeline - params.input_samplesheet",
+    "description": "Schema for the file provided with params.input_samplesheet",
     "type": "array",
     "items": {
         "type": "object",

@@ -9,9 +9,6 @@ process PREPROCESSING_RAW_READS {
     tuple val(meta), path(reads)
 
     output:
-    // path "intermediate_files/adapter1_trim/*.ad3trim.fastq.gz", emit: ad1trim_reads
-    // path "intermediate_files/collapsed/*.collapsed.fastq.gz", emit: collapsed_reads
-    // path "intermediate_files/adapter2_trim/*.collapsed.ad3trim.fastq.gz", emit: ad2trim_reads
     tuple val(meta), path ("intermediate_files/*/*.fastq.gz"),                          emit: intermediates
     tuple val(meta), path ("intermediate_files/*/*/*.fastq.gz"),                        emit: intermediates_discarded
     tuple val(meta), path ("${meta.id}.cleaned.fastq.gz"),                              emit: cleaned_reads

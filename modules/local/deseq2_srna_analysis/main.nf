@@ -19,7 +19,7 @@ process DESEQ2_SRNA_ANALYSIS {
 
     """
     echo "Running DESeq2 sncRNA analysis!"
-    04_de_analysis_sncrna.r \\
+    04_de_analysis_sncrna.R \\
         --input_dir ./ \\
         ${design_file ? "--design_file ${design_file}" : ""} \\
         ${params.sncrna_expression_threshold ? "--sncrna_expression_threshold ${params.sncrna_expression_threshold}" : ""}

@@ -3,7 +3,7 @@ process SAMTOOLS_INDEX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container 'biocontainers/samtools:1.21--h50ea8bc_0'
+    container 'community.wave.seqera.io/library/samtools:1.21--0d76da7c3cf7751c'
 
     input:
     tuple val(meta), path(input)
