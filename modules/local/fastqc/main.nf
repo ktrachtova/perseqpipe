@@ -21,7 +21,10 @@ process FASTQC {
 
     script:
     def args          = task.ext.args ?: ''
-    def filename      = reads.baseName.replaceAll(/\.gz$/, '').replaceAll(/\.fastq$/, '')
+    def use_meta = task.ext.use_meta_id ?: false
+    def prefix   = task.ext.prefix ?: ( use_meta ? "${meta.id}" : reads.baseName.replaceAll(/\.fastq$/, '') )
+    // def filename      = "${meta.id}"
+    //def filename      = reads.baseName.replaceAll(/\.gz$/, '').replaceAll(/\.fastq$/, '')
 
     // Ensure reads is always a single file
     if (reads instanceof List && reads.size() > 1) {
@@ -42,7 +45,7 @@ process FASTQC {
         --memory ${fastqc_memory} \\
         ${reads}
 
-    echo \$(( \$(zcat "${reads}" | wc -l) / 4 )) > "${filename}.counts.txt"
+    echo \$(( \$(zcat "${reads}" | wc -l) / 4 )) > "${prefix}.counts.txt"
  
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

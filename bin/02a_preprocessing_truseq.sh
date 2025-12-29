@@ -36,10 +36,6 @@ mkdir -p ./intermediate_files/adapter1_trim
 mkdir -p ./intermediate_files/adapter1_trim/discarded
 mkdir -p ./intermediate_files/adapter1_trim/len_distributions
 mkdir -p ./intermediate_files/collapsed
-#mkdir -p ${TMP_DIR}/intermediate_files/adapter2_trim
-#mkdir -p ${TMP_DIR}/qc_check
-#mkdir -p ${TMP_DIR}/cleaned_fastq
-
 
 ####################################################################################################
 ### PART 1: First adapter trimming - main indexed adapter
