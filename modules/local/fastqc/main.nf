@@ -23,8 +23,6 @@ process FASTQC {
     def args          = task.ext.args ?: ''
     def use_meta = task.ext.use_meta_id ?: false
     def prefix   = task.ext.prefix ?: ( use_meta ? "${meta.id}" : reads.baseName.replaceAll(/\.fastq$/, '') )
-    // def filename      = "${meta.id}"
-    //def filename      = reads.baseName.replaceAll(/\.gz$/, '').replaceAll(/\.fastq$/, '')
 
     // Ensure reads is always a single file
     if (reads instanceof List && reads.size() > 1) {

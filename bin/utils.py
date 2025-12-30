@@ -1,3 +1,7 @@
+"""
+utils script with helper functions for 03e_quantification_short_rna.py
+"""
+
 import subprocess
 import pandas as pd
 import re

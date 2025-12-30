@@ -1,8 +1,7 @@
 #!/bin/bash
-#
-# Cleaning smallRNA-seq data - QIAseq
-#
-# Requires Cutadapt, fastx-toolkit, FastQC, multiQC
+# @author: Karolina Trachtova
+# @description: Script for cleaning smallRNA-seq data, specific for lib prep kit: QIAseq
+# @dependencies: cutadapt, fastx-toolkit, bbmap
 #
 set -euo pipefail
 
@@ -15,23 +14,22 @@ echo "####################################################"
 echo "Starting at $(date +%s)"
 echo ""
 
-####################################################################################################
-
-APPENDIX=".fastq.gz" # Files suffix to launch the analysis on
+########################################################
 
 QUALITY=33 #phred coding of input files
 
-####################################################################################################
+########################################################
+
 # Trimming parameters
 # Specify default values in case this script is being used out of the nextflow pipeline
-ERROR_RATE=${3:-0.10}                       # Allowed error rate or adapters
-MIN_OVERLAP=${4:-5}                         # Minimal overlap of adapter for first adapter trimming; cutadapt uses this overlap as a "seed" and then tries to align the rest of the adapter. It doesn't remove the random hits in the middle of the sequence. We could go even lower if we would be interested in RNA/RNA fragments which could be approximately same length as the sequencing read length
-DISC_SHORT=${5:-15}                         # Discard shorter reads
-QUALITY_FILTER=${6:-10}                      # Quality filter for trimming
+ERROR_RATE=${3:-0.10}                                   # Allowed error rate or adapters
+MIN_OVERLAP=${4:-5}                                     # Minimal overlap of adapter for first adapter trimming; cutadapt uses this overlap as a "seed" and then tries to align the rest of the adapter. It doesn't remove the random hits in the middle of the sequence. We could go even lower if we would be interested in RNA/RNA fragments which could be approximately same length as the sequencing read length
+DISC_SHORT=${5:-15}                                     # Discard shorter reads
+QUALITY_FILTER=${6:-10}                                 # Quality filter for trimming
 ADAPTER3_SEQ1=${7:-"AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"} # Default Truseq 3' adapter
-ADAPTER3_SEQ2=${8:-"AACTGTAGGCACCATCAAT"}   # QIAseq specific 3' adapter
+ADAPTER3_SEQ2=${8:-"AACTGTAGGCACCATCAAT"}               # QIAseq specific 3' adapter
 
-####################################################################################################
+########################################################
 
 # Create a temporary directory for processing
 mkdir -p ./intermediate_files/adapter1_trim
@@ -41,8 +39,7 @@ mkdir -p ./intermediate_files/collapsed
 mkdir -p ./intermediate_files/adapter2_trim
 mkdir -p ./intermediate_files/adapter2_trim/discarded
 
-####################################################################################################
-### PART 1: First adapter trimming - main indexed adapter
+########################################################
 
 echo "PART 1: adapter trimming of the rightmost 3' adapter"
 echo "####################################################"
@@ -64,12 +61,15 @@ cutadapt -a $ADAPTER3_SEQ1 \
 	
 echo "$(date +%s) Finished trimming sample $SAMPLE"
 
+# collect length distribution information
 zcat ./intermediate_files/adapter1_trim/${SAMPLE%.fastq*}.ad3trim.fastq.gz | awk '{if(NR%4==2) print NR"\t"$0"\t"length($0)}' | cut -f3 | sort | uniq -c > ./intermediate_files/adapter1_trim/len_distributions/${SAMPLE%.fastq*}.ad3trim.lenDist.txt
 zcat ./intermediate_files/adapter1_trim/discarded/${SAMPLE%.fastq*}.ad3short.fastq.gz | awk '{if(NR%4==2) print NR"\t"$0"\t"length($0)}' | cut -f3 | sort | uniq -c > ./intermediate_files/adapter1_trim/len_distributions/${SAMPLE%.fastq*}.ad3short.lenDist.txt
 zcat ./intermediate_files/adapter1_trim/discarded/${SAMPLE%.fastq*}.ad3untrim.fastq.gz | awk '{if(NR%4==2) print NR"\t"$0"\t"length($0)}' | cut -f3 | sort | uniq -c > ./intermediate_files/adapter1_trim/len_distributions/${SAMPLE%.fastq*}.ad3untrim.lenDist.txt
 
-#echo "PART 2: collapsing reads"
-#echo "####################################################"
+########################################################
+
+echo "PART 2: collapsing reads"
+echo "####################################################"
 
 echo "$(date +%s) Started collapsing reads for sample $SAMPLE"
 
@@ -77,8 +77,10 @@ gunzip -c ./intermediate_files/adapter1_trim/${SAMPLE%.fastq*}.ad3trim.fastq.gz 
 
 echo "$(date +%s) Finished collapsing sample $SAMPLE"
 
-#echo "PART 3: Second adapter (QIAseq-specific) + UMI trimming"
-#echo "#######################################################"
+########################################################
+
+echo "PART 3: Second adapter (QIAseq-specific) + UMI trimming"
+echo "#######################################################"
 
 echo "$(date +%s) Started second adapter + UMI trimming for sample $SAMPLE"
 
@@ -95,8 +97,10 @@ cutadapt -a $ADAPTER3_SEQ2 \
 
 echo "$(date +%s) Finished trimming sample $SAMPLE"
 
-#echo "PART 4: Second collapsing"
-#echo "#######################################################"
+########################################################
+
+echo "PART 4: Second collapsing"
+echo "#######################################################"
 
 echo "$(date +%s) Started second collapsing reads for sample $SAMPLE"
 

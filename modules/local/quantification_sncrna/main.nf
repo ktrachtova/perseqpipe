@@ -29,5 +29,10 @@ process QUANTIFICATION_SNCRNA {
         ${reads_arg} \
         ${bp_arg} \
         ${frac_arg}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python3 --version | head -n1 | cut -d' ' -f2)
+    END_VERSIONS
     """
 }

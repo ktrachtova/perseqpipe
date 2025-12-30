@@ -23,5 +23,10 @@ process DESEQ2_SRNA_ANALYSIS {
         --input_dir ./ \\
         ${design_file ? "--design_file ${design_file}" : ""} \\
         ${params.sncrna_expression_threshold ? "--sncrna_expression_threshold ${params.sncrna_expression_threshold}" : ""}
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        R: \$(Rscript --version | cut -d' ' -f4)
+    END_VERSIONS
     """
 }

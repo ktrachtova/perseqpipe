@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
+"""
+Script for changing header format in order for the FASTQ files to be digested by miraligner tool. 
+Required format is "seq_000_x{X}" where {X} denotes number of collapsed identical reads, and 000 is random number unique across all reads.
 
+Author: Karolina Trachtova
+"""
 import sys
 import os
 

@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+"""
+Script that calculates overall statistics from all individual steps of PerSeqPIPE analysis.
+
+Author: Karolina Trachtova
+"""
 
 import os
 import pandas as pd

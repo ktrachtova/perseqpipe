@@ -39,7 +39,9 @@ process PREPROCESSING_RAW_READS {
 
     }
     """
-    ln -s ${reads} ${renamed}
+    if [ ! -e "${renamed}" ]; then
+        ln -s "${reads}" "${renamed}"
+    fi
 
     ${command}
 

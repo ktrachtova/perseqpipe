@@ -1,15 +1,18 @@
 #!/bin/bash
+# @author: Karolina Trachtova
+# @description: Script for STAR alignment of FASTQ files to genome
+# @dependencies: STAR
+#
 set -euo pipefail
 
 # main inputs
 index=$1
 input_file=$2
 sample=$3
-
-#gunzip -f $input_file
-#sed -i 's/ //g' ${input_file%.gz}
+threads=$4
 
 STAR --runMode alignReads \
+     --runThreadN $threads \
      --genomeDir ${index} \
      --readFilesCommand zcat \
      --readFilesIn ${input_file} \

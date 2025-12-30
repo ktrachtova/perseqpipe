@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-
 """
 Quantification of small non-coding RNAs from BAM alignments using GTF annotations.
 
 This script counts read alignments overlapping annotated RNA loci (tRNA, piRNA, snoRNA, etc.),
 filters overlaps based on a minimum overlap length or fraction, and generates a merged count table.
-Optionally, sequences with identical annotation sets can be merged.
+
+Author: Karolina Trachtova
 """
 
 import os

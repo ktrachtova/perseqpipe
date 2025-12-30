@@ -30,5 +30,10 @@ process DESEQ2_MIRNA_ANALYSIS {
         ${design_file ? "--design_file ${design_file}" : ""} \\
         ${params.mirna_expression_threshold ? "--mirna_expression_threshold ${params.mirna_expression_threshold}" : ""} \\
         ${params.isomirs_expression_threshold ? "--isomirs_expression_threshold ${params.isomirs_expression_threshold}" : ""}
+    
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        R: \$(Rscript --version | cut -d' ' -f4)
+    END_VERSIONS
     """
 }

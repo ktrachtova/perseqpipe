@@ -16,6 +16,11 @@ process STAR_RRNA {
 
     script:
     """    
-    03a_star_rrna.sh ${rrna_index} ${reads} ${meta.id} 4
+    03a_star_rrna.sh ${rrna_index} ${reads} ${meta.id} $task.cpus
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        star: \$(STAR --version | sed -e "s/STAR_//g")
+    END_VERSIONS
     """
 }

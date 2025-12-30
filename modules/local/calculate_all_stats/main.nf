@@ -13,5 +13,10 @@ process CALCULATE_ALL_STATS {
     script:
     """
     calculate_statistics.py ./
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        python: \$(python3 --version | head -n1 | cut -d' ' -f2)
+    END_VERSIONS
     """
 }

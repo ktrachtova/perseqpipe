@@ -1,7 +1,8 @@
 #!/bin/bash
-# Script for STAR alignment of cleaned FASTQ files to rRNA sequences
 # @author: Karolina Trachtova
-# @script: 03a_star_rrna.sh
+# @description: Script for STAR alignment of cleaned FASTQ files to rRNA sequences
+# @dependencies: STAR
+#
 set -euo pipefail
 
 index=$1            # STAR rRNA index

@@ -1,8 +1,7 @@
 #!/bin/bash
-#
-# Cleaning smallRNA-seq data - Truseq
-#
-# Requires Cutadapt, fastx-toolkit, FastQC, multiQC
+# @author: Karolina Trachtova
+# @description: Script for cleaning smallRNA-seq data, specific for lib prep kit: Truseq, Nebnext, NextflexV4, Norgen, Lexogen, Novogene
+# @dependencies: cutadapt, fastx-toolkit, bbmap
 #
 set -euo pipefail
 
@@ -23,13 +22,11 @@ echo "####################################################"
 echo "Starting at $(date +%s)"
 echo ""
 
-####################################################################################################
-
-APPENDIX=".fastq.gz" # Files suffix to launch the analysis on
+########################################################
 
 QUALITY=33 #phred coding of input files
 
-####################################################################################################
+########################################################
 
 # Create a temporary directory for processing
 mkdir -p ./intermediate_files/adapter1_trim
@@ -37,8 +34,7 @@ mkdir -p ./intermediate_files/adapter1_trim/discarded
 mkdir -p ./intermediate_files/adapter1_trim/len_distributions
 mkdir -p ./intermediate_files/collapsed
 
-####################################################################################################
-### PART 1: First adapter trimming - main indexed adapter
+########################################################
 
 echo "PART 1: adapter trimming of the rightmost 3' adapter"
 echo "####################################################"
@@ -60,12 +56,12 @@ cutadapt -a $ADAPTER3_SEQ1 \
 	
 echo "$(date +%s) Finished trimming sample $SAMPLE"
 
+# collect length distribution information
 zcat ./intermediate_files/adapter1_trim/${SAMPLE%.fastq*}.ad3trim.fastq.gz | awk '{if(NR%4==2) print NR"\t"$0"\t"length($0)}' | cut -f3 | sort | uniq -c > ./intermediate_files/adapter1_trim/len_distributions/${SAMPLE%.fastq*}.ad3trim.lenDist.txt
 zcat ./intermediate_files/adapter1_trim/discarded/${SAMPLE%.fastq*}.ad3short.fastq.gz | awk '{if(NR%4==2) print NR"\t"$0"\t"length($0)}' | cut -f3 | sort | uniq -c > ./intermediate_files/adapter1_trim/len_distributions/${SAMPLE%.fastq*}.ad3short.lenDist.txt
 zcat ./intermediate_files/adapter1_trim/discarded/${SAMPLE%.fastq*}.ad3untrim.fastq.gz | awk '{if(NR%4==2) print NR"\t"$0"\t"length($0)}' | cut -f3 | sort | uniq -c > ./intermediate_files/adapter1_trim/len_distributions/${SAMPLE%.fastq*}.ad3untrim.lenDist.txt
 
-#echo "PART 2: Collapsing reads"
-#echo "#######################################################"
+########################################################
 
 echo "PART 2: Collapsing reads"
 echo "####################################################"
