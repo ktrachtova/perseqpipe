@@ -23,7 +23,7 @@ The **DE_ANALYSIS** module is executed separately for miRNAs/isomiRs (using coun
 
 The design file must contain at least two columns (`sample` and `condition`) and may include an optional third column (`batch`). The sample names specified in the **sample column must exactly match the sample names listed in the input samplesheet file**; otherwise, the pipeline will fail.
 
-The file can be comma- or tab-delimited. Please note that using special characters (such as spaces, hashes, slashes, etc.) in sample names, conditions, or batch values may cause the analysis to fail. It is strongly recommended that the design file only contain alphanumeric characters, hyphens, and underscores.
+The file can be comma or tab-delimited. Please note that using special characters (such as spaces, hashes, slashes, etc.) in sample names, conditions, or batch values may cause the analysis to fail. It is strongly recommended that the design file only contain alphanumeric characters, hyphens, and underscores.
 
 Example design file with only sample and condition columns:
 ```
@@ -33,7 +33,6 @@ sample2,cond2
 ```
 
 Example design file with sample , condition and batch columns (batch effect here is a sequencing run):
-
 ```
 sample,condition,batch
 sample1,cond1,run1
@@ -152,7 +151,7 @@ Main outputs from sncRNA DE analysis if design file provided by user:
     * `mrna` column with known mRNA annotation
     * `lncrna` column with known lncRNA annotation
     * `genome_alignments` number of genomic alignments of a sequence
-    * `MINT_plate`
+    * `MINT_plate` contains sequence-specific and unique identifier (license-plate), more information [here](https://github.com/TJU-CMC-Org/MINTplates)
     * `baseMean` is the average of the normalized count values, dividing by size factors, taken over all samples
     * `stat_lrt` (optional) is the value of the test statistic from LRT; present only if more there are more than 2 conditions in the design file
     * `pvalue_lrt` (optional) is the p-value of from LRT; present only if more there are more than 2 conditions in the design file

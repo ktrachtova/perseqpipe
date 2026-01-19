@@ -22,6 +22,10 @@
 
 > Kechin A, Boyarskikh U, Kel A, Filipenko M. cutPrimers: A New Tool for Accurate Cutting of Primers from Reads of Targeted Next Generation Sequencing. J Comput Biol. 2017 Nov;24(11):1138-1143. doi: 10.1089/cmb.2017.0096. Epub 2017 Jul 17. PMID: 28715235.
 
+- [MMseqs2](https://www.nature.com/articles/nbt.3988)
+
+> Steinegger, M., Söding, J. MMseqs2 enables sensitive protein sequence searching for the analysis of massive data sets. Nat Biotechnol 35, 1026–1028 (2017). https://doi.org/10.1038/nbt.3988
+
 - [BBMap](https://bbmap.org)
 
 > Bushnell, B. (2014) BBMap: A Fast, Accurate, Splice-Aware Aligner. 9th Annual Genomics of Energy & Environment Meeting, Walnut Creek, CA. https://orcid.org/0000-0002-8140-0131. 

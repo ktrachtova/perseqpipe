@@ -20,9 +20,11 @@ To access overlap between known miRNA and all other sncRNA, coding and long non-
     * `B_gene_type` gene type of feature in database B
     * `overlap` overlap between feature (in nucleotides) between database A and B
 
+Before executing the script, user should downlaod a Gencode GTF file, version should correspong to the version used to create custom sncRNA GTF file as described in section [Annotation preparation](./annotation_preparation.md).
+
 To execute the script, run following  code:
 ```
-# download GENCODE GTF file, version should correspong to the version used to create custom sncRNA GTF file stated [here](reference_databases.md#mrna--lncrna) & unzip the file
+# unzip GTF file
 gzip -d /path/to/downloaded/gencode_gtf_file.gtf.gz
 GENCODE_GTF=/path/to/downloaded/gencode_gtf_file.gtf
 

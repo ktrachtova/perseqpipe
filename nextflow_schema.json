@@ -80,12 +80,35 @@
       },
       "preprocessing_options": {
         "type": "object",
+        "required": ["lib_type"],
+        "errorMessage": {
+          "required": {
+            "lib_type": "Missing required parameter: --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen."
+          },
+          "properties": {
+            "lib_type": "Invalid value for --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen."
+          }
+        },
         "properties": {
-          "lib_type": { "type": "string"},
+          "lib_type": {
+            "type": "string",
+            "enum": [
+              "qiaseq",
+              "truseq",
+              "trilink",
+              "nebnext",
+              "nextflexV3",
+              "nextflexV4",
+              "lexogen",
+              "novogene",
+              "norgen"
+            ],
+            "description": "Library preparation kit used for sequencing"
+          },
           "error_rate": { "type": "number" },
           "min_overlap": { "type": "integer" },
           "disc_short": { "type": "integer" },
-          "quality_filter": {"type": "integer"},
+          "quality_filter": { "type": "integer" },
           "adapter3_seq": { "type": ["string", "null"] },
           "adapter3_qiaseq_seq1": { "type": "string" },
           "adapter3_qiaseq_seq2": { "type": "string" }

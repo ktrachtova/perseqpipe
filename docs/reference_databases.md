@@ -1,6 +1,6 @@
 # PerSeqPIPE: Reference databases for sncRNA annotation
 
-To quantify all different sncRNAs currently known we have prepared an annotation GTF file for sncRNAs by combining information from multiple publicly available resources. This GTF file is automatically downloaded by PerSeqPIPE and used by the **GENOME_QUANTIFICATION** module. In case you want to reproduce or update certain resources from which the annotation GTF file was built, please see section Annotation preparation.
+To quantify all different sncRNAs currently known we have prepared an [annotation GTF file](https://zenodo.org/records/17700979) for sncRNAs by combining information from multiple publicly available resources. This GTF file is automatically downloaded by PerSeqPIPE and used by the **SNCRNA_QUANTIFICATION** module. In case you want to reproduce or update certain resources from which the annotation GTF file was built, please see section [Annotation preparation](./annotation_preparation.md).
 
 Below we provide information about resources for each sncRNA class and how many sequences were extracted.
 

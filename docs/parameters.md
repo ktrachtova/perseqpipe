@@ -4,9 +4,24 @@
 
 | parameter              | type   | description                                    |
 | -----------------------|--------|------------------------------------------------|
-| `--input_samplesheet`  | string | Path to the comma-separated file contianing sample information |
-| `--outdir`             | string | The output directory where all results will be saved. |
-| 
+| `--input_samplesheet`  | string | (Required) Path to the comma-separated file contianing sample information |
+| `--outdir`             | string | (Required) The output directory where all results will be saved. |
+
+## Module control flags
+
+Specifying one of the following parameters is required to run PerSeqPIPE.
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--download_reference_rrna` | boolean | Download rRNA STAR index, no actual analysis will be performed |
+| `--download_reference_genome` | boolean | Download human STAR index and custom sncRNA GTF file |
+| `--run_firstqc` | boolean | Run only FIRSTQC module |
+| `--run_preprocessing` | boolean | Run modules up to (including) PREPROCESSING module |
+| `--run_rrna` | boolean | Run modules up to (including) RRNA_QUANTIFICATION |
+| `--run_mirna` | boolean | Run modules up to (including) MIRNA_QUANTIFICATION |
+| `--run_sncrna` | boolean | Run modules up to (including) GENOME_QUANTIFICATION |
+| `--run_full` | boolean | Run all modules of the PerSeqPIPE pipeline |
+
 
 ## Reference and annotation options
 
@@ -24,14 +39,14 @@
 
 | parameter              | type    | description                                    |
 | -----------------------|---------|------------------------------------------------|
-| `--lib_type`           | string  | Library type used to prepare sequencing libraries, one of ['truseq','trilink','qiaseq','nextflexV3','nextflexV4','novogene','norgen','nebnext','lexogen'] |
+| `--lib_type`           | string  | (Required) Library type used to prepare sequencing libraries, one of `['truseq','trilink','qiaseq','nextflexV3','nextflexV4','novogene','norgen','nebnext','lexogen']` |
 | `--error_rate`         | number  | Error rate for adapter trimming                |
 | `--min_overlap`        | integer | Minimal overlap between adapter and read required |
 | `--disc_short`         | integer | Length threshold for discarding reads          |
 | `--quality_filter`     | integer | Quality filtering for preprocessing |
 | `--adapter3_seq`       | string | Adapter sequence for first 3' adapter trimming |
 | `--adapter3_qiaseq_seq1` | string | First 3' end adapter sequence (QIAseq-specific!) |
-| `--adapter3_qiaseq_seq2` | string | Second 3'end adapter sequence (QIAseq-specific!) |
+| `--adapter3_qiaseq_seq2` | string | Second 3' end adapter sequence (QIAseq-specific!) |
 
 ## sncRNA quantification options
 
@@ -49,20 +64,6 @@
 | `--sncrna_expression_threshold` | string | Expression thresholds for samples for sncRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples
 | `--mirna_expression_threshold` | string | Expression thresholds for samples for miRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples |
 | `--isomirs_expression_threshold` | string | Expression thresholds for samples for isomiRs, e.g., '20,3' mean at least 20 reads in at least 3 samples |
-
-## Module control flags
-
-| parameter              | type   | description                                    |
-| -----------------------|--------|------------------------------------------------|
-| `--download_reference_rrna` | boolean | Download rRNA STAR index, no actual analysis will be performed |
-| `--download_reference_genome` | boolean | Download human STAR index and custom sncRNA GTF file |
-| `--run_firstqc` | boolean | Run only FIRSTQC module |
-| `--run_preprocessing` | boolean | Run modules up to (including) PREPROCESSING module |
-| `--run_rrna` | boolean | Run modules up to (including) RRNA_QUANTIFICATION |
-| `--run_mirna` | boolean | Run modules up to (including) MIRNA_QUANTIFICATION |
-| `--run_sncrna` | boolean | Run modules up to (including) GENOME_QUANTIFICATION |
-| `--run_full` | boolean | Run all modules of the PerSeqPIPE pipeline |
-
 
 ## MultiQC options
 
