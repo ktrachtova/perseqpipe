@@ -37,7 +37,7 @@ process DOWNLOAD_REFERENCE_FILES {
     cd resources
 
     echo "Downloading STAR index from ${index_url}"
-    wget -q ${index_url} -O ${index_folder}.tar.gz
+    wget -S --max-redirect=20 --tries=10 --waitretry=30 --timeout=60 --retry-connrefused ${index_url} -O ${index_folder}.tar.gz
     tar -xzf ${index_folder}.tar.gz
     rm ${index_folder}.tar.gz
  

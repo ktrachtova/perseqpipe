@@ -13,7 +13,7 @@ process ISOMIRS_STATS {
 
     script:
     """
-    isomirs_mirna_counts.R \"${miraligner_mirna}\" ./
+    isomirs_mirna_counts.r \"${miraligner_mirna}\" ./
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

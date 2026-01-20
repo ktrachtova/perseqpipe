@@ -20,7 +20,7 @@ process MIRALIGNER_MIRNA {
 
     """
     tar -zxvf ${miraligner_db}
-    03c_miraligner_mirna.sh ${db_dir} ${reads} ${meta.id} ${params.miraligner_jar}
+    03b_miraligner_mirna.sh ${db_dir} ${reads} ${meta.id} ${params.miraligner_jar}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

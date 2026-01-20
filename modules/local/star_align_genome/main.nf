@@ -16,7 +16,7 @@ process STAR_GENOME {
 
     script:
     """
-    03e_star_genome.sh ${genome_index} ${reads} ${meta.id} $task.cpus
+    03c_star_genome.sh ${genome_index} ${reads} ${meta.id} $task.cpus
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

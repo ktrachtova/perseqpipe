@@ -20,22 +20,22 @@ process PREPROCESSING_RAW_READS {
   
     if (params.lib_type == 'qiaseq') {
 
-        command="02a_preprocessing_qiaseq.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${params.adapter3_qiaseq_seq1} ${params.adapter3_qiaseq_seq2}"
+        command="02_preprocessing_qiaseq.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${params.adapter3_qiaseq_seq1} ${params.adapter3_qiaseq_seq2}"
 
     } else if (params.lib_type in ['truseq', 'trilink', 'nextflexV4', 'lexogen', 'norgen']) {
 
         def adapter = params.adapter3_seq ?: 'TGGAATTCTCGGGTGCCAAGG'
-        command="02a_preprocessing_truseq.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${adapter}"
+        command="02_preprocessing_truseq.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${adapter}"
         
     } else if (params.lib_type == 'nextflexV3') {
 
         def adapter = params.adapter3_seq ?: 'TGGAATTCTCGGGTGCCAAGG'
-        command="02a_preprocessing_nextflexV3.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${adapter}"
+        command="02_preprocessing_nextflexV3.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${adapter}"
 
     } else if (params.lib_type in ['nebnext', 'novogene']) {
 
         def adapter = params.adapter3_seq ?: 'AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC'
-        command="02a_preprocessing_truseq.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${adapter}"
+        command="02_preprocessing_truseq.sh ${renamed} ${task.cpus} ${params.error_rate} ${params.min_overlap} ${params.disc_short} ${params.quality_filter} ${adapter}"
 
     }
     """

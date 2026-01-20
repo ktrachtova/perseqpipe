@@ -1,219 +1,236 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/ktrachtova/perseqpipe/master/nextflow_schema.json",
-    "title": "PerSeqPIPE",
-    "description": "Pipeline for sequence-centered quantification of various small non-coding RNAs (sncRNAs) from NGS data",
-    "type": "object",
-    "$defs": {
-      "input_output_options": {
-        "type": "object",
-        "properties": {
-          "input_samplesheet": {
-            "type": "string",
-            "format": "file-path",
-            "description": "Path to input CSV samplesheet."
-          },
-          "outdir": {
-            "type": "string",
-            "format": "directory-path",
-            "description": "Output directory for pipeline results."
-          }
-        }
-      },
-      "reference_options": {
-        "type": "object",
-        "properties": {
-          "index_rrna_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL to download prebuilt rRNA STAR index."
-          },
-          "index_rrna_path": {
-            "type": "string",
-            "format": "directory-path",
-            "description": "Path to STAR rRNA index."
-          },
-          "miraligner_db_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL to download miRBase database for miraligner."
-          },
-          "index_genome_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL to download prebuilt genome STAR index."
-          },
-          "index_genome_path": {
-            "type": "string",
-            "format": "directory-path",
-            "description": "Path to STAR genome index."
-          },
-          "sncrna_gtf_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL to download prebuilt sncRNA GTF file."
-          },
-          "sncrna_gtf_path": {
-            "type": "string",
-            "format": "file-path",
-            "description": "Path to sncRNA GTF file."
-          },
-          "mirna_overlap_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL to download overlap file for miRNA."
-          },
-          "mirna_overlap_path": {
-            "type": "string",
-            "format": "file-path",
-            "description": "Path to miRNA overlap file."
-          }
-        }
-      },
-      "sncrna_quantification_options": {
-        "type": "object",
-        "properties": {
-          "sncrna_overlap": { "type": "integer"},
-          "sncrna_overlap_frac": { "type": "number"},
-          "reads_threshold": { "type": "integer"}
-        }
-      },
-      "preprocessing_options": {
-        "type": "object",
-        "required": ["lib_type"],
-        "errorMessage": {
-          "required": {
-            "lib_type": "Missing required parameter: --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen."
-          },
-          "properties": {
-            "lib_type": "Invalid value for --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen."
-          }
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/ktrachtova/perseqpipe/master/nextflow_schema.json",
+  "title": "PerSeqPIPE",
+  "description": "Pipeline for sequence-centered quantification of various small non-coding RNAs (sncRNAs) from NGS data",
+  "type": "object",
+  "$defs": {
+    "input_output_options": {
+      "type": "object",
+      "properties": {
+        "input_samplesheet": {
+          "type": "string",
+          "format": "file-path",
+          "description": "Path to input CSV samplesheet."
         },
-        "properties": {
-          "lib_type": {
-            "type": "string",
-            "enum": [
-              "qiaseq",
-              "truseq",
-              "trilink",
-              "nebnext",
-              "nextflexV3",
-              "nextflexV4",
-              "lexogen",
-              "novogene",
-              "norgen"
-            ],
-            "description": "Library preparation kit used for sequencing"
-          },
-          "error_rate": { "type": "number" },
-          "min_overlap": { "type": "integer" },
-          "disc_short": { "type": "integer" },
-          "quality_filter": { "type": "integer" },
-          "adapter3_seq": { "type": ["string", "null"] },
-          "adapter3_qiaseq_seq1": { "type": "string" },
-          "adapter3_qiaseq_seq2": { "type": "string" }
-        }
-      },
-      "de_analysis_options": {
-        "type": "object",
-        "properties": {
-          "design_file": {
-            "type": ["string", "null"],
-            "format": "file-path",
-            "description": "Design file for differential expression analysis."
-          },
-          "sncrna_expression_threshold": {
-            "type": "string",
-            "pattern": "^\\d+\\,\\d+$",
-            "description": "Expression thresholds for samples for sncRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples."
-          },
-          "mirna_expression_threshold": {
-            "type": "string",
-            "pattern": "^\\d+\\,\\d+$",
-            "description": "Expression thresholds for samples for miRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples."
-          },
-          "isomirs_expression_threshold": {
-            "type": "string",
-            "pattern": "^\\d+\\,\\d+$",
-            "description": "Expression thresholds for samples for isomiRs, e.g., '20,3' mean at least 20 reads in at least 3 samples."
-          }
-        }
-      },
-      "module_flags": {
-        "type": "object",
-        "properties": {
-          "download_reference_rrna": { "type": "boolean" },
-          "download_reference_genome": { "type": "boolean" },
-          "run_firstqc": { "type": "boolean" },
-          "run_preprocessing": { "type": "boolean" },
-          "run_rrna": { "type": "boolean" },
-          "run_mirna": { "type": "boolean" },
-          "run_sncrna": { "type": "boolean" },
-          "run_full": { "type": "boolean" }
-        },
-        "description": "Flags to enable or disable individual pipeline stages."
-      },
-      "multiqc_options": {
-        "type": "object",
-        "properties": {
-          "multiqc_config": { "type": ["string", "null"] },
-          "multiqc_logo": { "type": ["string", "null"] },
-          "max_multiqc_email_size": { "type": "string" },
-          "multiqc_methods_description": { "type": ["string", "null"] }
-        }
-      },
-      "generic_execution_options": {
-        "type": "object",
-        "properties": {
-          "publish_dir_mode": {
-            "type": "string",
-            "enum": ["copy", "symlink", "move"],
-            "default": "copy",
-            "description": "Mode for publishing results."
-          },
-          "miraligner_jar": {
-            "type": "string",
-            "format": "file-path",
-            "description": "Path to miraligner.jar."
-          },
-          "email": { "type": ["string", "null"] },
-          "email_on_fail": { "type": ["string", "null"] },
-          "plaintext_email": { "type": "boolean" },
-          "monochrome_logs": { "type": "boolean" },
-          "help": { "type": "boolean" },
-          "help_full": { "type": "boolean" },
-          "show_hidden": { "type": "boolean" },
-          "version": { "type": "boolean" },
-          "trace_report_suffix": { "type": "string" },
-          "config_profile_name": { "type": ["string", "null"] },
-          "config_profile_description": { "type": ["string", "null"] },
-          "custom_config_version": { "type": "string" },
-          "validate_params": { "type": "boolean" }
+        "outdir": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "Output directory for pipeline results."
         }
       }
     },
-    "allOf": [
-      { "$ref": "#/$defs/input_output_options" },
-      { "$ref": "#/$defs/reference_options" },
-      { "$ref": "#/$defs/module_flags" },
-      { "$ref": "#/$defs/preprocessing_options" },
-      { "$ref": "#/$defs/de_analysis_options" },
-      { "$ref": "#/$defs/multiqc_options" },
-      { "$ref": "#/$defs/generic_execution_options" }
-    ],
-    "validation": {
-        "description": "Check that at least one run_* parameter is true",
-        "anyOf": [
-          { "properties": { "download_reference_rrna": { "const": true } } },
-          { "properties": { "download_reference_genome": { "const": true } } },
-          { "properties": { "run_firstqc": { "const": true } } },
-          { "properties": { "run_preprocessing": { "const": true } } },
-          { "properties": { "run_rrna": { "const": true } } },
-          { "properties": { "run_mirna": { "const": true } } },
-          { "properties": { "run_genome": { "const": true } } },
-          { "properties": { "run_full": { "const": true } } }
-        ],
-        "errorMessage": "You must specify which modules of PerSeqPIPE to run! Options: --download_reference_rrna, --download_reference_genome, --run_firstqc, --run_preprocessing, --run_rrna, --run_mirna, --run_sncrna, --run_full"
+    "reference_options": {
+      "type": "object",
+      "properties": {
+        "index_rrna_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download prebuilt rRNA STAR index."
+        },
+        "index_rrna_path": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "Path to STAR rRNA index."
+        },
+        "miraligner_db_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download miRBase database for miraligner."
+        },
+        "index_genome_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download prebuilt genome STAR index."
+        },
+        "index_genome_path": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "Path to STAR genome index."
+        },
+        "sncrna_gtf_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download prebuilt sncRNA GTF file."
+        },
+        "sncrna_gtf_path": {
+          "type": "string",
+          "format": "file-path",
+          "description": "Path to sncRNA GTF file."
+        },
+        "mirna_overlap_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download overlap file for miRNA."
+        },
+        "mirna_overlap_path": {
+          "type": "string",
+          "format": "file-path",
+          "description": "Path to miRNA overlap file."
+        }
       }
+    },
+    "sncrna_quantification_options": {
+      "type": "object",
+      "properties": {
+        "sncrna_overlap": { "type": "integer" },
+        "sncrna_overlap_frac": { "type": "number" },
+        "reads_threshold": { "type": "integer" }
+      }
+    },
+    "preprocessing_options": {
+      "type": "object",
+      "errorMessage": {
+        "required": {
+          "lib_type": "Missing required parameter: --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen."
+        },
+        "properties": {
+          "lib_type": "Invalid value for --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen."
+        }
+      },
+      "properties": {
+        "lib_type": {
+          "type": "string",
+          "enum": [
+            "qiaseq",
+            "truseq",
+            "trilink",
+            "nebnext",
+            "nextflexV3",
+            "nextflexV4",
+            "lexogen",
+            "novogene",
+            "norgen"
+          ],
+          "description": "Library preparation kit used for sequencing"
+        },
+        "error_rate": { "type": "number" },
+        "min_overlap": { "type": "integer" },
+        "disc_short": { "type": "integer" },
+        "quality_filter": { "type": "integer" },
+        "adapter3_seq": { "type": ["string", "null"] },
+        "adapter3_qiaseq_seq1": { "type": "string" },
+        "adapter3_qiaseq_seq2": { "type": "string" }
+      }
+    },
+    "de_analysis_options": {
+      "type": "object",
+      "properties": {
+        "design_file": {
+          "type": ["string", "null"],
+          "format": "file-path",
+          "description": "Design file for differential expression analysis."
+        },
+        "sncrna_expression_threshold": {
+          "type": "string",
+          "pattern": "^\\d+\\,\\d+$",
+          "description": "Expression thresholds for samples for sncRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples."
+        },
+        "mirna_expression_threshold": {
+          "type": "string",
+          "pattern": "^\\d+\\,\\d+$",
+          "description": "Expression thresholds for samples for miRNA, e.g., '20,3' mean at least 20 reads in at least 3 samples."
+        },
+        "isomirs_expression_threshold": {
+          "type": "string",
+          "pattern": "^\\d+\\,\\d+$",
+          "description": "Expression thresholds for samples for isomiRs, e.g., '20,3' mean at least 20 reads in at least 3 samples."
+        }
+      }
+    },
+    "module_flags": {
+      "type": "object",
+      "properties": {
+        "download_reference_rrna": { "type": "boolean" },
+        "download_reference_genome": { "type": "boolean" },
+        "run_firstqc": { "type": "boolean" },
+        "run_preprocessing": { "type": "boolean" },
+        "run_rrna": { "type": "boolean" },
+        "run_mirna": { "type": "boolean" },
+        "run_sncrna": { "type": "boolean" },
+        "run_full": { "type": "boolean" }
+      },
+      "description": "Flags to enable or disable individual pipeline stages."
+    },
+    "multiqc_options": {
+      "type": "object",
+      "properties": {
+        "multiqc_config": { "type": ["string", "null"] },
+        "multiqc_logo": { "type": ["string", "null"] },
+        "max_multiqc_email_size": { "type": "string" },
+        "multiqc_methods_description": { "type": ["string", "null"] }
+      }
+    },
+    "generic_execution_options": {
+      "type": "object",
+      "properties": {
+        "publish_dir_mode": {
+          "type": "string",
+          "enum": ["copy", "symlink", "move"],
+          "default": "copy",
+          "description": "Mode for publishing results."
+        },
+        "miraligner_jar": {
+          "type": "string",
+          "format": "file-path",
+          "description": "Path to miraligner.jar."
+        },
+        "email": { "type": ["string", "null"] },
+        "email_on_fail": { "type": ["string", "null"] },
+        "plaintext_email": { "type": "boolean" },
+        "monochrome_logs": { "type": "boolean" },
+        "help": { "type": "boolean" },
+        "help_full": { "type": "boolean" },
+        "show_hidden": { "type": "boolean" },
+        "version": { "type": "boolean" },
+        "trace_report_suffix": { "type": "string" },
+        "config_profile_name": { "type": ["string", "null"] },
+        "config_profile_description": { "type": ["string", "null"] },
+        "custom_config_version": { "type": "string" },
+        "validate_params": { "type": "boolean" }
+      }
+    }
+  },
+  "allOf": [
+    { "$ref": "#/$defs/input_output_options" },
+    { "$ref": "#/$defs/reference_options" },
+    { "$ref": "#/$defs/module_flags" },
+    { "$ref": "#/$defs/preprocessing_options" },
+    { "$ref": "#/$defs/de_analysis_options" },
+    { "$ref": "#/$defs/multiqc_options" },
+    { "$ref": "#/$defs/generic_execution_options" },
+    {
+      "if": {
+        "not": {
+          "anyOf": [
+            { "properties": { "download_reference_rrna": { "const": true } } },
+            { "properties": { "download_reference_genome": { "const": true } } }
+          ]
+        }
+      },
+      "then": {
+        "required": ["lib_type", "outdir"],
+        "errorMessage": {
+          "required": {
+            "lib_type": "Missing required parameter: --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen.",
+            "outdir": "Missing required parameter: --outdir. Please specify an output directory (either in a config file or via --outdir)."
+          }
+        }
+      }
+    }
+  ],
+  "validation": {
+    "description": "Check that at least one run_* parameter is true",
+    "anyOf": [
+      { "properties": { "download_reference_rrna": { "const": true } } },
+      { "properties": { "download_reference_genome": { "const": true } } },
+      { "properties": { "run_firstqc": { "const": true } } },
+      { "properties": { "run_preprocessing": { "const": true } } },
+      { "properties": { "run_rrna": { "const": true } } },
+      { "properties": { "run_mirna": { "const": true } } },
+      { "properties": { "run_sncrna": { "const": true } } },
+      { "properties": { "run_full": { "const": true } } }
+    ],
+    "errorMessage": "You must specify which modules of PerSeqPIPE to run! Options: --download_reference_rrna, --download_reference_genome, --run_firstqc, --run_preprocessing, --run_rrna, --run_mirna, --run_sncrna, --run_full"
   }
-  
+}

@@ -52,6 +52,9 @@ This will download and unzip STAR index folder into the folder `resources/star_r
 > [!WARNING]
 > Downloading both STAR indexes will take some time, compressed index for human genome has size of ~9GB. 
 
+> [!NOTE]
+> Altough no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.
+
 ## Running PerSeqPIPE
 
 ### Samplesheet input
