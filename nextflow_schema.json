@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://raw.githubusercontent.com/ktrachtova/perseqpipe/master/nextflow_schema.json",
+  "$id": "https://raw.githubusercontent.com/ktrachtova/perseqpipe/main/nextflow_schema.json",
   "title": "PerSeqPIPE",
   "description": "Pipeline for sequence-centered quantification of various small non-coding RNAs (sncRNAs) from NGS data",
   "type": "object",
