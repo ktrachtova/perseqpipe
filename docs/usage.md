@@ -57,7 +57,7 @@ nextflow run main.nf --download_reference_genome
 This will download and unzip STAR index folder into the folder `./resources/star_rrna` and `./resources/star_genome` respectively. The sncRNA GTF file will be also downloaded and placed into `./resources/` folder. Both indexes and the GTF file will be automatically picked by PerSeqPIPE when executed on real datasets. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
 
 > [!WARNING]
-> Downloading both STAR indexes will take some time, compressed index for human genome has size of ~9GB. 
+> Downloading STAR index for whole genome will take some time (based on download speed) as the compressed index has size of ~9GB.
 
 > [!NOTE]
 > Altough no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.
@@ -112,37 +112,13 @@ Execution of the pipeline will create following pipeline-related files in the wo
 ```bash
 work                # Directory containing the nextflow working files
 <OUTDIR>            # Finished results in specified location (defined with --outdir)
-.nextflow_log       # Log file from Nextflow
+.nextflow.log       # Log file from Nextflow
 # Other nextflow hidden files, eg. history of pipeline runs and old logs.
 ```
 
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 
 Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
-
-## Updating the pipeline
-
-When you launch the pipeline using a command such as:
-
-```
-nextflow run ktrachtova/perseqpipe <OTHER_PARAMETERS>
-```
-
-Nextflow retrieves the pipeline code from GitHub and saves a local cached copy. Subsequent runs will reuse this cached version by default, even if newer changes have been pushed to the repository in the meantime.
-
-To ensure that you are running the most up-to-date version of the pipeline, periodically refresh the local cache by pulling the latest code:
-
-```
-nextflow pull ktrachtova/perseqpipe
-```
-
-## Reproducibility
-
-When running the pipeline on your data, we strongly recommend explicitly setting the pipeline version. Doing so guarantees that the same pipeline code and associated software versions are used for each run. As long as you continue using the same version tag, your results will remain reproducible, even if the pipeline code is updated later.
-
-To choose a version, visit the pipeline’s releases page and identify the most recent numeric release (for example, `1.0.0`). You can then specify this version at runtime using the `-r` flag (single hyphen), e.g. `-r 1.0.0`. Switching to a different pipeline release simply requires updating the value passed to `-r`.
-
-The selected pipeline version is recorded in the pipeline logs and summary reports, allowing you to easily track which version was used for a given analysis. This information is also included in the generated reports, such as the MultiQC summary, for future reference.
 
 ## Core Nextflow arguments
 
@@ -209,6 +185,7 @@ To test the workflow, user can select from several small test profiles, one for 
 | test_trilink | CleanTag Small RNA Library Preparation Kit (TriLink) |
 | test_lexogen | Small RNA-Seq Library Prep Kit (Lexogen) |
 | test_novogene | Small RNA Sequencing Novogene |
+| test_norgen | Norgen Small RNA Library Prep Kit |
 
 To execute a specific minimal test, run following command (here shown example to run QIAseq-specific test):
 ```

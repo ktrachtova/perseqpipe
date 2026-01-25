@@ -31,7 +31,7 @@ The PREPROCESSING module cleans raw sequencing reads and prepares FASTQ files wi
 4. (Optional: Nextflex V3) Remove the first 4 and last 4 bases from each read (`cutadapt`)  
 5. Collapse cleaned reads (`fastx_collapser`, `bbmap`)  
 
-The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). The new header of each collapsed read sequence contains a unique sequence ID, followed by the number of reads that have the same sequence (example: `seq_{XY}_x10` where `XY` is unique sequence ID and `x10` means there were 10 reads with identical sequence). When calculating [read statistics](outputs.md#reads-statistics), the read count for each unique sequence is added together to provide with real read count.
+The output of the PREPROCESSING module consists of cleaned, collapsed reads ready for alignment (suffix `.cleaned.reads.fastq.gz`). The new header of each collapsed read sequence contains a unique sequence ID, followed by the number of reads that have the same sequence (example: `seq_{XY}_x10` where `XY` is unique sequence ID and `x10` means there were 10 reads with identical sequence). When calculating read statistics, the read count for each unique sequence is added together to provide with real read count. For more information about read statistics, see section **Reads statistics** in [Outputs](outputs.md#reads-statistics).
 
 Each type of preprocessed read also undergoes post-processing checks with `FastQC`, and an overall `MultiQC` HTML report is produced, summarizing the quality of all samples after each preprocessing step.  
 
