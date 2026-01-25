@@ -84,7 +84,7 @@ The specified path can either be local or point to accessible external storage.
 
 ### PerSeqPIPE module execution
 
-To run a full PerSeqPIPE workflow (assuming you already downlaoded all reference files required and these are now located in `resources/` folder), following command can be used:
+To run a full PerSeqPIPE workflow (assuming you already downlaoded all reference files required and these are now located in `./resources/` folder), following command can be used:
 
 ```
 nextflow run main.nf \
@@ -92,8 +92,11 @@ nextflow run main.nf \
   --input_samplesheet <SAMPLESHEET> \
   --outdir <OUTDIR> \
   --design_file <DESIGN_FILE> \
+  --lib_type <LIB_TYPE>
   --run_full 
 ```
+
+For list of available library types `<LIB_TYPE>`, see [Parameters](parameters.md#preprocessing-options).
 
 As mentioned in section [Module description](module_description.md), PerSeqPIPE consists of six sequential modules. The selected module determines the **final module in the execution chain**, and all preceding modules are executed automatically. Which module is executed can be controlled using the following parameters:
 
