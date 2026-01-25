@@ -92,7 +92,7 @@ nextflow run main.nf \
   --input_samplesheet <SAMPLESHEET> \
   --outdir <OUTDIR> \
   --design_file <DESIGN_FILE> \
-  --lib_type <LIB_TYPE>
+  --lib_type <LIB_TYPE> \
   --run_full 
 ```
 
