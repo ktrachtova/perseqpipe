@@ -71,19 +71,10 @@ workflow {
     // WORKFLOW: Run main workflow - either download reference or actually analyze some samples
     //
     if (params.download_reference_rrna || params.download_reference_genome) {
-        
-            // Create empty channels for optional outputs
-        Channel
-            .empty()
-            .set { ch_star_rrna_index }
-
-        Channel
-            .empty()
-            .set { ch_star_genome_index }
 
         // Conditionally download rRNA index
         if (params.download_reference_rrna) {
-            ch_star_rrna_index = DOWNLOAD_REFERENCES(
+            DOWNLOAD_REFERENCES(
                 params.index_rrna_url,
                 params.index_rrna_path,
                 '',
@@ -95,7 +86,7 @@ workflow {
 
         // Conditionally download genome index
         if (params.download_reference_genome) {
-            ch_star_genome_index = DOWNLOAD_REFERENCES(
+            DOWNLOAD_REFERENCES(
                 params.index_genome_url,
                 params.index_genome_path,
                 params.sncrna_gtf_url,

@@ -24,6 +24,8 @@ To run PerSeqPIPE on real data, it is first required to [download reference file
 To run PerSeqPIPE (both for downloading reference files and analysis of actual data), first download the repository locally and navigate to the `perseqpipe/` directory. Then run PerSeqPIPE using the following command:
 
 ```
+git clone https://github.com/ktrachtova/perseqpipe.git
+cd perseqpipe
 nextflow run main.nf <OTHER_PARAMETERS>
 ```
 
@@ -33,7 +35,12 @@ Alternatively, Nextflow can automatically download the pipeline code when execut
 nextflow run ktrachtova/perseqpipe <OTHER_PARAMETERS>
 ```
 
-This command will first download and then execute the latest version of the PerSeqPIPE pipeline.
+When using this command, Nextflow will:
+1. Download the PerSeqPIPE pipeline code from GitHub and cache it locally.
+2. Execute the pipeline from the cached copy.
+3. Create a `work/` directory and a `.nextflow.log` file in the directory where the command was launched.
+
+The pipeline source code itself is not copied into the current directory.
 
 For the exact commands and all required parameters, refer to the sections [Download reference](#download-reference) and [Running PerSeqPIPE](#running-perseqpipe).
 
@@ -42,12 +49,12 @@ For the exact commands and all required parameters, refer to the sections [Downl
 In order to run rRNA and sncRNA quantification modules, user must first download STAR index for rRNA database and human genome and a custom sncRNA GTF file (see [Reference databases](reference_databases.md) for a list of resources). This can be easily done by running following two commands:
 
 ```
-nextflow run ktrachtova/perseqpipe --download_reference_rrna
+nextflow run main.nf --download_reference_rrna
 
-nextflow run ktrachtova/perseqpipe --download_reference_genome
+nextflow run main.nf --download_reference_genome
 ```
 
-This will download and unzip STAR index folder into the folder `resources/star_rrna` and `resources/star_genome` respectively. The sncRNA GTF file will be also downloaded and placed into `resources/` folder. Both indexes and the GTF file will be automatically picked by PerSeqPIPE when executed on real datasets. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
+This will download and unzip STAR index folder into the folder `./resources/star_rrna` and `./resources/star_genome` respectively. The sncRNA GTF file will be also downloaded and placed into `./resources/` folder. Both indexes and the GTF file will be automatically picked by PerSeqPIPE when executed on real datasets. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
 
 > [!WARNING]
 > Downloading both STAR indexes will take some time, compressed index for human genome has size of ~9GB. 
@@ -80,7 +87,7 @@ The specified path can either be local or point to accessible external storage.
 To run a full PerSeqPIPE workflow (assuming you already downlaoded all reference files required and these are now located in `resources/` folder), following command can be used:
 
 ```
-nextflow run ktrachtova/perseqpipe \
+nextflow run main.nf \
   -profile <docker> \
   --input_samplesheet <SAMPLESHEET> \
   --outdir <OUTDIR> \
