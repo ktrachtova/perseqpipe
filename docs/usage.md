@@ -19,7 +19,7 @@
 > [!NOTE]
 > If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section [Running tests](#running-tests)) first before processing actual data.
 
-To run PerSeqPIPE on real data, it is first required to [download reference files](#download-reference),such as the STAR index, mialigner database, and GTF file for sncRNA quantification. This step is performed separately from the actual analysis and needs to be completed only once per computational environment.
+To run PerSeqPIPE on real data, it is first required to [download reference files](#download-reference), such as the STAR index, mialigner database, and GTF file for sncRNA quantification. This step is performed separately from the actual analysis and needs to be completed only once per computational environment.
 
 To run PerSeqPIPE (both for downloading reference files and analysis of actual data), first download the repository locally and navigate to the `perseqpipe/` directory. Then run PerSeqPIPE using the following command:
 
@@ -58,6 +58,9 @@ This will download and unzip STAR index folder into the folder `./resources/star
 
 > [!WARNING]
 > Downloading STAR index for whole genome will take some time (based on download speed) as the compressed index has size of ~9GB.
+
+> [!IMPORTANT]
+> The reference files will be always downloaded into folder `resources/` within a launch directory folder. When analyzing real data, PerSeqPIPE expects to find the `resources/` folder in the directory from which it is being launched from (unless specified otherwise through parameters `--index_genome_path` or `--index_rrna_path`). If the pipelien is launched from a different directory then in which the `resources/` folder is located in and path to reference is not appropriately stated, it terminate with error.
 
 > [!NOTE]
 > Altough no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.

@@ -24,7 +24,13 @@ workflow RRNA_QUANTIFICATION {
 
     main:
         // Use the pre-defined STAR index path from the parameters
-        ch_rrna_index = Channel.value("${workflow.projectDir}/${params.index_rrna_path}")
+        // ch_rrna_index = Channel.value("${workflow.projectDir}/${params.index_rrna_path}")
+        def rrna_index_path = file(params.index_rrna_path)
+        if( !rrna_index_path.isAbsolute() ) {
+            rrna_index_path = file("${workflow.launchDir}/${params.index_rrna_path}") 
+        }
+        ch_rrna_index = channel.value(rrna_index_path)
+
         STAR_RRNA ( ch_rrna_index , cleaned_reads)
 
         ALIGNMENT_STATS ( STAR_RRNA.out.rrna_aligned_bam )
