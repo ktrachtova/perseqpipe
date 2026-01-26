@@ -6,6 +6,7 @@
 - [Running PerSeqPIPE](#running-perseqpipe)
   - [Samplesheet input](#samplesheet-input)
   - [PerSeqPIPE module execution](#perseqpipe-module-execution)
+  - [Parameters](#parameters)
 - [Updating the pipeline](#updating-the-pipeline)
 - [Reproducibility](#reproducibility)
 - [Core Nextflow arguments](#core-nextflow-arguments)
@@ -60,7 +61,7 @@ This will download and unzip STAR index folder into the folder `./resources/star
 > Downloading STAR index for whole genome will take some time (based on download speed) as the compressed index has size of ~9GB.
 
 > [!IMPORTANT]
-> The reference files will be always downloaded into folder `resources/` within a launch directory folder. When analyzing real data, PerSeqPIPE expects to find the `resources/` folder in the directory from which it is being launched from (unless specified otherwise through parameters `--index_genome_path` or `--index_rrna_path`). If the pipelien is launched from a different directory then in which the `resources/` folder is located in and path to reference is not appropriately stated, it terminate with error.
+> The reference files are always downloaded into the `resources/` folder within the launch directory. When analyzing real data, PerSeqPIPE expects to find the `resources/` folder in the directory from which it is launched (unless specified otherwise via the `--index_genome_path` or `--index_rrna_path` parameters). If the pipeline is launched from a different directory than the one containing the `resources/` folder and the reference path is not specified correctly, it will terminate with an error.
 
 > [!NOTE]
 > Altough no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.
@@ -125,6 +126,10 @@ work                # Directory containing the nextflow working files
 If you wish to repeatedly use the same parameters for multiple runs, rather than specifying each flag in the command, you can specify these in a params file.
 
 Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <file>`.
+
+### Parameters
+
+For a complete list of parameters, please see section [Parameters](parameters.md)
 
 ## Core Nextflow arguments
 
