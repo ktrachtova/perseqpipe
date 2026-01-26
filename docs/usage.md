@@ -129,7 +129,7 @@ Pipeline settings can be provided in a `yaml` or `json` file via `-params-file <
 
 ### Parameters
 
-For a complete list of parameters, please see section [Parameters](parameters.md)
+For a complete list of parameters, please see section [Parameters](parameters.md).
 
 ## Core Nextflow arguments
 
