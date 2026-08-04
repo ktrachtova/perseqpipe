@@ -173,7 +173,20 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ### Resource requests
 
-Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time, which are specified through config file `base.config` or optionally, through `local.config`. 
+Whilst the default requirements set within the pipeline should  work for most users and input datasets, you may wish to customise the requested computational resources. Each pipeline process has default CPU, memory and execution-time requirements defined in `base.config`, or alternatively `local.config` that can be used to execute the pipeline on resource-constrained environment. 
+
+The default `base.config` requires a system with at least 8 CPUs and 16 GB RAM to execute the most demanding individual processes. A system with 32 CPUs and 64 GB RAM is recommended, as it allows multiple sample-level processes to run in parallel. The `local.config` is intended for laptops and smaller workstations and limits individual processes to a maximum of 8 CPUs and 12 GB RAM, with high-resource processes executed sequentially.
+
+The complete reference-resource bundle requires approximately 15 GB of storage. Analysis of one sample containing approximately 10 million reads generates around 0.5 GB of final output. The average runtime is approximately 16 minutes per sample.
+
+The standard resource configuration in `base.config` is loaded automatically when the pipeline is executed with a container profile, for example:
+```
+nextflow run main.nf -profile docker <OTHER_PARAMETERS>
+```
+For execution on a laptop or smaller workstation, add the `local` profile, which overrides the default resource requests with the reduced limits defined in `local.config`:
+```
+nextflow run main.nf -profile docker,local <OTHER_PARAMETERS>
+```
 
 To change the resource requests, please see the [max resources](https://nf-co.re/docs/usage/configuration#max-resources) and [tuning workflow resources](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources) section of the nf-core website.
 
