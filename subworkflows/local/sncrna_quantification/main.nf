@@ -13,6 +13,8 @@ include { STAR_GENOME                     } from '../../../modules/local/star_al
 include { SAMTOOLS_INDEX                  } from '../../../modules/nf-core/samtools/index/main'                                                   
 include { ALIGNMENT_STATS                 } from '../../../modules/local/alignment_stats/main'
 include { QUANTIFICATION_SNCRNA           } from '../../../modules/local/quantification_sncrna/main'
+include { DOWNLOAD_REFERENCES             } from '../download_references/main.nf'
+include { resolveRefPath; isGenomeReferenceComplete } from '../utils_perseqpipe/main.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -26,27 +28,30 @@ workflow SNCRNA_QUANTIFICATION {
 
     main:
 
-        // ch_genome_index = Channel.value("${workflow.projectDir}/${params.index_genome_path}")
-
         // Define correct path to reference files - genome STAR index, sncRNA GTF file and miRNA overlap file;
         // either use full path provided by user or if relative path provided, assume it is relative to launch directory
-        def genome_index_path = file(params.index_genome_path)
-        if( !genome_index_path.isAbsolute() ) {
-            genome_index_path = file("${workflow.launchDir}/${params.index_genome_path}") 
-        }
-        ch_genome_index = channel.value(genome_index_path)
+        def genome_index_path  = resolveRefPath(params.index_genome_path)
+        def gtf_sncrna_path    = resolveRefPath(params.sncrna_gtf_path)
+        def overlap_mirna_path = resolveRefPath(params.mirna_overlap_path)
 
-        def gtf_sncrna_path = file(params.sncrna_gtf_path)
-        if( !gtf_sncrna_path.isAbsolute() ) {
-            gtf_sncrna_path = file("${workflow.launchDir}/${params.sncrna_gtf_path}") 
+        // Use the pre-downloaded reference files if already present, otherwise download them now
+        if (isGenomeReferenceComplete(genome_index_path, gtf_sncrna_path, overlap_mirna_path)) {
+            ch_genome_index  = channel.value(genome_index_path)
+            ch_gtf           = channel.value(gtf_sncrna_path)
+            ch_mirna_overlap = channel.value(overlap_mirna_path)
+        } else {
+            DOWNLOAD_REFERENCES(
+                params.index_genome_url,
+                params.index_genome_path,
+                params.sncrna_gtf_url,
+                params.sncrna_gtf_path,
+                params.mirna_overlap_url,
+                params.mirna_overlap_path
+            )
+            ch_genome_index  = DOWNLOAD_REFERENCES.out.star_index_dir
+            ch_gtf           = DOWNLOAD_REFERENCES.out.gtf_file
+            ch_mirna_overlap = DOWNLOAD_REFERENCES.out.mirna_path
         }
-        ch_gtf = channel.value(gtf_sncrna_path)
-
-        def overlap_mirna_path = file(params.mirna_overlap_path)
-        if( !overlap_mirna_path.isAbsolute() ) {
-            overlap_mirna_path = file("${workflow.launchDir}/${params.mirna_overlap_path}") 
-        }
-        ch_mirna_overlap = channel.value(overlap_mirna_path)
 
         STAR_GENOME ( ch_genome_index , reads)
 
@@ -56,9 +61,6 @@ workflow SNCRNA_QUANTIFICATION {
 
         ch_bam_bai = STAR_GENOME.out.genome_aligned_bam
             .join(SAMTOOLS_INDEX.out.bai)
-
-        // ch_gtf = Channel.value("${workflow.projectDir}/${params.sncrna_gtf_path}")
-        // ch_mirna_overlap = Channel.value("${workflow.projectDir}/${params.mirna_overlap_path}")
 
         QUANTIFICATION_SNCRNA (
             ch_gtf,

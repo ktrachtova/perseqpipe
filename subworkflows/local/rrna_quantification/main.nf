@@ -11,6 +11,8 @@
 */
 include { STAR_RRNA                     } from '../../../modules/local/star_align_rrna/main'
 include { ALIGNMENT_STATS               } from '../../../modules/local/alignment_stats/main'
+include { DOWNLOAD_REFERENCES           } from '../download_references/main.nf'
+include { resolveRefPath; isStarIndexComplete } from '../utils_perseqpipe/main.nf'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,13 +25,15 @@ workflow RRNA_QUANTIFICATION {
         cleaned_reads
 
     main:
-        // Use the pre-defined STAR index path from the parameters
-        // ch_rrna_index = Channel.value("${workflow.projectDir}/${params.index_rrna_path}")
-        def rrna_index_path = file(params.index_rrna_path)
-        if( !rrna_index_path.isAbsolute() ) {
-            rrna_index_path = file("${workflow.launchDir}/${params.index_rrna_path}") 
+        // Use the pre-downloaded STAR index if already present, otherwise download it now
+        def rrna_index_path = resolveRefPath(params.index_rrna_path)
+
+        if (isStarIndexComplete(rrna_index_path)) {
+            ch_rrna_index = channel.value(rrna_index_path)
+        } else {
+            DOWNLOAD_REFERENCES(params.index_rrna_url, params.index_rrna_path, '', '', '', '')
+            ch_rrna_index = DOWNLOAD_REFERENCES.out.star_index_dir
         }
-        ch_rrna_index = channel.value(rrna_index_path)
 
         STAR_RRNA ( ch_rrna_index , cleaned_reads)
 

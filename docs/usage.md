@@ -47,7 +47,9 @@ For the exact commands and all required parameters, refer to the sections [Downl
 
 ## Download reference
 
-In order to run rRNA and sncRNA quantification modules, user must first download STAR index for rRNA database and human genome and a custom sncRNA GTF file (see [Reference databases](reference_databases.md) for a list of resources). This can be easily done by running following two commands:
+In order to run rRNA and sncRNA quantification modules, PerSeqPIPE needs the STAR index for the rRNA database and human genome and a custom sncRNA GTF file (see [Reference databases](reference_databases.md) for a list of resources).
+
+**As of this version, PerSeqPIPE downloads any missing reference files automatically** the first time it needs them during a normal analysis run - there is no need to run a separate step beforehand. If you'd rather pre-fetch them (e.g. to warm a shared cache once for multiple users/runs on an HPC system), you can still trigger the download explicitly ahead of time:
 
 ```
 nextflow run main.nf --download_reference_rrna
@@ -55,7 +57,7 @@ nextflow run main.nf --download_reference_rrna
 nextflow run main.nf --download_reference_genome
 ```
 
-This will download and unzip STAR index folder into the folder `./resources/star_rrna` and `./resources/star_genome` respectively. The sncRNA GTF file will be also downloaded and placed into `./resources/` folder. Both indexes and the GTF file will be automatically picked by PerSeqPIPE when executed on real datasets. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
+Either way, the STAR index folders are downloaded and unzipped into `./resources/star_rrna` and `./resources/star_genome` respectively, and the sncRNA GTF/miRNA overlap files are placed into `./resources/` too. On every subsequent run, PerSeqPIPE checks whether these files already exist and are complete - if so it reuses them as-is, and only re-downloads whatever is still missing. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
 
 > [!WARNING]
 > Downloading STAR index for whole genome will take some time (based on download speed) as the compressed index has size of ~9GB.
@@ -151,6 +153,8 @@ Currently available profiles (excluding test-related profiles, for these see sec
 
 - `docker`
   - A generic configuration profile to be used with [Docker](https://docker.com/)
+- `apptainer`
+  - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
 - `arm`
   - A generic configuration profile to be used when running pipeline on ARM architecture
 

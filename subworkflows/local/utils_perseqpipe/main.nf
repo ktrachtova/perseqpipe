@@ -134,8 +134,32 @@ workflow PIPELINE_COMPLETION {
 // Check and validate pipeline parameters
 //
 def validateInputParameters() {
-    checkRrnaIndexExists()
-    checkGenomeIndexExists()
+    // Reference files (STAR indices, sncRNA GTF, miRNA overlap file) are no longer
+    // required upfront - they are checked and downloaded automatically if missing
+    // by rrna_quantification/sncrna_quantification, see isStarIndexComplete() below.
+}
+
+//
+// Resolve a params path to an absolute path, relative to the launch directory if not already absolute
+//
+def resolveRefPath(pathString) {
+    def resolved = file(pathString)
+    return resolved.isAbsolute() ? resolved : file("${workflow.launchDir}/${pathString}")
+}
+
+//
+// Returns true if a STAR index directory contains all required index files
+//
+def isStarIndexComplete(indexPath) {
+    def requiredFiles = ['SA', 'SAindex', 'Genome', 'genomeParameters.txt']
+    return indexPath.exists() && indexPath.isDirectory() && requiredFiles.every { file("${indexPath}/${it}").exists() }
+}
+
+//
+// Returns true if the genome STAR index, sncRNA GTF and miRNA overlap file are all present
+//
+def isGenomeReferenceComplete(indexPath, gtfPath, mirnaOverlapPath) {
+    return isStarIndexComplete(indexPath) && gtfPath.exists() && mirnaOverlapPath.exists()
 }
 
 //
@@ -151,40 +175,6 @@ def validateInputSamplesheet(input) {
     }
 
     return [ metas[0], fastqs ]
-}
-
-def checkRrnaIndexExists() {
-    if (!params.download_reference_rrna && !params.download_reference_genome && !params.run_firstqc && !params.run_preprocessing && params.index_rrna_path) {
-        def indexPath = file(params.index_rrna_path)
-        def requiredFiles = ['SA', 'SAindex', 'Genome', 'genomeParameters.txt']
-        def missingFiles = requiredFiles.findAll { !file("${indexPath}/${it}").exists() }
-
-        if (!indexPath.exists() || !indexPath.isDirectory() || !missingFiles.isEmpty()) {
-            def error_string = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                "  STAR rRNA index not found or incomplete at: '${params.index_rrna_path}'\n" +
-                "  Missing files: ${missingFiles.join(', ')}\n" +
-                "  Please provide a valid STAR rRNA index directory or set `--download_reference_rrna`.\n" +
-                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            error(error_string)
-        }
-    }
-}
-
-def checkGenomeIndexExists() {
-    if (!params.download_reference_genome && !params.download_reference_rrna && !params.run_firstqc && !params.run_preprocessing && params.index_genome_path) {
-        def indexPath = file(params.index_genome_path)
-        def requiredFiles = ['SA', 'SAindex', 'Genome', 'genomeParameters.txt']
-        def missingFiles = requiredFiles.findAll { !file("${indexPath}/${it}").exists() }
-
-        if (!indexPath.exists() || !indexPath.isDirectory() || !missingFiles.isEmpty()) {
-            def error_string = "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                "  STAR rRNA index not found or incomplete at: '${params.index_genome_path}'\n" +
-                "  Missing files: ${missingFiles.join(', ')}\n" +
-                "  Please provide a valid STAR genome index directory or set `--download_reference_genome`.\n" +
-                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-            error(error_string)
-        }
-    }
 }
 
 //

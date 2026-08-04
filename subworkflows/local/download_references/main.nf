@@ -11,7 +11,6 @@
 */
 process DOWNLOAD_REFERENCE_FILES {
     tag "Download reference files"
-    publishDir '.', mode: 'copy', overwrite: true
 
     input:
     val index_url
@@ -70,4 +69,9 @@ workflow DOWNLOAD_REFERENCES {
 
     main:
     DOWNLOAD_REFERENCE_FILES(index_url, index_path, gtf_url, gtf_path, mirna_url, mirna_path)
+
+    emit:
+    star_index_dir = DOWNLOAD_REFERENCE_FILES.out.star_index_dir
+    gtf_file       = DOWNLOAD_REFERENCE_FILES.out.gtf_file
+    mirna_path     = DOWNLOAD_REFERENCE_FILES.out.mirna_path
 }
