@@ -33,10 +33,21 @@
           "format": "directory-path",
           "description": "Path to STAR rRNA index."
         },
-        "miraligner_db_url": {
+        "mirbase_db": {
           "type": "string",
           "format": "uri",
           "description": "URL to download miRBase database for miraligner."
+        },
+        "mirgenedb_db": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download miRGenDB database for miraligner."
+        },
+        "miraligner_db": {
+          "type": "string",
+          "enum": ["mirbase", "mirgenedb"],
+          "default": "mirbase",
+          "description": "Database used for miRNA/isomiR quantification with miraligner: 'mirbase' or 'mirgenedb'."
         },
         "index_genome_url": {
           "type": "string",

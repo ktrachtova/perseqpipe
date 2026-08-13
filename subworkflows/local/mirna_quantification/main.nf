@@ -23,7 +23,18 @@ workflow MIRNA_QUANTIFICATION {
         cleaned_reads
 
     main:
-        MIRALIGNER_MIRNA(params.miraligner_db_url, cleaned_reads)
+        // select DB and miraligner species flag based on the requested miRNA pipeline
+        if (params.miraligner_db == 'mirgenedb') {
+            mirna_db      = params.mirgenedb_db
+            mirna_species = 'Hsa'
+        } else if (params.miraligner_db == 'mirbase') {
+            mirna_db      = params.mirbase_db
+            mirna_species = 'hsa'
+        } else {
+            error "Invalid value for params.miraligner_db: '${params.miraligner_db}'. Must be one of ['mirbase', 'mirgenedb']."
+        }
+
+        MIRALIGNER_MIRNA(mirna_db, mirna_species, cleaned_reads)
 
         ch_mirna_files = Channel.empty()
         ch_mirna_files = MIRALIGNER_MIRNA.out.mirna_aligned

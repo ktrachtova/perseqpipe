@@ -60,5 +60,25 @@ Both mRNA and lncRNA sequences are also considered during quantification as rece
 mRNA and lncRNA coordinates were extracted from Gencode (v47). 
 
 
+## miRNA MirGeneDB database
 
+From release `2.0.0` PerSeqPIPE supports both miRBase and MirGeneDB for miRNA/isomiR quantification. 
+
+To prepare a MirGeneDB database in a format accepted by `miraligner` tool, 2 files (genomic coordinates in BED and a precursor w/flank 30nt FASTA file) are required. These can be downloaded directly from [MirGeneDB](https://mirgenedb.org/download). For reproducibility purposes, we also store these two files used to create a database for current PerSeqPIPE release ([hsa-all.bed](https://osf.io/zne7g/files/hacuk), [hsa-pri.fas](https://osf.io/zne7g/files/b5e6t)). These correspond to MirGeneDB 3.0 version. 
+
+Below are instruction on how to create a MirGeneDB for `miraligner`. The used scripts was adapted from code of https://github.com/miRTop/mirtop.
+
+```
+# download hsa-all.bed and hsa-pri.fas from MirGeneDB or use commands below
+wget -O hsa-all.bed https://osf.io/hacuk/download
+wget -O hsa-pri.fas https://osf.io/b5e6t/download
+
+# script create_mirgenedb_db.py is located in perseqpipe/scripts;
+python3 create_mirgenedb_db.py \
+  --bed hsa-all.bed --fasta hsa-pri.fas --species hsa --outdir mirgene
+mv hsa.hairpin.fa hairpin.fa
+mv hsa.miRNA.str miRNA.str
+```
+
+The `create_mirgenedb_db.py` creates two files needed by `miraligner` - hairpin.fa and miRNA.str. These two files are stored in a folder available here, and are supplied to PerSeqPIPE through paramater `miraligner_db_url`.
 

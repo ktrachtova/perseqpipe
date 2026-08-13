@@ -7,6 +7,7 @@ process MIRALIGNER_MIRNA {
     
     input:
     path miraligner_db
+    val species
     tuple val(meta), path(reads)
 
     output:
@@ -19,8 +20,8 @@ process MIRALIGNER_MIRNA {
     def db_dir = miraligner_db.toString().replaceFirst(/\.tar\.gz$/, '')
 
     """
-    tar -zxvf ${miraligner_db}
-    03b_miraligner_mirna.sh ${db_dir} ${reads} ${meta.id} ${params.miraligner_jar}
+    tar -xvf ${miraligner_db}
+    03b_miraligner_mirna.sh ${db_dir} ${reads} ${meta.id} ${params.miraligner_jar} ${species}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

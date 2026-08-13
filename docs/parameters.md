@@ -21,7 +21,7 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--run_mirna` | boolean | Run modules up to (including) MIRNA_QUANTIFICATION |
 | `--run_sncrna` | boolean | Run modules up to (including) GENOME_QUANTIFICATION |
 | `--run_full` | boolean | Run all modules of the PerSeqPIPE pipeline |
-
+| `--miraligner_db` | string | Database used for miRNA/isomiR quantification using miraligner tool, one of `['mirbase', 'mirgenedb']`. Default = `mirbase`. |
 
 ## Reference and annotation options
 
@@ -29,7 +29,8 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | -----------------------|--------|------------------------------------------------|
 | `--index_rrna_url`     | string | Link to .tar.gz compressed STAR rRNA index     |
 | `--index_rrna_path`    | string | Path to download STAR rRNA index               |
-| `--miraligner_db_url`  | string | Link to .tar.gz compressed miraligner database |          
+| `--mirbase_db`         | string | Link to .tar.gz compressed miRbase database    | 
+| `--mirgene_db`         | string | Link to tar.gz compressed MirGeneDB database   |      
 | `--index_genome_url`   | string | Link to .tar.gz compressed STAR GRCh38 index   |
 | `--index_genome_path`  | string | Path to download STAR GRCh38 index             |
 | `--sncrna_gtf_url`     | string | Link to .tar.gz compressed custom sncRNA GTF   |
