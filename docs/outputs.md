@@ -120,7 +120,8 @@ Results from the **SNCRNA_QUANTIFICATION** module are stored inside `my_project/
 
 Main outputs of **SNCRNA_QUANTIFICATION** module are:
 
-* `{sample_id}.genome.short_rna_counts.tsv` files created by a custom quantification script contain the number of raw reads for all various sncRNAs, for more information about these files see section [**sncRNA quantification output file format**](#sncrna-quantification-output-file-format). Files are stored inside folder `my_project/rna_quantification/genome/counts/`.
+* `{sample_id}.genome.short_rna_counts.tsv` files created by a custom quantification script and further annotated with tDR names by the **TDRNAMER** process (using [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer)) contain the number of raw reads for all various sncRNAs, for more information about these files see section [**sncRNA quantification output file format**](#sncrna-quantification-output-file-format). Files are stored inside folder `my_project/rna_quantification/genome/counts/`.
+
 
 Other outputs of **SNCRNA_QUANTIFICATION** module are:
 
@@ -197,6 +198,8 @@ Per-sample tab-separated files with suffix `.short_rna_counts.tsv` contain resul
 * `lncrna` list of lncRNA that overlap alignment loci of given read
 * `genome_alignments` number of individual genomic loci to which given read aligned to
 * `MINT_plate` contains sequence-specific and unique identifier (license-plate), more information [here](https://github.com/TJU-CMC-Org/MINTplates)
+* `tdr_name` contains the standardized tRNA-derived RNA (tDR) name assigned by [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer); blank if the sequence was not recognized as a tDR
+
 
 For all annotation columns, the user can see none, one or multiple RNAs reported, separated by comma. Each RNA annotation can contain multiple sncRNA IDs, separated by `|` (pipe). This means that when creating the annotation GTF file, multiple sncRNAs with identical sequence were identified across different databases. For example, 1 piRNA sequence present in 3 databases (each has its own naming system) will be shown as `hsa-piR-1|piR-1|URS00000X`.
 

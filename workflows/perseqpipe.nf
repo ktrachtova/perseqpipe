@@ -100,7 +100,7 @@ workflow PERSEQPIPE {
         DE_ANALYSIS (
             MIRNA_QUANTIFICATION.out.mirna_canonical_tsv,
             MIRNA_QUANTIFICATION.out.mirna_isomirs_tsv,
-            SNCRNA_QUANTIFICATION.out.genome_srna_counts.collect({it[1]})
+            SNCRNA_QUANTIFICATION.out.genome_srna_counts_tdr.collect({it[1]})
         )
     }
 

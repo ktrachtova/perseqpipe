@@ -13,6 +13,7 @@ include { STAR_GENOME                     } from '../../../modules/local/star_al
 include { SAMTOOLS_INDEX                  } from '../../../modules/nf-core/samtools/index/main'                                                   
 include { ALIGNMENT_STATS                 } from '../../../modules/local/alignment_stats/main'
 include { QUANTIFICATION_SNCRNA           } from '../../../modules/local/quantification_sncrna/main'
+include { TDRNAMER                        } from '../../../modules/local/tdrnamer/main'
 include { DOWNLOAD_REFERENCES             } from '../download_references/main.nf'
 include { resolveRefPath; isGenomeReferenceComplete } from '../utils_perseqpipe/main.nf'
 
@@ -68,11 +69,17 @@ workflow SNCRNA_QUANTIFICATION {
             ch_bam_bai
         )
 
+        TDRNAMER (
+            QUANTIFICATION_SNCRNA.out.srna_counts_tsv,
+            params.tdrnamer_db_url,
+            params.tdrnamer_db_name
+        )
 
     emit:
         genome_aligned_bam         = STAR_GENOME.out.genome_aligned_bam
         genome_unmapped_fastq      = STAR_GENOME.out.genome_unmapped_fastq
         genome_logs                = STAR_GENOME.out.genome_logs
         genome_srna_counts         = QUANTIFICATION_SNCRNA.out.srna_counts_tsv
+        genome_srna_counts_tdr     = TDRNAMER.out.tdr_annotated_tsv
         genome_counts              = ALIGNMENT_STATS.out.counts
 }

@@ -69,6 +69,8 @@ Other RNA classes included in the reference, and therefore also quantified if fr
 * mRNA  
 * lncRNA
 
+After sncRNA quantification, the counts table is further annotated by the **TDR_NAMING** process using [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer). Each read sequence is matched against the tDRnamer reference database (currently `hg38`) to assign a standardized tRNA-derived RNA (tDR) name, following the naming system proposed by the tRNA research community (Holmes et al. 2023). The resulting `tdr_name` is added as an extra column to the sncRNA counts table; sequences not recognized as tDRs by tDRnamer are left blank.
+
 ### Quantification of miRNA/isomiR VS other sncRNA
 
 miRNAs are among the best-studied classes of small non-coding RNAs. Their biogenesis is well characterized, and the mechanisms generating isomiRs—sequence variants arising from trimming, extension, or nucleotide modifications—are relatively well understood, even though their exact biological functions are still being uncovered. Historically, miRNA expression analyses aggregated all isomiRs belonging to a canonical miRNA, regardless of sequence differences. As the importance of isomiRs became clearer, specialized tools and a dedicated naming system were developed to detect, classify, and report these variants with high specificity.

@@ -78,6 +78,15 @@
           "type": "string",
           "format": "file-path",
           "description": "Path to miRNA overlap file."
+        },
+        "tdrnamer_db_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download the tDRnamer database tarball."
+        },
+        "tdrnamer_db_name": {
+          "type": "string",
+          "description": "Name of the extracted tDRnamer database folder/prefix, e.g. 'hg38'."
         }
       }
     },

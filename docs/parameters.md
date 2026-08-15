@@ -35,6 +35,10 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--index_genome_path`  | string | Path to download STAR GRCh38 index             |
 | `--sncrna_gtf_url`     | string | Link to .tar.gz compressed custom sncRNA GTF   |
 | `--sncrna_gtf_path`    | string | Path to downloaded custom sncRNA GTF           |
+| `--mirna_overlap_url`  | string | Link to download the miRNA/sncRNA overlap static file |
+| `--mirna_overlap_path` | string | Path to the miRNA/sncRNA overlap static file   |
+| `--tdrnamer_db_url`    | string | Link to .tar.gz compressed tDRnamer database   |
+| `--tdrnamer_db_name`   | string | Name of the extracted tDRnamer database folder/prefix, e.g. `hg38` |
 
 ## Preprocessing options
 

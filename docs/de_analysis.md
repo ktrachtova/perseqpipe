@@ -152,6 +152,7 @@ Main outputs from sncRNA DE analysis if design file provided by user:
     * `lncrna` column with known lncRNA annotation
     * `genome_alignments` number of genomic alignments of a sequence
     * `MINT_plate` contains sequence-specific and unique identifier (license-plate), more information [here](https://github.com/TJU-CMC-Org/MINTplates)
+    * `tdr_name` contains the standardized tRNA-derived RNA (tDR) name assigned by [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer); blank if the sequence was not recognized as a tDR
     * `baseMean` is the average of the normalized count values, dividing by size factors, taken over all samples
     * `stat_lrt` (optional) is the value of the test statistic from LRT; present only if more there are more than 2 conditions in the design file
     * `pvalue_lrt` (optional) is the p-value of from LRT; present only if more there are more than 2 conditions in the design file
