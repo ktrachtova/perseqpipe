@@ -13,7 +13,7 @@
 For comprehensive annotation, PerSeqPIPE uses a precompiled [GTF file](https://zenodo.org/records/17700979) that integrates multiple sncRNA databases into one reusable resource. 
 
 <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/PerSeqPIPE.png">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/PerSeqPIPE_2.0.0.png">
     <img alt="" src="docs/images/PerSeqPIPE.png" style="margin-bottom: 40px;">
 </picture>
 
