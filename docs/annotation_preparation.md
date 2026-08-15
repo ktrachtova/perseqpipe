@@ -61,6 +61,9 @@ Then, supply the created STAR index folder (in the code above folder `star_rrna_
 > [!WARNING]
 > Be aware that versions of STAR need to be identical for both creating an index and running actual STAR aligner inside PerSeqPIPE! Version of STAR currently used by PerSeqPIPE can be found in the [`main.nf`](https://github.com/ktrachtova/perseqpipe/blob/main/modules/local/star_align_rrna/main.nf) file of `star_rrna` module.
 
+> [!NOTE]
+> The current rRNA reference contains 9,171 non-identical sequences collected from RNAcentral v24 and NCBI. This number represents distinct rRNA sequence records, not human rRNA genes or genomic loci. Only exact duplicates are collapsed during reference preparation, while sequences differing by one or more nucleotides are retained to provide an inclusive reference for rRNA contamination removal. Such sequence heterogeneity is also consistent with previously reported variation in human rRNA (Parks et al. 2018; Fan et al. 2022).
+
 
 ## tRNA
 
