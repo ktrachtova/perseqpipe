@@ -98,6 +98,43 @@
         "reads_threshold": { "type": "integer" }
       }
     },
+    "star_genome_options": {
+      "type": "object",
+      "properties": {
+        "genome_outFilterMultimapNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapNmax for genome alignment."
+        },
+        "genome_outFilterMatchNmin": {
+          "type": "integer",
+          "description": "STAR --outFilterMatchNmin for genome alignment."
+        },
+        "genome_outFilterMismatchNoverReadLmax": {
+          "type": "number",
+          "description": "STAR --outFilterMismatchNoverReadLmax for genome alignment."
+        },
+        "genome_outFilterMultimapScoreRange": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapScoreRange for genome alignment."
+        },
+        "genome_outFilterScoreMinOverLread": {
+          "type": "number",
+          "description": "STAR --outFilterScoreMinOverLread for genome alignment."
+        },
+        "genome_outFilterMismatchNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMismatchNmax for genome alignment."
+        },
+        "genome_alignIntronMax": {
+          "type": "integer",
+          "description": "STAR --alignIntronMax for genome alignment."
+        },
+        "genome_alignIntronMin": {
+          "type": "integer",
+          "description": "STAR --alignIntronMin for genome alignment."
+        }
+      }
+    },
     "preprocessing_options": {
       "type": "object",
       "errorMessage": {
@@ -216,6 +253,8 @@
     { "$ref": "#/$defs/reference_options" },
     { "$ref": "#/$defs/module_flags" },
     { "$ref": "#/$defs/preprocessing_options" },
+    { "$ref": "#/$defs/sncrna_quantification_options" },
+    { "$ref": "#/$defs/star_genome_options" },
     { "$ref": "#/$defs/de_analysis_options" },
     { "$ref": "#/$defs/multiqc_options" },
     { "$ref": "#/$defs/generic_execution_options" },

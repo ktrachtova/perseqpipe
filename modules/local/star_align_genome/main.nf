@@ -16,7 +16,15 @@ process STAR_GENOME {
 
     script:
     """
-    03c_star_genome.sh ${genome_index} ${reads} ${meta.id} $task.cpus
+    03c_star_genome.sh ${genome_index} ${reads} ${meta.id} $task.cpus \\
+        ${params.genome_outFilterMultimapNmax} \\
+        ${params.genome_outFilterMatchNmin} \\
+        ${params.genome_outFilterMismatchNoverReadLmax} \\
+        ${params.genome_outFilterMultimapScoreRange} \\
+        ${params.genome_outFilterScoreMinOverLread} \\
+        ${params.genome_outFilterMismatchNmax} \\
+        ${params.genome_alignIntronMax} \\
+        ${params.genome_alignIntronMin}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

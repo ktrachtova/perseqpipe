@@ -61,6 +61,19 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--sncrna_overlap_frac` | number | Minimum fraction of a read’s length that must overlap an annotated feature for the read to be counted (e.g., 1.0 requires full-length overlap, 0.5 requires at least 50%). |
 | `--reads_threshold` | integer | Minimal expression of a read to be counted during sncRNA quantification. Any read with expression lower than this threshold will be omitted from the sncRNA quantification results. Default = 1.|
 
+## STAR genome alignment options
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--genome_outFilterMultimapNmax` | integer | STAR `--outFilterMultimapNmax` for genome alignment. Default = 5000. |
+| `--genome_outFilterMatchNmin` | integer | STAR `--outFilterMatchNmin` for genome alignment. Default = 15. |
+| `--genome_outFilterMismatchNoverReadLmax` | number | STAR `--outFilterMismatchNoverReadLmax` for genome alignment. Default = 0.05. |
+| `--genome_outFilterMultimapScoreRange` | integer | STAR `--outFilterMultimapScoreRange` for genome alignment. Default = 0. |
+| `--genome_outFilterScoreMinOverLread` | number | STAR `--outFilterScoreMinOverLread` for genome alignment. Default = 0. |
+| `--genome_outFilterMismatchNmax` | integer | STAR `--outFilterMismatchNmax` for genome alignment. Default = 999. |
+| `--genome_alignIntronMax` | integer | STAR `--alignIntronMax` for genome alignment. Default = 1. |
+| `--genome_alignIntronMin` | integer | STAR `--alignIntronMin` for genome alignment. Default = 2. |
+
 ## DE analysis options
 
 | parameter              | type    | description                                    |
