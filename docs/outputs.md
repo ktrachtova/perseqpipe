@@ -129,6 +129,8 @@ Other outputs of **SNCRNA_QUANTIFICATION** module are:
 
 * Folder `my_project/rna_quantification/genome/stats` contains simple TXT files (`*.genome.multi.counts.txt`, `.genome.uniq.counts.txt` and `.genome.unmapped.counts.txt`) with number of aligned (uniquely and multi-mapping) and unmapped reads. These files are used to create final statistics report summarizing read numbers after genome alignment (for more information see section **Reads statistics**).
 
+* Folder `my_project/rna_quantification/genome/counts/intermediate_files` containing intermediate quantification results with suffix `.genome.short_rna_counts.tsv`; these are files before annotation by tDRnamer tool, otherwise identical to `.genome.short_rna_counts.tsv`.
+
 > [!IMPORTANT]
 > When examining results from the STAR, specifically its `.Log.final.out` files, please keep in mind that alignment statistics there are based on input FASTQ files which contain **collapsed** reads.
 >

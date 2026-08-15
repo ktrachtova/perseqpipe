@@ -69,7 +69,7 @@ Other RNA classes included in the reference, and therefore also quantified if fr
 * mRNA  
 * lncRNA
 
-After sncRNA quantification, the counts table is further annotated by the **TDR_NAMING** process using [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer). Each read sequence is matched against the tDRnamer reference database (currently `hg38`) to assign a standardized tRNA-derived RNA (tDR) name, following the naming system proposed by the tRNA research community (Holmes et al. 2023). The resulting `tdr_name` is added as an extra column to the sncRNA counts table; sequences not recognized as tDRs by tDRnamer are left blank.
+After sncRNA quantification, the counts table is further annotated by the **TDRNAMER** process using [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer). Each read sequence is matched against the tDRnamer reference database (currently `hg38`) to assign a standardized tRNA-derived RNA (tDR) name, following the naming system proposed by the tRNA research community (Holmes et al. 2023). The resulting `tdr_name` is added as an extra column to the sncRNA counts table; sequences not recognized as tDRs by tDRnamer are left blank.
 
 ### Quantification of miRNA/isomiR VS other sncRNA
 

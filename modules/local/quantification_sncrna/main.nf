@@ -7,12 +7,10 @@ process QUANTIFICATION_SNCRNA {
 
     input:
     path gtf
-    path mirna_overlap
     tuple val(meta), path(bam), path(bai)
 
     output:
     tuple val(meta), path ("*.short_rna_counts.tsv"),  emit: srna_counts_tsv
-    path mirna_overlap, emit: mirna_overlap
 
     script:
     def prefix = bam.baseName.replaceAll(/\.Aligned\..*/, "")

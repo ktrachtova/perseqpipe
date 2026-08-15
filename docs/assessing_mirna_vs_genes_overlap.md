@@ -42,4 +42,4 @@ cd reference_preparation/perseqpipe/scripts
 ./mirna_cross-mapping.sh $GENCODE_GTF $SNCRNA_GTF
 ```
 
-The `mirna_sncrna_overlap_v{X.Y}.tsv` is generated every time a custom sncRNA GTF file is updated/changed and its version correspond to the GTF file version.
+The `mirna_sncrna_overlap_v{X.Y}.tsv` is generated every time a custom sncRNA GTF file is updated/changed and its version correspond to the GTF file version. This file is provided as part of PerSeqPIPE results and is located in `my_project/rna_quantification/genome/counts`. This file can be used to assess if any of the detected miRNAs do overlap sncRNAs (or _vice versa_).

@@ -65,14 +65,14 @@ workflow SNCRNA_QUANTIFICATION {
 
         QUANTIFICATION_SNCRNA (
             ch_gtf,
-            ch_mirna_overlap,
             ch_bam_bai
         )
 
         TDRNAMER (
             QUANTIFICATION_SNCRNA.out.srna_counts_tsv,
             params.tdrnamer_db_url,
-            params.tdrnamer_db_name
+            params.tdrnamer_db_name,
+            ch_mirna_overlap
         )
 
     emit:

@@ -8,9 +8,12 @@ process TDRNAMER {
     tuple val(meta), path(srna_counts_tsv)
     val   tdrnamer_db_url
     val   tdrnamer_db_name
+    path  mirna_overlap
+
 
     output:
     tuple val(meta), path ("*.short_rna_counts.tsv"), emit: tdr_annotated_tsv
+    path mirna_overlap, emit: mirna_overlap
 
     script:
     def prefix = task.ext.prefix ?: meta.id
