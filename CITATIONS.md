@@ -62,6 +62,10 @@
 
 > Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res. 2015 Apr 20;43(7):e47. doi: 10.1093/nar/gkv007. Epub 2015 Jan 20. PMID: 25605792; PMCID: PMC4402510.
 
+- [tDRnamer](https://pmc.ncbi.nlm.nih.gov/articles/PMC10334869/)
+ 
+> Holmes AD, Chan PP, Chen Q, Ivanov P, Drouard L, Polacek N, Kay MA, Lowe TM. A standardized ontology for naming tRNA-derived RNAs based on molecular origin. Nat Methods. 2023 May;20(5):627-628. doi: 10.1038/s41592-023-01813-2. PMID: 36869120; PMCID: PMC10334869.
+
 ## Software packaging/containerisation tools
 
 - [BioContainers](https://pubmed.ncbi.nlm.nih.gov/28379341/)

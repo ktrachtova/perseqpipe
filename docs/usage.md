@@ -20,6 +20,9 @@
 > [!NOTE]
 > If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section [Running tests](#running-tests)) first before processing actual data.
 
+> [!IMPORTANT]
+> As of Nextflow 26.04 and higher, a strict syntax parser is enabled by default. For current release PerSeqPIPE, if running with Nextlfow 26.04 or higher disable the strict syntax parser using command `export NXF_SYNTAX_PARSER=v1` prior to running the pipeline. Support for strict syntax parser will be added in the next release.
+
 To run PerSeqPIPE on real data, it is first required to [download reference files](#download-reference), such as the STAR index, mialigner database, and GTF file for sncRNA quantification. This step is performed separately from the actual analysis and needs to be completed only once per computational environment.
 
 To run PerSeqPIPE (both for downloading reference files and analysis of actual data), first download the repository locally and navigate to the `perseqpipe/` directory. Then run PerSeqPIPE using the following command:

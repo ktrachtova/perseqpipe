@@ -8,7 +8,7 @@
 
 ## ⭐ Introduction
 
-**PerSeqPIPE** is a modular Nextflow pipeline for small RNA-seq analysis. The pipeline supports joint analysis of multiple small non-coding RNA (sncRNA) classes, including miRNA, isomiRs, snoRNA, piRNA, tRNA fragments and other. It implements a sequence-centric quantification strategy to count and annotate each distinct read with all compatible genomic and transcriptomic features.
+**PerSeqPIPE** is a modular Nextflow pipeline for small RNA-seq analysis. The pipeline supports joint analysis of multiple small non-coding RNA (sncRNA) classes, including miRNA, isomiRs, snoRNA, piRNA, tRNA-derived fragments and other. It implements a sequence-centric quantification strategy to count and annotate each distinct read with all compatible genomic and transcriptomic features.
 
 For comprehensive annotation, PerSeqPIPE uses a precompiled [GTF file](https://zenodo.org/records/17700979) that integrates multiple sncRNA databases into one reusable resource. 
 
