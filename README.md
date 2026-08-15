@@ -14,7 +14,7 @@ For comprehensive annotation, PerSeqPIPE uses a precompiled [GTF file](https://z
 
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/images/PerSeqPIPE_2.0.0.png">
-    <img alt="" src="docs/images/PerSeqPIPE.png" style="margin-bottom: 40px;">
+    <img alt="" src="docs/images/PerSeqPIPE_2.0.0.png" style="margin-bottom: 40px;">
 </picture>
 
 For detailed information about individual **PerSeqPIPE modules**, please refere to [Module description](docs/module_description.md) documentation.
