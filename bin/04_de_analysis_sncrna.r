@@ -215,7 +215,7 @@ for (file in input_files) {
   expression_data <- data[, c("sequence", "expression")]
 
   # Annotate expression data with the file name as the column name for expression
-  colnames(expression_data) <- c("sequence", gsub(".genome.*", "", basename(file)))
+  colnames(expression_data) <- c("sequence", gsub("\\.short_rna_counts.*$", "", basename(file)))
 
   # Save the expression data to the list
   df_list[[basename(file)]] <- expression_data
