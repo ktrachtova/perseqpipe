@@ -5,6 +5,10 @@
 #
 set -euo pipefail
 
+# When running using apptainer, the following environment variable is set to avoid Java
+# sharing /tmp directory across processes and crashing
+export JAVA_TOOL_OPTIONS="-XX:+PerfDisableSharedMem"
+
 SAMPLE=$1
 THREADS=$2
 
@@ -68,7 +72,7 @@ echo "####################################################"
 
 echo "$(date +%s) Started collapsing reads for sample $SAMPLE"
 
-gunzip -c ./intermediate_files/adapter1_trim/$(basename $SAMPLE .fastq.gz).ad3trim.fastq.gz | fastx_collapser -Q$QUALITY | reformat.sh qfake=40 in=stdin.fa out=stdout.fq > $(basename $SAMPLE .fastq.gz).cleaned.fastq
+gunzip -c ./intermediate_files/adapter1_trim/$(basename $SAMPLE .fastq.gz).ad3trim.fastq.gz | fastx_collapser -Q$QUALITY | reformat.sh qfake=40 in=stdin.fa out=$(basename $SAMPLE .fastq.gz).cleaned.fastq
 
 echo "$(date +%s) Finished collapsing sample $SAMPLE"
 
