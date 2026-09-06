@@ -462,8 +462,15 @@ if (!is.null(design_file)) {
   
   # Merge with annotation
   final_results_annot <- merge(final_annotation, final_results, by.x = "sequence", by.y= "gene", all.x = FALSE, all.y = TRUE)
-  final_results_annot <- final_results_annot %>%
-    arrange(padj_lrt)
+  # Arrange results: prefer LRT padj if available, otherwise use first pairwise padj column
+  if ("padj_lrt" %in% colnames(final_results_annot)) {
+    final_results_annot <- final_results_annot %>% arrange(padj_lrt)
+  } else {
+    padj_cols <- grep("^padj_", colnames(final_results_annot), value = TRUE)
+    if (length(padj_cols) > 0) {
+      final_results_annot <- final_results_annot[order(final_results_annot[[padj_cols[1]]], na.last = TRUE), ]
+    }
+  }
   
   # Save result
   output_file <- paste0("DE_analysis_sncrna_results.tsv")

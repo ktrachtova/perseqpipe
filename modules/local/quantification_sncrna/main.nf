@@ -1,6 +1,6 @@
 process QUANTIFICATION_SNCRNA {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/htseq_pandas:52439a4c7dbfb1f0'

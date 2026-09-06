@@ -1,6 +1,6 @@
 process PREPROCESSING_RAW_READS {
     tag "${meta.id}"
-    label 'process_medium'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/bbmap_cutadapt_fastx_toolkit_pip_gunzip:b9e0f3b085723453'

@@ -465,8 +465,18 @@ if (!is.null(design_file)) {
       final_results <- pairwise_results[[1]]
     }
     
-    final_results <- final_results %>%
-      arrange(padj_lrt)
+    # Arrange results: prefer LRT padj if available, otherwise use first pairwise padj column
+    if ("padj_lrt" %in% colnames(final_results)) {
+      message("Arranging results by LRT adjusted p-value")
+      final_results <- final_results %>% arrange(padj_lrt)
+    } else {
+      message("Arranging results by first pairwise adjusted p-value")
+      padj_cols <- grep("^padj_", colnames(final_results), value = TRUE)
+      if (length(padj_cols) > 0) {
+        # arrange by the first padj column (the single pairwise comparison)
+        final_results <- final_results[order(final_results[[padj_cols[1]]], na.last = TRUE), ]
+      }
+    }
     
     # Save result
     output_file <- paste0("DE_analysis_", name, "_results.tsv")

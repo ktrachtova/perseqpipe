@@ -1,6 +1,6 @@
 process TDRNAMER {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_single'
 
     container 'ktrachtok/tdrnamer:1.3.1-procps'
 

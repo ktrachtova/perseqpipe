@@ -1,6 +1,6 @@
 process STAR_RRNA {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_medium'
     
     conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/star:2.7.11b--822039d47adf19a7'
