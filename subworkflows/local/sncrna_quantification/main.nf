@@ -47,7 +47,9 @@ workflow SNCRNA_QUANTIFICATION {
                 params.sncrna_gtf_url,
                 params.sncrna_gtf_path,
                 params.mirna_overlap_url,
-                params.mirna_overlap_path
+                params.mirna_overlap_path,
+                '',
+                ''
             )
             ch_genome_index  = DOWNLOAD_REFERENCES.out.star_index_dir
             ch_gtf           = DOWNLOAD_REFERENCES.out.gtf_file

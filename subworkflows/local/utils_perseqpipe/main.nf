@@ -163,6 +163,14 @@ def isGenomeReferenceComplete(indexPath, gtfPath, mirnaOverlapPath) {
 }
 
 //
+// Returns true if a miraligner database directory contains the required hairpin.fa and miRNA.str files
+//
+def isMirnaDbComplete(dbPath) {
+    def requiredFiles = ['hairpin.fa', 'miRNA.str']
+    return dbPath.exists() && dbPath.isDirectory() && requiredFiles.every { file("${dbPath}/${it}").exists() }
+}
+
+//
 // Validate channels from input samplesheet
 //
 def validateInputSamplesheet(input) {

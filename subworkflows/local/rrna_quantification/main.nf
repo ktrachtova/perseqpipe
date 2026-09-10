@@ -31,7 +31,7 @@ workflow RRNA_QUANTIFICATION {
         if (isStarIndexComplete(rrna_index_path)) {
             ch_rrna_index = channel.value(rrna_index_path)
         } else {
-            DOWNLOAD_REFERENCES(params.index_rrna_url, params.index_rrna_path, '', '', '', '')
+            DOWNLOAD_REFERENCES(params.index_rrna_url, params.index_rrna_path, '', '', '', '', '', '')
             ch_rrna_index = DOWNLOAD_REFERENCES.out.star_index_dir
         }
 

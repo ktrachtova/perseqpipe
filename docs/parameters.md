@@ -30,7 +30,9 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--index_rrna_url`     | string | Link to .tar.gz compressed STAR rRNA index     |
 | `--index_rrna_path`    | string | Path to download STAR rRNA index               |
 | `--mirbase_db`         | string | Link to .tar.gz compressed miRbase database    | 
+| `--mirbase_db_path`    | string | Path to downloaded miRbase database            |
 | `--mirgene_db`         | string | Link to tar.gz compressed MirGeneDB database   |      
+| `--mirgenedb_db_path`  | string | Path to downloaded MirGeneDB database          |
 | `--index_genome_url`   | string | Link to .tar.gz compressed STAR GRCh38 index   |
 | `--index_genome_path`  | string | Path to download STAR GRCh38 index             |
 | `--sncrna_gtf_url`     | string | Link to .tar.gz compressed custom sncRNA GTF   |

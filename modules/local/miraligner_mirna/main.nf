@@ -16,12 +16,8 @@ process MIRALIGNER_MIRNA {
     tuple val(meta), path ("*.counts.txt"),              emit: mirna_counts
 
     script:
-
-    def db_dir = miraligner_db.toString().replaceFirst(/\.tar\.gz$/, '')
-
     """
-    tar -xvf ${miraligner_db}
-    03b_miraligner_mirna.sh ${db_dir} ${reads} ${meta.id} ${params.miraligner_jar} ${species}
+    03b_miraligner_mirna.sh ${miraligner_db} ${reads} ${meta.id} ${params.miraligner_jar} ${species}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

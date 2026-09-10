@@ -38,10 +38,20 @@
           "format": "uri",
           "description": "URL to download miRBase database for miraligner."
         },
+        "mirbase_db_path": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "Path to the downloaded miRBase database for miraligner."
+        },
         "mirgenedb_db": {
           "type": "string",
           "format": "uri",
           "description": "URL to download miRGenDB database for miraligner."
+        },
+        "mirgenedb_db_path": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "Path to the downloaded miRGenDB database for miraligner."
         },
         "miraligner_db": {
           "type": "string",

@@ -218,6 +218,7 @@ To test the workflow, user can select from several small test profiles, one for 
 | test_lexogen | Small RNA-Seq Library Prep Kit (Lexogen) |
 | test_novogene | Small RNA Sequencing Novogene |
 | test_norgen | Norgen Small RNA Library Prep Kit |
+| test_mirgenedb | QIAseq miRNA Library Kit (QIAGEN) + MirGeneDB for miRNA/isomiR quantification |
 
 To execute a specific minimal test, run following command (here shown example to run QIAseq-specific test):
 ```
