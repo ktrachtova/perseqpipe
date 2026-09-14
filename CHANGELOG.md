@@ -18,11 +18,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated pipeline parameters, including parameter renaming that introduces a breaking change from version 1.x.
   - parameter `miraligner_db_url` contianing path to miRBase reference was changed to `mirbase_db`
   - miraligner database (either mirbase or mirgenedb) are now downloaded together with all other reference files and not separately before each miraligner process
+* Exposed miRNA/isomiR quantification options as user-facing parameters for the Miraligner wrapper: `miraligner_sub`, `miraligner_trim`, `miraligner_add`, and `miraligner_minl`.
+* Exposed the rRNA and genome STAR parameters as user-facing parameters.
 
 ### Dependencies
 
 * Requires Nextflow `>=24.04.2`.
   - Please note that in Nextflow 26.04 and higher, strict syntax parser is the default; the PerSeqPIPE right now does not work correctly with the strict syntax parser, hence, if Nextflow 26.04 or higher is being used variable `NXF_SYNTAX_PARSER` has to be set to `v1` prior to running the PerSeqPIPE; this will be fixed in the next release
+
+### Fixed
+
+#### Minor
+* fixed bug in calculation of miRNA mapped/unmapped reads in script `03b_miraligner_mirna.sh`
+  - previous code counted some reads twice introducing small (~1%) increase in reads in the `reads_counts_summary.csv` compared to actual reads in FASTQ files
+* fixed bug in `04_de_analysis_mirna.r` where parametere `--mirna_expression_threshold` was used for isomiRs filtering instead of `--isomirs_expression_threshold`
 
 ## [1.0.0] – 2026-01-27
 
