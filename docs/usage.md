@@ -48,11 +48,11 @@ The pipeline source code itself is not copied into the current directory.
 
 For the exact commands and all required parameters, refer to the sections [Download reference](#download-reference) and [Running PerSeqPIPE](#running-perseqpipe).
 
-## Download reference
+## Download reference (optional)
 
 In order to run rRNA and sncRNA quantification modules, PerSeqPIPE needs the STAR index for the rRNA database and human genome and a custom sncRNA GTF file (see [Reference databases](reference_databases.md) for a list of resources).
 
-**As of 2.0.0 version, PerSeqPIPE downloads any missing reference files automatically** the first time it needs them during a normal analysis run - there is no need to run a separate step beforehand. If you'd rather pre-fetch them (e.g. to warm a shared cache once for multiple users/runs on an HPC system), you can still trigger the download explicitly ahead of running the actual analysis:
+**As of 2.0.0 version, PerSeqPIPE downloads any missing reference files automatically** during a normal analysis run, hence, there is no need to run a separate step beforehand. However, if you'd rather pre-fetch them (e.g. to warm a shared cache once for multiple users/runs on an HPC system), you can still trigger the download explicitly ahead of running the actual analysis:
 
 ```
 export NXF_SYNTAX_PARSER=v1
