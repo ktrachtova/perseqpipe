@@ -9,6 +9,16 @@ index=$1            # STAR rRNA index
 input_file=$2       # input .fastq.gz file
 sample=$3           # sample name
 threads=$4          # threads for STAR
+outFilterMultimapNmax=${5:-5000}
+outFilterMatchNmin=${6:-15}
+outFilterMismatchNoverReadLmax=${7:-0.05}
+outFilterMultimapScoreRange=${8:-0}
+outFilterScoreMinOverLread=${9:-0}
+outFilterMismatchNmax=${10:-999}
+alignIntronMax=${11:-1}
+alignIntronMin=${12:-2}
+seedSearchStartLmax=${13:-10}
+winAnchorMultimapNmax=${14:-1000}
 
 STAR --runMode alignReads \
      --runThreadN $threads \
@@ -16,21 +26,21 @@ STAR --runMode alignReads \
      --readFilesCommand zcat \
      --readFilesIn $input_file \
      --outFileNamePrefix ${sample}.rrna. \
-     --outFilterMultimapNmax 5000 \
-     --outFilterMatchNmin 15 \
-     --outFilterMismatchNoverReadLmax 0.05 \
-     --outFilterMultimapScoreRange 0 \
-     --outFilterScoreMinOverLread 0 \
-     --outFilterMismatchNmax 999 \
-     --alignIntronMax 1 --alignIntronMin 2 \
+     --outFilterMultimapNmax $outFilterMultimapNmax \
+     --outFilterMatchNmin $outFilterMatchNmin \
+     --outFilterMismatchNoverReadLmax $outFilterMismatchNoverReadLmax \
+     --outFilterMultimapScoreRange $outFilterMultimapScoreRange \
+     --outFilterScoreMinOverLread $outFilterScoreMinOverLread \
+     --outFilterMismatchNmax $outFilterMismatchNmax \
+     --alignIntronMax $alignIntronMax --alignIntronMin $alignIntronMin \
      --outSAMheaderHD @HD VN:1.4 SO:coordinate \
      --outSAMunmapped Within \
      --outReadsUnmapped Fastx \
      --outFilterType Normal \
      --outSAMattributes All \
      --twopassMode None \
-     --seedSearchStartLmax 10 \
-     --winAnchorMultimapNmax 1000 \
+     --seedSearchStartLmax $seedSearchStartLmax \
+     --winAnchorMultimapNmax $winAnchorMultimapNmax \
      --outMultimapperOrder Random \
      --outSAMtype BAM Unsorted \
      --alignEndsType EndToEnd

@@ -11,15 +11,15 @@ input_file=$2
 sample=$3
 miraligner_path=$4
 species=$5
-
-mismatch=1  # [0, 1] Allows only 0 or 1 mismatch
-add=3       # Max. number of additions (non-templated)
-trim=3      # Max. number of trimmings
+sub=${6:-1}
+trim=${7:-3}
+add=${8:-3}
+minl=${9:-16}
 
 # running miraligner
 echo "Processing $input_file"
 unpigz -c $input_file > ${input_file%.gz}
-java -jar ${miraligner_path} -freq -sub $mismatch -trim $trim -add $add -minl 16 -s $species -i ./${input_file%.gz} -db $miraligner_db -o ./${sample}
+java -jar ${miraligner_path} -freq -sub $sub -trim $trim -add $add -minl $minl -s $species -i ./${input_file%.gz} -db $miraligner_db -o ./${sample}
 
 # extract mirna-aligner reads into FASTQ files
 cut -f2 ./${sample}.mirna | sort | uniq  > mapped.names

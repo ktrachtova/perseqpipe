@@ -16,7 +16,16 @@ process MIRALIGNER_MIRNA {
 
     script:
     """
-    03b_miraligner_mirna.sh ${miraligner_db} ${reads} ${meta.id} ${params.miraligner_jar} ${species}
+    03b_miraligner_mirna.sh \
+        ${miraligner_db} \
+        ${reads} \
+        ${meta.id} \
+        ${params.miraligner_jar} \
+        ${species} \
+        ${params.miraligner_sub} \
+        ${params.miraligner_trim} \
+        ${params.miraligner_add} \
+        ${params.miraligner_minl}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

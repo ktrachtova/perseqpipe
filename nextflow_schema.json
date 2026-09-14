@@ -59,6 +59,26 @@
           "default": "mirbase",
           "description": "Database used for miRNA/isomiR quantification with miraligner: 'mirbase' or 'mirgenedb'."
         },
+        "miraligner_sub": {
+          "type": "integer",
+          "default": 1,
+          "description": "Miraligner -sub mismatch filter value."
+        },
+        "miraligner_trim": {
+          "type": "integer",
+          "default": 3,
+          "description": "Miraligner -trim trimming allowance value."
+        },
+        "miraligner_add": {
+          "type": "integer",
+          "default": 3,
+          "description": "Miraligner -add addition allowance value."
+        },
+        "miraligner_minl": {
+          "type": "integer",
+          "default": 16,
+          "description": "Miraligner -minl minimum read length value."
+        },
         "index_genome_url": {
           "type": "string",
           "format": "uri",
@@ -142,6 +162,46 @@
         "genome_alignIntronMin": {
           "type": "integer",
           "description": "STAR --alignIntronMin for genome alignment."
+        },
+        "rrna_outFilterMultimapNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapNmax for rRNA alignment."
+        },
+        "rrna_outFilterMatchNmin": {
+          "type": "integer",
+          "description": "STAR --outFilterMatchNmin for rRNA alignment."
+        },
+        "rrna_outFilterMismatchNoverReadLmax": {
+          "type": "number",
+          "description": "STAR --outFilterMismatchNoverReadLmax for rRNA alignment."
+        },
+        "rrna_outFilterMultimapScoreRange": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapScoreRange for rRNA alignment."
+        },
+        "rrna_outFilterScoreMinOverLread": {
+          "type": "number",
+          "description": "STAR --outFilterScoreMinOverLread for rRNA alignment."
+        },
+        "rrna_outFilterMismatchNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMismatchNmax for rRNA alignment."
+        },
+        "rrna_alignIntronMax": {
+          "type": "integer",
+          "description": "STAR --alignIntronMax for rRNA alignment."
+        },
+        "rrna_alignIntronMin": {
+          "type": "integer",
+          "description": "STAR --alignIntronMin for rRNA alignment."
+        },
+        "rrna_seedSearchStartLmax": {
+          "type": "integer",
+          "description": "STAR --seedSearchStartLmax for rRNA alignment."
+        },
+        "rrna_winAnchorMultimapNmax": {
+          "type": "integer",
+          "description": "STAR --winAnchorMultimapNmax for rRNA alignment."
         }
       }
     },

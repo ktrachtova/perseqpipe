@@ -14,8 +14,18 @@ process STAR_RRNA {
     tuple val(meta), path ("*.Log.*"),                          emit: rrna_logs
 
     script:
-    """    
-    03a_star_rrna.sh ${rrna_index} ${reads} ${meta.id} $task.cpus
+    """
+    03a_star_rrna.sh ${rrna_index} ${reads} ${meta.id} $task.cpus \
+        ${params.rrna_outFilterMultimapNmax} \
+        ${params.rrna_outFilterMatchNmin} \
+        ${params.rrna_outFilterMismatchNoverReadLmax} \
+        ${params.rrna_outFilterMultimapScoreRange} \
+        ${params.rrna_outFilterScoreMinOverLread} \
+        ${params.rrna_outFilterMismatchNmax} \
+        ${params.rrna_alignIntronMax} \
+        ${params.rrna_alignIntronMin} \
+        ${params.rrna_seedSearchStartLmax} \
+        ${params.rrna_winAnchorMultimapNmax}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

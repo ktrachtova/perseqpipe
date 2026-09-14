@@ -63,6 +63,15 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--sncrna_overlap_frac` | number | Minimum fraction of a read’s length that must overlap an annotated feature for the read to be counted (e.g., 1.0 requires full-length overlap, 0.5 requires at least 50%). |
 | `--reads_threshold` | integer | Minimal expression of a read to be counted during sncRNA quantification. Any read with expression lower than this threshold will be omitted from the sncRNA quantification results. Default = 1.|
 
+## miRNA quantification options
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--miraligner_sub`    | integer | Miraligner `-sub` mismatch allowance. Default = 1. |
+| `--miraligner_trim`   | integer | Miraligner `-trim` trimming allowance. Default = 3. |
+| `--miraligner_add`    | integer | Miraligner `-add` non-templated addition allowance. Default = 3. |
+| `--miraligner_minl`   | integer | Miraligner `-minl` minimum read length. Default = 16. |
+
 ## STAR genome alignment options
 
 | parameter              | type   | description                                    |
@@ -75,6 +84,21 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--genome_outFilterMismatchNmax` | integer | STAR `--outFilterMismatchNmax` for genome alignment. Default = 999. |
 | `--genome_alignIntronMax` | integer | STAR `--alignIntronMax` for genome alignment. Default = 1. |
 | `--genome_alignIntronMin` | integer | STAR `--alignIntronMin` for genome alignment. Default = 2. |
+
+## STAR rRNA alignment options
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--rrna_outFilterMultimapNmax` | integer | STAR `--outFilterMultimapNmax` for rRNA alignment. Default = 5000. |
+| `--rrna_outFilterMatchNmin` | integer | STAR `--outFilterMatchNmin` for rRNA alignment. Default = 15. |
+| `--rrna_outFilterMismatchNoverReadLmax` | number | STAR `--outFilterMismatchNoverReadLmax` for rRNA alignment. Default = 0.05. |
+| `--rrna_outFilterMultimapScoreRange` | integer | STAR `--outFilterMultimapScoreRange` for rRNA alignment. Default = 0. |
+| `--rrna_outFilterScoreMinOverLread` | number | STAR `--outFilterScoreMinOverLread` for rRNA alignment. Default = 0. |
+| `--rrna_outFilterMismatchNmax` | integer | STAR `--outFilterMismatchNmax` for rRNA alignment. Default = 999. |
+| `--rrna_alignIntronMax` | integer | STAR `--alignIntronMax` for rRNA alignment. Default = 1. |
+| `--rrna_alignIntronMin` | integer | STAR `--alignIntronMin` for rRNA alignment. Default = 2. |
+| `--rrna_seedSearchStartLmax` | integer | STAR `--seedSearchStartLmax` for rRNA alignment. Default = 10. |
+| `--rrna_winAnchorMultimapNmax` | integer | STAR `--winAnchorMultimapNmax` for rRNA alignment. Default = 1000. |
 
 ## DE analysis options
 
