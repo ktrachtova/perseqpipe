@@ -174,7 +174,7 @@ A comprehensive read statistics is automatically generated at the end of PerSeqP
   * `mirna_mapped_reads_%` is percentage of reads aligning to miRNA precursors
   * `mirna_unmapped_reads` is number of miRNA unmapped reads
   * `mirna_unmapped_reads_%` is percentage of miRNA unmapped reads
-5. From **GENOME_QUANTIFICATION** module
+5. From **SNCRNA_QUANTIFICATION** module
   * `genome_multimapped_reads` is number of reads multi-mapping to genome
   * `genome_multimapped_reads_%` is percentage of reads multi-mapping to genome
   * `genome_unique_reads` is number of reads uniquely aligning to genome
