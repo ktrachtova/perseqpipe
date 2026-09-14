@@ -34,7 +34,7 @@ Outputs of PerSeqPIPE individual modules are desribed in [Outputs](docs/outputs.
 
 ## ✅ Test data
 
-A full size example test results can be downloaded [here](https://osf.io/zne7g/files/osfstorage).
+A full size example test results can be downloaded [here](https://osf.io/zne7g/files/aw8v7).
 
 ## 🎺 Credits
 

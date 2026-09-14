@@ -83,7 +83,7 @@ workflow {
                 '',
                 '',
                 ''
-            ).out.star_index_dir
+            )
         }
 
         // Conditionally download genome index, annotation and the selected miRNA database
@@ -100,7 +100,7 @@ workflow {
                 params.mirna_overlap_path,
                 mirna_db_url,
                 mirna_db_path
-            ).out.star_index_dir
+            )
         }
 
     } else {
