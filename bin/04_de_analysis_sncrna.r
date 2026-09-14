@@ -50,7 +50,7 @@ create_raw_norm_counts <- function(dds) {
     batch <- colData(dds)$batch
     condition <- colData(dds)$condition
     norm_counts <- limma::removeBatchEffect(norm_counts, batch = batch, design = model.matrix(~ condition))
-    vst_counts <- limma:removeBatchEffect(vst_counts, batch = batch, design = model.matrix(~ condition))
+    vst_counts <- limma::removeBatchEffect(vst_counts, batch = batch, design = model.matrix(~ condition))
   }
   
   norm_counts <- as.data.frame(norm_counts) %>%
@@ -87,21 +87,12 @@ create_raw_norm_counts <- function(dds) {
 args <- commandArgs(trailingOnly = TRUE)
 
 # Initialize parameters
-#expression_threshold <- 20
-#sample_threshold <- 6
-
-# Test 1
-#input_dir <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/rna_quantification/genome/counts"
-#design_file <- NULL
-#generate_counts_only <- TRUE
-
-# Test 2
-#input_dir <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_full/rna_quantification/genome/counts"
-#design_file <- "/Users/kaja/Public/nextflow/test_data/trilink_GSE262424/design_MM_PCL_EMD.txt"
-#generate_counts_only <- FALSE
-#sncrna_exp <- 20
-#sncrna_sample <- 6
-#setwd("/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/de_analysis2")
+# All optional arguments must default to NULL so that the is.null() checks below
+# work when the argument is not supplied (e.g. no design file -> counts only)
+input_dir <- NULL
+design_file <- NULL
+sncrna_exp <- NULL
+sncrna_sample <- NULL
 
 # Parse arguments
 i <- 1

@@ -15,7 +15,7 @@
 
 ## Output directory structure
 
-Below is a general directory structure of outputs when pipeline is executed with parameter `--full-run` (running all modules of PerSeqPIPE). In case only specific modules were run (for example, DE analysis was omitted), then output folder corresponding to that module will be missing.
+Below is a general directory structure of outputs when pipeline is executed with parameter `--run_full` (running all modules of PerSeqPIPE). In case only specific modules were run (for example, DE analysis was omitted), then output folder corresponding to that module will be missing.
 
 ```
 my_project/

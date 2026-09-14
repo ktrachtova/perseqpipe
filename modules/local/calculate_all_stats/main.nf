@@ -1,7 +1,6 @@
 process CALCULATE_ALL_STATS {
     label 'process_high'
 
-    conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/pandas:2.3.3--5a902bf824a79745'
     
     input:

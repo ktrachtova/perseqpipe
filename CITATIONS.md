@@ -18,9 +18,17 @@
 
 > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
 
-- [Cutadapt](https://pubmed.ncbi.nlm.nih.gov/28715235/)
+- [Cutadapt](https://journal.embnet.org/index.php/embnetjournal/article/view/200)
 
-> Kechin A, Boyarskikh U, Kel A, Filipenko M. cutPrimers: A New Tool for Accurate Cutting of Primers from Reads of Targeted Next Generation Sequencing. J Comput Biol. 2017 Nov;24(11):1138-1143. doi: 10.1089/cmb.2017.0096. Epub 2017 Jul 17. PMID: 28715235.
+> Marcel Mertin. Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet.journal 17.1. https://doi.org/10.14806/ej.17.1.200.
+
+- [Samtools](https://pubmed.ncbi.nlm.nih.gov/33590861/)
+
+> Danecek P, Bonfield JK, Liddle J, et al. Twelve years of SAMtools and BCFtools. Gigascience. 2021;10(2):giab008. doi:10.1093/gigascience/giab008
+
+- [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/)
+
+>  Hannon, G. J. FASTX-Toolkit. From Hannon Lab, Cold Spring Harbor Laboratory. Available online at: http://hannonlab.cshl.edu/fastx_toolkit/
 
 - [MMseqs2](https://www.nature.com/articles/nbt.3988)
 
@@ -79,3 +87,13 @@
 - [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
 
   > Kurtzer GM, Sochat V, Bauer MW. Singularity: Scientific containers for mobility of compute. PLoS One. 2017 May 11;12(5):e0177459. doi: 10.1371/journal.pone.0177459. eCollection 2017. PubMed PMID: 28494014; PubMed Central PMCID: PMC5426675.
+
+## Databases
+
+- [MiRBase](https://pmc.ncbi.nlm.nih.gov/articles/PMC1347474/)
+
+> Kozomara A, Birgaoanu M, Griffiths-Jones S. (2019) miRBase: from microRNA sequences to function. Nucleic Acids Research, 47(D1):D155–D162. PMID: 30423142 [1] (https://ngdc.cncb.ac.cn/databasecommons/database/id/165), [2] (https://research.manchester.ac.uk/en/publications/mirbase-from-microrna-sequences-to-function/)
+
+- [MirGeneDB](https://pubmed.ncbi.nlm.nih.gov/31598695/)
+
+> Fromm B, Domanska D, Høye E, et al. MirGeneDB 2.0: the metazoan microRNA complement. Nucleic Acids Res. 2020;48(D1):D132-D141. doi:10.1093/nar/gkz885

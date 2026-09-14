@@ -4,7 +4,7 @@
 
 | parameter              | type   | description                                    |
 | -----------------------|--------|------------------------------------------------|
-| `--input_samplesheet`  | string | (Required) Path to the comma-separated file contianing sample information |
+| `--input_samplesheet`  | string | (Required) Path to the comma-separated file containing sample information |
 | `--outdir`             | string | (Required) The output directory where all results will be saved. |
 
 ## Module control flags
@@ -14,7 +14,7 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | parameter              | type   | description                                    |
 | -----------------------|--------|------------------------------------------------|
 | `--download_reference_rrna` | boolean | Download rRNA STAR index, no actual analysis will be performed |
-| `--download_reference_genome` | boolean | Download human STAR index and custom sncRNA GTF file |
+| `--download_reference_genome` | boolean | Download the human STAR index, custom sncRNA GTF file, miRNA overlap file, and the miRNA database selected by `--miraligner_db` |
 | `--run_firstqc` | boolean | Run only FIRSTQC module |
 | `--run_preprocessing` | boolean | Run modules up to (including) PREPROCESSING module |
 | `--run_rrna` | boolean | Run modules up to (including) RRNA_QUANTIFICATION |
@@ -31,7 +31,7 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--index_rrna_path`    | string | Path to download STAR rRNA index               |
 | `--mirbase_db`         | string | Link to .tar.gz compressed miRbase database    | 
 | `--mirbase_db_path`    | string | Path to downloaded miRbase database            |
-| `--mirgene_db`         | string | Link to tar.gz compressed MirGeneDB database   |      
+| `--mirgenedb_db`       | string | Link to tar.gz compressed MirGeneDB database   |      
 | `--mirgenedb_db_path`  | string | Path to downloaded MirGeneDB database          |
 | `--index_genome_url`   | string | Link to .tar.gz compressed STAR GRCh38 index   |
 | `--index_genome_path`  | string | Path to download STAR GRCh38 index             |

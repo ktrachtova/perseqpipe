@@ -51,7 +51,7 @@ Cleaned reads from preprocessing are aligned to a custom set of rRNA sequences (
 
 ## Module 4️⃣: miRNA/isomiR quantification  
 
-Reads unmapped to rRNA are aligned to miRNA precursor sequences using the `miraligner` tool (by default miRBase v22; alternatively, v21 can be chosen using the parameter `--mirbase_version`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
+Reads unmapped to rRNA are aligned to miRNA precursor sequences using the `miraligner` tool (by default miRBase v22, MirGeneDB can be alternatively used by setting parameter `--miraligner_db mirgenedb`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
 
 ## Module 5️⃣: Other sncRNA quantification  
 

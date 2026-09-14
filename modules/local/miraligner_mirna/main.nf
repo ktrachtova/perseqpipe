@@ -2,7 +2,6 @@ process MIRALIGNER_MIRNA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "${moduleDir}/environment.yml"
     container 'ktrachtok/mirna_quantification:amd64-1.0.0'
     
     input:

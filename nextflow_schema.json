@@ -278,11 +278,12 @@
         }
       },
       "then": {
-        "required": ["lib_type", "outdir"],
+        "required": ["lib_type", "outdir", "input_samplesheet"],
         "errorMessage": {
           "required": {
             "lib_type": "Missing required parameter: --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen.",
-            "outdir": "Missing required parameter: --outdir. Please specify an output directory (either in a config file or via --outdir)."
+            "outdir": "Missing required parameter: --outdir. Please specify an output directory (either in a config file or via --outdir).",
+            "input_samplesheet": "Missing required parameter: --input_samplesheet. Please specify a CSV samplesheet (either in a config file or via --input_samplesheet)."
           }
         }
       }

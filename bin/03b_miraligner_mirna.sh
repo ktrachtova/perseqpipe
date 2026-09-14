@@ -34,5 +34,5 @@ pigz ${sample}.mirna.unmapped.fastq
 rm mapped.names all.names nomap.names
 
 # create files with counts of both mapped and unmapped reads for overall statistics
-sed '1d' ./${sample}.mirna | cut -f2 | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ./${sample}.mirna.mapped.counts.txt
+sed '1d' ./${sample}.mirna | cut -f2 | sort -u | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ./${sample}.mirna.mapped.counts.txt
 zgrep '@seq' ${sample}.mirna.unmapped.fastq.gz | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${sample}.mirna.unmapped.counts.txt

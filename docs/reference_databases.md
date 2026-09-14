@@ -40,7 +40,7 @@ Overall number of sequences after removing redundant sequences: **2,657**
 
 ## miRNA
 
-For miRNA quantification, miRBase (v22) is used as a primary source of miRNA sequences. 
+For miRNA quantification, miRBase (v22) is used as a primary source of miRNA sequences by default. MirGeneDB is however also supported.
 
 
 ## Other sncRNA
@@ -80,5 +80,5 @@ mv hsa.hairpin.fa hairpin.fa
 mv hsa.miRNA.str miRNA.str
 ```
 
-The `create_mirgenedb_db.py` creates two files needed by `miraligner` - hairpin.fa and miRNA.str. These two files are stored in a folder available here, and are supplied to PerSeqPIPE through paramater `miraligner_db_url`.
+The `create_mirgenedb_db.py` creates two files needed by `miraligner` - hairpin.fa and miRNA.str. These two files are stored in a folder available here, and are supplied to PerSeqPIPE through parameter `miraligner_db_url`.
 

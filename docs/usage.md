@@ -21,7 +21,7 @@
 > If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section [Running tests](#running-tests)) first before processing actual data.
 
 > [!IMPORTANT]
-> As of Nextflow 26.04 and higher, a strict syntax parser is enabled by default. For the current release PerSeqPIPE, if running with Nextlfow 26.04 or higher disable the strict syntax parser using command `export NXF_SYNTAX_PARSER=v1` prior to running the pipeline. Support of strict syntax parser will be added in the next release.
+> As of Nextflow 26.04 and higher, a strict syntax parser is enabled by default. For the current release PerSeqPIPE, if running with Nextflow 26.04 or higher disable the strict syntax parser using command `export NXF_SYNTAX_PARSER=v1` prior to running the pipeline. Support of strict syntax parser will be added in the next release.
 
 To run PerSeqPIPE (both for downloading reference files and analysis of actual data), first download the repository locally and navigate to the `perseqpipe/` directory. Then run PerSeqPIPE using the following command:
 
@@ -62,7 +62,7 @@ nextflow run main.nf --download_reference_rrna
 nextflow run main.nf --download_reference_genome
 ```
 
-Either way, the STAR index folders are downloaded and unzipped into `./resources/star_rrna` and `./resources/star_genome` respectively, and the sncRNA GTF/miRNA overlap files are placed into `./resources/` too. On every subsequent run, PerSeqPIPE checks whether these files already exist and are complete - if so it reuses them as-is, and only re-downloads whatever is still missing. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
+Either way, the STAR index folders are downloaded and unzipped into `./resources/star_rrna` and `./resources/star_genome` respectively. The genome reference download also places the sncRNA GTF and miRNA overlap file into `./resources/`, and downloads the miRNA database selected by `--miraligner_db` (`mirbase` by default or `mirgenedb`). On every subsequent run, PerSeqPIPE checks whether these files are already present and complete - if so it reuses them as-is, and only re-downloads whatever is still missing. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
 
 > [!WARNING]
 > Downloading STAR index for whole genome will take some time (based on download speed, can be up to 40min) as the compressed index has size of ~9GB.
@@ -71,7 +71,7 @@ Either way, the STAR index folders are downloaded and unzipped into `./resources
 > The reference files are always downloaded into the `resources/` folder within the launch directory. When analyzing real data, PerSeqPIPE expects to find the `resources/` folder in the directory from which it is launched (unless specified otherwise via the `--index_genome_path` or `--index_rrna_path` parameters). If the pipeline is launched from a different directory than the one containing the `resources/` folder and the reference path is not specified correctly, it will terminate with an error.
 
 > [!NOTE]
-> Altough no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.
+> Although no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.
 
 ## Running PerSeqPIPE
 
@@ -112,7 +112,7 @@ For list of available library types `<LIB_TYPE>`, see [Parameters](parameters.md
 As mentioned in section [Module description](module_description.md), PerSeqPIPE consists of six sequential modules. The selected module determines the **final module in the execution chain**, and all preceding modules are executed automatically. Which module is executed can be controlled using the following parameters:
 
 
-| parameter             | decription                              |
+| parameter             | description                              |
 |-----------------------|-----------------------------------------|
 | `--run_firstqc`       | Run FIRSTQC module only                 |
 | `--run_preprocessing` | Run modules up to PREPROCESSING         |
