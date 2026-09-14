@@ -254,10 +254,10 @@ if (!is.null(design_file)) {
 final_data <- merge(merged_data, final_annotation, by = "sequence", all.x = TRUE)
 
 # Write raw counts
-write.table(merged_data, file = "sncrna_raw_counts.tsv", sep = "\t", row.names = TRUE, quote = FALSE)
+write.table(merged_data, file = "sncrna_raw_counts.tsv", sep = "\t", row.names = FALSE, quote = FALSE)
 
 # Write raw counts with annotation
-write.table(final_data, file = "sncrna_raw_counts_annotated.tsv", sep = "\t", row.names = TRUE, quote = FALSE)
+write.table(final_data, file = "sncrna_raw_counts_annotated.tsv", sep = "\t", row.names = FALSE, quote = FALSE)
 
 # Save cleaned counts and design into R data object
 analysis_data_cleaned <- list(

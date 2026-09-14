@@ -92,8 +92,8 @@
 
 - [MiRBase](https://pmc.ncbi.nlm.nih.gov/articles/PMC1347474/)
 
-> Kozomara A, Birgaoanu M, Griffiths-Jones S. (2019) miRBase: from microRNA sequences to function. Nucleic Acids Research, 47(D1):D155–D162. PMID: 30423142 [1] (https://ngdc.cncb.ac.cn/databasecommons/database/id/165), [2] (https://research.manchester.ac.uk/en/publications/mirbase-from-microrna-sequences-to-function/)
+> Kozomara A, Birgaoanu M, Griffiths-Jones S. (2019) miRBase: from microRNA sequences to function. Nucleic Acids Research, 47(D1):D155–D162. PMID: 30423142
 
-- [MirGeneDB](https://pubmed.ncbi.nlm.nih.gov/31598695/)
+- [MirGeneDB](https://pubmed.ncbi.nlm.nih.gov/39673268/)
 
-> Fromm B, Domanska D, Høye E, et al. MirGeneDB 2.0: the metazoan microRNA complement. Nucleic Acids Res. 2020;48(D1):D132-D141. doi:10.1093/nar/gkz885
+> Clarke AW, Høye E, Hembrom AA, et al. MirGeneDB 3.0: improved taxonomic sampling, uniform nomenclature of novel conserved microRNA families and updated covariance models. Nucleic Acids Res. 2025;53(D1):D116-D128. doi:10.1093/nar/gkae1094

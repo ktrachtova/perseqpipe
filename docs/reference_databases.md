@@ -80,5 +80,5 @@ mv hsa.hairpin.fa hairpin.fa
 mv hsa.miRNA.str miRNA.str
 ```
 
-The `create_mirgenedb_db.py` creates two files needed by `miraligner` - hairpin.fa and miRNA.str. These two files are stored in a folder available here, and are supplied to PerSeqPIPE through parameter `miraligner_db_url`.
+The `create_mirgenedb_db.py` creates two files needed by `miraligner` - hairpin.fa and miRNA.str. These two files are stored in a folder available here, and are supplied to PerSeqPIPE through parameters `mirgenedb_db` and `mirgenedb_db_path`. 
 

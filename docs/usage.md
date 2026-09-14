@@ -7,8 +7,6 @@
   - [Samplesheet input](#samplesheet-input)
   - [PerSeqPIPE module execution](#perseqpipe-module-execution)
   - [Parameters](#parameters)
-- [Updating the pipeline](#updating-the-pipeline)
-- [Reproducibility](#reproducibility)
 - [Core Nextflow arguments](#core-nextflow-arguments)
 - [Custom configuration](#custom-configuration)
   - [Resource requests](#resource-requests)

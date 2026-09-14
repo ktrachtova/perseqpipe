@@ -19,7 +19,7 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--run_preprocessing` | boolean | Run modules up to (including) PREPROCESSING module |
 | `--run_rrna` | boolean | Run modules up to (including) RRNA_QUANTIFICATION |
 | `--run_mirna` | boolean | Run modules up to (including) MIRNA_QUANTIFICATION |
-| `--run_sncrna` | boolean | Run modules up to (including) GENOME_QUANTIFICATION |
+| `--run_sncrna` | boolean | Run modules up to (including) SNCRNA_QUANTIFICATION |
 | `--run_full` | boolean | Run all modules of the PerSeqPIPE pipeline |
 | `--miraligner_db` | string | Database used for miRNA/isomiR quantification using miraligner tool, one of `['mirbase', 'mirgenedb']`. Default = `mirbase`. |
 

@@ -4,7 +4,7 @@
     ktrachtova/perseqpipe
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github :        https://github.com/ktrachtova/perseqpipe
-    Documentation : https://github.com/ktrachtova/perseqpipe/docs
+    Documentation : https://github.com/ktrachtova/perseqpipe/tree/main/docs
     Email :         k.trachtova@gmail.com, karolina.trachtova@ceitec.muni.cz
 ----------------------------------------------------------------------------------------
 */

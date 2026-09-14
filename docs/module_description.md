@@ -43,7 +43,8 @@ Currently supported library preparation kits:
 * NEXTFLEX Small RNA-Seq Kit V4  
 * CleanTag Small RNA Library Preparation Kit (TriLink)  
 * Small RNA-Seq Library Prep Kit (Lexogen)  
-* Small RNA Sequencing Novogene  
+* Small RNA Sequencing Novogene 
+* Norgen Small RNA Library Prep Kit
 
 ## Module 3️⃣: rRNA quantification  
 

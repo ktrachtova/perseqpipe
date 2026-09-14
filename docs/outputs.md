@@ -36,14 +36,14 @@ my_project/
           star_genome/
           stats/
       mirna/
-          miraligner/
+          miraligner_mirna/
           stats/
       rrna/
           star_rrna/
           stats/
   de_analysis/
       mirna_isomirs/
-      srna/
+      sncrna/
   pipeline_info/
 ```
 
