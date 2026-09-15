@@ -92,7 +92,8 @@ Other outputs of **RRNA_QUANTIFICATION** module are:
 
 *  Folder `my_project/rna_quantification/rrna/stats` contains simple TXT files (`*.rrna.multi.counts.txt`, `.rrna.uniq.counts.txt` and `.rrna.unmapped.counts.txt`) with number of aligned (uniquely and multi-mapping) and unmapped reads. These files are used to create final statistics report summarizing read numbers after rRNA contamination removal (for more information see section [Reads statistics](#reads-statistics)).
 
-> [!IMPORTANT] When examining results from the STAR, specifically its `.Log.final.out` files, please keep in mind that alignment statistics there are based on input FASTQ files which contain **collapsed** reads.
+> [!IMPORTANT]
+> When examining results from the STAR, specifically its `.Log.final.out` files, please keep in mind that alignment statistics there are based on input FASTQ files which contain **collapsed** reads.
 >
 > Number of non-collapsed aligned/unmapped reads is calculated by PerSeqPIPE using information in the header of input FASTQ files and is saved inside the various `*.counts.txt` files and then summarized into final read statistics report as described in section [Reads statistics](#reads-statistics).
 

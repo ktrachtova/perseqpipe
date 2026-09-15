@@ -99,7 +99,7 @@ Additionally, likelihood ratio test (LRT) will also be performed. The likelihood
 
 ## Filtering low-expressed sequences
 
-It is highly recommended to filter out low-expressed sequences (for both miRNA/isomiRs and sncRNA) prior to evaluating differentially expressed genes. This improves dispersion estimation and hence avoid unreliable fold changes and p-values. Unless specified otherwise, at least 20 reads in at least 3 samples are required (for both miRNA/isomiRs and sncRNA DE analysis). However, user can specify parameter `--sncrna_expression_threshold X,Y` for sncRNA (or alternatively `—-mirna_expression_threshold` for miRNA and `--isomirs_expression_threshold` for isomiRs) to set expression threshold for specific number of samples. For example, `--sncrna_expression_threshold 20,3` will filter out any sncRNA sequences that do not have expression of at least 20 in at least 3 samples. This filtering happens on raw matrix of counts before calculating DE genes. See section [Pre-filtering](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering) of DESeq2 documentation for more information.
+It is highly recommended to filter out low-expressed sequences (for both miRNA/isomiRs and sncRNA) prior to evaluating differentially expressed genes. This improves dispersion estimation and hence avoid unreliable fold changes and p-values. Unless specified otherwise, at least 20 reads in at least 3 samples are required (for both miRNA/isomiRs and sncRNA DE analysis). However, user can specify parameter `--sncrna_expression_threshold X,Y` for sncRNA (or alternatively `--mirna_expression_threshold` for miRNA and `--isomirs_expression_threshold` for isomiRs) to set expression threshold for specific number of samples. For example, `--sncrna_expression_threshold 20,3` will filter out any sncRNA sequences that do not have expression of at least 20 in at least 3 samples. This filtering happens on raw matrix of counts before calculating DE genes. See section [Pre-filtering](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering) of DESeq2 documentation for more information.
 
 It is highly recommended to use this filtering when running sncRNA DE analysis as there are usually several thousands of distinct sequences which are often present in only one or two samples which introduces strong bias into the DE analysis!
 
@@ -147,7 +147,7 @@ Main outputs from sncRNA DE analysis if design file provided by user:
     * `pirna` column with known piRNA annotation
     * `trna` column with known tRNA annotation
     * `snorna` column with known snoRNA annotation
-    * `srna` column with other known small non-coding RNAs annotation (TO-DO: add link to documentation about reference preparation)
+    * `srna` column with other known small non-coding RNAs annotation
     * `mrna` column with known mRNA annotation
     * `lncrna` column with known lncRNA annotation
     * `genome_alignments` number of genomic alignments of a sequence
