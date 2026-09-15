@@ -1,0 +1,65 @@
+To: $email
+Subject: $subject
+Mime-Version: 1.0
+Content-Type: multipart/mixed; boundary="perseqpipe-mixed-boundary"
+
+--perseqpipe-mixed-boundary
+Content-Type: multipart/related; boundary="perseqpipe-related-boundary"
+
+--perseqpipe-related-boundary
+Content-Type: multipart/alternative; boundary="perseqpipe-alternative-boundary"
+
+--perseqpipe-alternative-boundary
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+$email_txt
+
+--perseqpipe-alternative-boundary
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+$email_html
+
+--perseqpipe-alternative-boundary--
+<%
+// Inline the pipeline logo as a related part so that the <img src="cid:..."> in
+// assets/email_template.html resolves. Skipped if the logo is missing, which
+// leaves a broken image rather than aborting the whole completion handler.
+def wrapBase64 = { String encoded ->
+    encoded.toList().collate(76).collect { chunk -> chunk.join() }.join("\n")
+}
+
+def logoFile = new File(projectDir.toString(), "assets/logo_light.png")
+if (logoFile.exists()) {
+    out << "\n--perseqpipe-related-boundary\n"
+    out << "Content-Type: image/png; name=\"" + logoFile.name + "\"\n"
+    out << "Content-Transfer-Encoding: base64\n"
+    out << "Content-ID: <nfcorepipelinelogo>\n"
+    out << "Content-Disposition: inline; filename=\"" + logoFile.name + "\"\n\n"
+    out << wrapBase64(logoFile.bytes.encodeBase64().toString())
+    out << "\n"
+}
+
+out << "\n--perseqpipe-related-boundary--\n"
+
+// Attach the MultiQC report, but only when it exists and stays within
+// --max_multiqc_email_size, so that a large report does not make the message
+// undeliverable.
+if (mqcFile != null) {
+    def mqcPath = mqcFile as java.nio.file.Path
+    if (java.nio.file.Files.exists(mqcPath)) {
+        def mqcSize = java.nio.file.Files.size(mqcPath)
+        def mqcName = mqcPath.getFileName().toString()
+        if (mqcSize <= (mqcMaxSize as Long)) {
+            out << "\n--perseqpipe-mixed-boundary\n"
+            out << "Content-Type: text/html; name=\"" + mqcName + "\"\n"
+            out << "Content-Transfer-Encoding: base64\n"
+            out << "Content-Disposition: attachment; filename=\"" + mqcName + "\"\n\n"
+            out << wrapBase64(java.nio.file.Files.readAllBytes(mqcPath).encodeBase64().toString())
+            out << "\n"
+        }
+    }
+}
+%>
+--perseqpipe-mixed-boundary--

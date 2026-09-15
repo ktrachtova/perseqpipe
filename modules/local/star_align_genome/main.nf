@@ -1,8 +1,7 @@
 process STAR_GENOME {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_high_memory'
 
-    conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/star:2.7.11b--822039d47adf19a7'
 
     input:
@@ -16,7 +15,15 @@ process STAR_GENOME {
 
     script:
     """
-    03c_star_genome.sh ${genome_index} ${reads} ${meta.id} $task.cpus
+    03c_star_genome.sh ${genome_index} ${reads} ${meta.id} $task.cpus \\
+        ${params.genome_outFilterMultimapNmax} \\
+        ${params.genome_outFilterMatchNmin} \\
+        ${params.genome_outFilterMismatchNoverReadLmax} \\
+        ${params.genome_outFilterMultimapScoreRange} \\
+        ${params.genome_outFilterScoreMinOverLread} \\
+        ${params.genome_outFilterMismatchNmax} \\
+        ${params.genome_alignIntronMax} \\
+        ${params.genome_alignIntronMin}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

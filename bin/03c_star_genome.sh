@@ -11,20 +11,30 @@ input_file=$2
 sample=$3
 threads=$4
 
+# STAR filtering/alignment parameters, exposed to the user; defaults match previous hardcoded values
+outFilterMultimapNmax=${5:-5000}
+outFilterMatchNmin=${6:-15}
+outFilterMismatchNoverReadLmax=${7:-0.05}
+outFilterMultimapScoreRange=${8:-0}
+outFilterScoreMinOverLread=${9:-0}
+outFilterMismatchNmax=${10:-999}
+alignIntronMax=${11:-1}
+alignIntronMin=${12:-2}
+
 STAR --runMode alignReads \
      --runThreadN $threads \
      --genomeDir ${index} \
      --readFilesCommand zcat \
      --readFilesIn ${input_file} \
      --outFileNamePrefix ${sample}.genome. \
-     --outFilterMultimapNmax 5000 \
-     --outFilterMatchNmin 15 \
-     --outFilterMismatchNoverReadLmax 0.05 \
-     --outFilterMultimapScoreRange 0 \
-     --outFilterScoreMinOverLread 0 \
-     --outFilterMismatchNmax 999 \
-     --alignIntronMax 1 \
-     --alignIntronMin 2 \
+     --outFilterMultimapNmax $outFilterMultimapNmax \
+     --outFilterMatchNmin $outFilterMatchNmin \
+     --outFilterMismatchNoverReadLmax $outFilterMismatchNoverReadLmax \
+     --outFilterMultimapScoreRange $outFilterMultimapScoreRange \
+     --outFilterScoreMinOverLread $outFilterScoreMinOverLread \
+     --outFilterMismatchNmax $outFilterMismatchNmax \
+     --alignIntronMax $alignIntronMax \
+     --alignIntronMin $alignIntronMin \
      --outSAMheaderHD @HD VN:1.4 SO:coordinate \
      --outSAMunmapped Within \
      --outReadsUnmapped Fastx \

@@ -10,15 +10,16 @@ miraligner_db=$1
 input_file=$2
 sample=$3
 miraligner_path=$4
-
-mismatch=1  # [0, 1] Allows only 0 or 1 mismatch
-add=3       # Max. number of additions (non-templated)
-trim=3      # Max. number of trimmings
+species=$5
+sub=${6:-1}
+trim=${7:-3}
+add=${8:-3}
+minl=${9:-16}
 
 # running miraligner
 echo "Processing $input_file"
 unpigz -c $input_file > ${input_file%.gz}
-java -jar ${miraligner_path} -freq -sub $mismatch -trim $trim -add $add -minl 16 -s hsa -i ./${input_file%.gz} -db $miraligner_db -o ./${sample}
+java -jar ${miraligner_path} -freq -sub $sub -trim $trim -add $add -minl $minl -s $species -i ./${input_file%.gz} -db $miraligner_db -o ./${sample}
 
 # extract mirna-aligner reads into FASTQ files
 cut -f2 ./${sample}.mirna | sort | uniq  > mapped.names
@@ -33,5 +34,5 @@ pigz ${sample}.mirna.unmapped.fastq
 rm mapped.names all.names nomap.names
 
 # create files with counts of both mapped and unmapped reads for overall statistics
-sed '1d' ./${sample}.mirna | cut -f2 | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ./${sample}.mirna.mapped.counts.txt
+sed '1d' ./${sample}.mirna | cut -f2 | sort -u | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ./${sample}.mirna.mapped.counts.txt
 zgrep '@seq' ${sample}.mirna.unmapped.fastq.gz | cut -d'x' -f2 | awk '{s+=$1} END {print s}' > ${sample}.mirna.unmapped.counts.txt

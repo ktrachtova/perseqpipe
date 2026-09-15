@@ -33,10 +33,51 @@
           "format": "directory-path",
           "description": "Path to STAR rRNA index."
         },
-        "miraligner_db_url": {
+        "mirbase_db": {
           "type": "string",
           "format": "uri",
           "description": "URL to download miRBase database for miraligner."
+        },
+        "mirbase_db_path": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "Path to the downloaded miRBase database for miraligner."
+        },
+        "mirgenedb_db": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download miRGenDB database for miraligner."
+        },
+        "mirgenedb_db_path": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "Path to the downloaded miRGenDB database for miraligner."
+        },
+        "miraligner_db": {
+          "type": "string",
+          "enum": ["mirbase", "mirgenedb"],
+          "default": "mirbase",
+          "description": "Database used for miRNA/isomiR quantification with miraligner: 'mirbase' or 'mirgenedb'."
+        },
+        "miraligner_sub": {
+          "type": "integer",
+          "default": 1,
+          "description": "Miraligner -sub mismatch filter value."
+        },
+        "miraligner_trim": {
+          "type": "integer",
+          "default": 3,
+          "description": "Miraligner -trim trimming allowance value."
+        },
+        "miraligner_add": {
+          "type": "integer",
+          "default": 3,
+          "description": "Miraligner -add addition allowance value."
+        },
+        "miraligner_minl": {
+          "type": "integer",
+          "default": 16,
+          "description": "Miraligner -minl minimum read length value."
         },
         "index_genome_url": {
           "type": "string",
@@ -67,6 +108,15 @@
           "type": "string",
           "format": "file-path",
           "description": "Path to miRNA overlap file."
+        },
+        "tdrnamer_db_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL to download the tDRnamer database tarball."
+        },
+        "tdrnamer_db_name": {
+          "type": "string",
+          "description": "Name of the extracted tDRnamer database folder/prefix, e.g. 'hg38'."
         }
       }
     },
@@ -76,6 +126,83 @@
         "sncrna_overlap": { "type": "integer" },
         "sncrna_overlap_frac": { "type": "number" },
         "reads_threshold": { "type": "integer" }
+      }
+    },
+    "star_genome_options": {
+      "type": "object",
+      "properties": {
+        "genome_outFilterMultimapNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapNmax for genome alignment."
+        },
+        "genome_outFilterMatchNmin": {
+          "type": "integer",
+          "description": "STAR --outFilterMatchNmin for genome alignment."
+        },
+        "genome_outFilterMismatchNoverReadLmax": {
+          "type": "number",
+          "description": "STAR --outFilterMismatchNoverReadLmax for genome alignment."
+        },
+        "genome_outFilterMultimapScoreRange": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapScoreRange for genome alignment."
+        },
+        "genome_outFilterScoreMinOverLread": {
+          "type": "number",
+          "description": "STAR --outFilterScoreMinOverLread for genome alignment."
+        },
+        "genome_outFilterMismatchNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMismatchNmax for genome alignment."
+        },
+        "genome_alignIntronMax": {
+          "type": "integer",
+          "description": "STAR --alignIntronMax for genome alignment."
+        },
+        "genome_alignIntronMin": {
+          "type": "integer",
+          "description": "STAR --alignIntronMin for genome alignment."
+        },
+        "rrna_outFilterMultimapNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapNmax for rRNA alignment."
+        },
+        "rrna_outFilterMatchNmin": {
+          "type": "integer",
+          "description": "STAR --outFilterMatchNmin for rRNA alignment."
+        },
+        "rrna_outFilterMismatchNoverReadLmax": {
+          "type": "number",
+          "description": "STAR --outFilterMismatchNoverReadLmax for rRNA alignment."
+        },
+        "rrna_outFilterMultimapScoreRange": {
+          "type": "integer",
+          "description": "STAR --outFilterMultimapScoreRange for rRNA alignment."
+        },
+        "rrna_outFilterScoreMinOverLread": {
+          "type": "number",
+          "description": "STAR --outFilterScoreMinOverLread for rRNA alignment."
+        },
+        "rrna_outFilterMismatchNmax": {
+          "type": "integer",
+          "description": "STAR --outFilterMismatchNmax for rRNA alignment."
+        },
+        "rrna_alignIntronMax": {
+          "type": "integer",
+          "description": "STAR --alignIntronMax for rRNA alignment."
+        },
+        "rrna_alignIntronMin": {
+          "type": "integer",
+          "description": "STAR --alignIntronMin for rRNA alignment."
+        },
+        "rrna_seedSearchStartLmax": {
+          "type": "integer",
+          "description": "STAR --seedSearchStartLmax for rRNA alignment."
+        },
+        "rrna_winAnchorMultimapNmax": {
+          "type": "integer",
+          "description": "STAR --winAnchorMultimapNmax for rRNA alignment."
+        }
       }
     },
     "preprocessing_options": {
@@ -196,6 +323,8 @@
     { "$ref": "#/$defs/reference_options" },
     { "$ref": "#/$defs/module_flags" },
     { "$ref": "#/$defs/preprocessing_options" },
+    { "$ref": "#/$defs/sncrna_quantification_options" },
+    { "$ref": "#/$defs/star_genome_options" },
     { "$ref": "#/$defs/de_analysis_options" },
     { "$ref": "#/$defs/multiqc_options" },
     { "$ref": "#/$defs/generic_execution_options" },
@@ -209,11 +338,12 @@
         }
       },
       "then": {
-        "required": ["lib_type", "outdir"],
+        "required": ["lib_type", "outdir", "input_samplesheet"],
         "errorMessage": {
           "required": {
             "lib_type": "Missing required parameter: --lib_type. Allowed values are: qiaseq, truseq, trilink, nebnext, nextflexV3, nextflexV4, lexogen, novogene, norgen.",
-            "outdir": "Missing required parameter: --outdir. Please specify an output directory (either in a config file or via --outdir)."
+            "outdir": "Missing required parameter: --outdir. Please specify an output directory (either in a config file or via --outdir).",
+            "input_samplesheet": "Missing required parameter: --input_samplesheet. Please specify a CSV samplesheet (either in a config file or via --input_samplesheet)."
           }
         }
       }

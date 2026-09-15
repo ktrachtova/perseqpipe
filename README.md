@@ -8,13 +8,13 @@
 
 ## ⭐ Introduction
 
-**PerSeqPIPE** is a modular Nextflow pipeline for small RNA-seq analysis. The pipeline supports joint analysis of multiple small non-coding RNA (sncRNA) classes, including miRNA, isomiRs, snoRNA, piRNA, tRNA fragments and other. It implements a sequence-centric quantification strategy to count and annotate each distinct read with all compatible genomic and transcriptomic features.
+**PerSeqPIPE** is a modular Nextflow pipeline for small RNA-seq analysis. The pipeline supports joint analysis of multiple small non-coding RNA (sncRNA) classes, including miRNA, isomiRs, snoRNA, piRNA, tRNA-derived fragments and other. It implements a sequence-centric quantification strategy to count and annotate each distinct read with all compatible genomic and transcriptomic features.
 
 For comprehensive annotation, PerSeqPIPE uses a precompiled [GTF file](https://zenodo.org/records/17700979) that integrates multiple sncRNA databases into one reusable resource. 
 
 <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/PerSeqPIPE.png">
-    <img alt="" src="docs/images/PerSeqPIPE.png" style="margin-bottom: 40px;">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/images/PerSeqPIPE_2.0.0.png">
+    <img alt="" src="docs/images/PerSeqPIPE_2.0.0.png" style="margin-bottom: 40px;">
 </picture>
 
 For detailed information about individual **PerSeqPIPE modules**, please refere to [Module description](docs/module_description.md) documentation.
@@ -34,7 +34,7 @@ Outputs of PerSeqPIPE individual modules are desribed in [Outputs](docs/outputs.
 
 ## ✅ Test data
 
-A full size example test results can be downloaded [here](https://osf.io/zne7g/files/osfstorage).
+A full size example test results can be downloaded [here](https://osf.io/zne7g/files/aw8v7).
 
 ## 🎺 Credits
 

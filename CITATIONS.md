@@ -18,9 +18,17 @@
 
 > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
 
-- [Cutadapt](https://pubmed.ncbi.nlm.nih.gov/28715235/)
+- [Cutadapt](https://journal.embnet.org/index.php/embnetjournal/article/view/200)
 
-> Kechin A, Boyarskikh U, Kel A, Filipenko M. cutPrimers: A New Tool for Accurate Cutting of Primers from Reads of Targeted Next Generation Sequencing. J Comput Biol. 2017 Nov;24(11):1138-1143. doi: 10.1089/cmb.2017.0096. Epub 2017 Jul 17. PMID: 28715235.
+> Marcel Mertin. Cutadapt removes adapter sequences from high-throughput sequencing reads. EMBnet.journal 17.1. https://doi.org/10.14806/ej.17.1.200.
+
+- [Samtools](https://pubmed.ncbi.nlm.nih.gov/33590861/)
+
+> Danecek P, Bonfield JK, Liddle J, et al. Twelve years of SAMtools and BCFtools. Gigascience. 2021;10(2):giab008. doi:10.1093/gigascience/giab008
+
+- [FASTX-Toolkit](http://hannonlab.cshl.edu/fastx_toolkit/)
+
+>  Hannon, G. J. FASTX-Toolkit. From Hannon Lab, Cold Spring Harbor Laboratory. Available online at: http://hannonlab.cshl.edu/fastx_toolkit/
 
 - [MMseqs2](https://www.nature.com/articles/nbt.3988)
 
@@ -62,6 +70,10 @@
 
 > Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK. limma powers differential expression analyses for RNA-sequencing and microarray studies. Nucleic Acids Res. 2015 Apr 20;43(7):e47. doi: 10.1093/nar/gkv007. Epub 2015 Jan 20. PMID: 25605792; PMCID: PMC4402510.
 
+- [tDRnamer](https://pmc.ncbi.nlm.nih.gov/articles/PMC10334869/)
+ 
+> Holmes AD, Chan PP, Chen Q, Ivanov P, Drouard L, Polacek N, Kay MA, Lowe TM. A standardized ontology for naming tRNA-derived RNAs based on molecular origin. Nat Methods. 2023 May;20(5):627-628. doi: 10.1038/s41592-023-01813-2. PMID: 36869120; PMCID: PMC10334869.
+
 ## Software packaging/containerisation tools
 
 - [BioContainers](https://pubmed.ncbi.nlm.nih.gov/28379341/)
@@ -71,3 +83,17 @@
 - [Docker](https://dl.acm.org/doi/10.5555/2600239.2600241)
 
   > Merkel, D. (2014). Docker: lightweight linux containers for consistent development and deployment. Linux Journal, 2014(239), 2. doi: 10.5555/2600239.2600241.
+
+- [Singularity](https://pubmed.ncbi.nlm.nih.gov/28494014/)
+
+  > Kurtzer GM, Sochat V, Bauer MW. Singularity: Scientific containers for mobility of compute. PLoS One. 2017 May 11;12(5):e0177459. doi: 10.1371/journal.pone.0177459. eCollection 2017. PubMed PMID: 28494014; PubMed Central PMCID: PMC5426675.
+
+## Databases
+
+- [MiRBase](https://pmc.ncbi.nlm.nih.gov/articles/PMC1347474/)
+
+> Kozomara A, Birgaoanu M, Griffiths-Jones S. (2019) miRBase: from microRNA sequences to function. Nucleic Acids Research, 47(D1):D155–D162. PMID: 30423142
+
+- [MirGeneDB](https://pubmed.ncbi.nlm.nih.gov/39673268/)
+
+> Clarke AW, Høye E, Hembrom AA, et al. MirGeneDB 3.0: improved taxonomic sampling, uniform nomenclature of novel conserved microRNA families and updated covariance models. Nucleic Acids Res. 2025;53(D1):D116-D128. doi:10.1093/nar/gkae1094

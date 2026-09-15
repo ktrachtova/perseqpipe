@@ -1,7 +1,6 @@
 process DESEQ2_MIRNA_ANALYSIS {
     label 'process_low'
 
-    conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_r-dplyr_r-readr:2c0e542d01296b58'
     
     input:

@@ -4,7 +4,7 @@
     ktrachtova/perseqpipe
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Github :        https://github.com/ktrachtova/perseqpipe
-    Documentation : https://github.com/ktrachtova/perseqpipe/docs
+    Documentation : https://github.com/ktrachtova/perseqpipe/tree/main/docs
     Email :         k.trachtova@gmail.com, karolina.trachtova@ceitec.muni.cz
 ----------------------------------------------------------------------------------------
 */
@@ -80,20 +80,27 @@ workflow {
                 '',
                 '',
                 '',
+                '',
+                '',
                 ''
-            ).out.star_index_dir
+            )
         }
 
-        // Conditionally download genome index
+        // Conditionally download genome index, annotation and the selected miRNA database
         if (params.download_reference_genome) {
+            def mirna_db_url  = params.miraligner_db == 'mirgenedb' ? params.mirgenedb_db      : params.mirbase_db
+            def mirna_db_path = params.miraligner_db == 'mirgenedb' ? params.mirgenedb_db_path : params.mirbase_db_path
+
             DOWNLOAD_REFERENCES(
                 params.index_genome_url,
                 params.index_genome_path,
                 params.sncrna_gtf_url,
                 params.sncrna_gtf_path,
                 params.mirna_overlap_url,
-                params.mirna_overlap_path
-            ).out.star_index_dir
+                params.mirna_overlap_path,
+                mirna_db_url,
+                mirna_db_path
+            )
         }
 
     } else {

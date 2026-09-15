@@ -50,7 +50,7 @@ create_raw_norm_counts <- function(dds) {
     batch <- colData(dds)$batch
     condition <- colData(dds)$condition
     norm_counts <- limma::removeBatchEffect(norm_counts, batch = batch, design = model.matrix(~ condition))
-    vst_counts <- limma:removeBatchEffect(vst_counts, batch = batch, design = model.matrix(~ condition))
+    vst_counts <- limma::removeBatchEffect(vst_counts, batch = batch, design = model.matrix(~ condition))
   }
   
   norm_counts <- as.data.frame(norm_counts) %>%
@@ -87,21 +87,12 @@ create_raw_norm_counts <- function(dds) {
 args <- commandArgs(trailingOnly = TRUE)
 
 # Initialize parameters
-#expression_threshold <- 20
-#sample_threshold <- 6
-
-# Test 1
-#input_dir <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/rna_quantification/genome/counts"
-#design_file <- NULL
-#generate_counts_only <- TRUE
-
-# Test 2
-#input_dir <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_full/rna_quantification/genome/counts"
-#design_file <- "/Users/kaja/Public/nextflow/test_data/trilink_GSE262424/design_MM_PCL_EMD.txt"
-#generate_counts_only <- FALSE
-#sncrna_exp <- 20
-#sncrna_sample <- 6
-#setwd("/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/de_analysis2")
+# All optional arguments must default to NULL so that the is.null() checks below
+# work when the argument is not supplied (e.g. no design file -> counts only)
+input_dir <- NULL
+design_file <- NULL
+sncrna_exp <- NULL
+sncrna_sample <- NULL
 
 # Parse arguments
 i <- 1
@@ -215,7 +206,7 @@ for (file in input_files) {
   expression_data <- data[, c("sequence", "expression")]
 
   # Annotate expression data with the file name as the column name for expression
-  colnames(expression_data) <- c("sequence", gsub(".genome.*", "", basename(file)))
+  colnames(expression_data) <- c("sequence", gsub("\\.short_rna_counts.*$", "", basename(file)))
 
   # Save the expression data to the list
   df_list[[basename(file)]] <- expression_data
@@ -263,10 +254,10 @@ if (!is.null(design_file)) {
 final_data <- merge(merged_data, final_annotation, by = "sequence", all.x = TRUE)
 
 # Write raw counts
-write.table(merged_data, file = "sncrna_raw_counts.tsv", sep = "\t", row.names = TRUE, quote = FALSE)
+write.table(merged_data, file = "sncrna_raw_counts.tsv", sep = "\t", row.names = FALSE, quote = FALSE)
 
 # Write raw counts with annotation
-write.table(final_data, file = "sncrna_raw_counts_annotated.tsv", sep = "\t", row.names = TRUE, quote = FALSE)
+write.table(final_data, file = "sncrna_raw_counts_annotated.tsv", sep = "\t", row.names = FALSE, quote = FALSE)
 
 # Save cleaned counts and design into R data object
 analysis_data_cleaned <- list(
@@ -462,8 +453,15 @@ if (!is.null(design_file)) {
   
   # Merge with annotation
   final_results_annot <- merge(final_annotation, final_results, by.x = "sequence", by.y= "gene", all.x = FALSE, all.y = TRUE)
-  final_results_annot <- final_results_annot %>%
-    arrange(padj_lrt)
+  # Arrange results: prefer LRT padj if available, otherwise use first pairwise padj column
+  if ("padj_lrt" %in% colnames(final_results_annot)) {
+    final_results_annot <- final_results_annot %>% arrange(padj_lrt)
+  } else {
+    padj_cols <- grep("^padj_", colnames(final_results_annot), value = TRUE)
+    if (length(padj_cols) > 0) {
+      final_results_annot <- final_results_annot[order(final_results_annot[[padj_cols[1]]], na.last = TRUE), ]
+    }
+  }
   
   # Save result
   output_file <- paste0("DE_analysis_sncrna_results.tsv")

@@ -54,7 +54,7 @@ create_raw_norm_counts <- function(dds) {
     
     norm_counts <- limma::removeBatchEffect(norm_counts, batch = batch, design = model.matrix(~ condition))
     
-    vst_counts <- limma:removeBatchEffect(vst_counts, batch = batch, design = model.matrix(~ condition))
+    vst_counts <- limma::removeBatchEffect(vst_counts, batch = batch, design = model.matrix(~ condition))
   }
   
   norm_counts <- as.data.frame(norm_counts) %>%
@@ -92,39 +92,15 @@ create_raw_norm_counts <- function(dds) {
 args <- commandArgs(trailingOnly = TRUE)
 
 # Initialize variables
-# mirna_exp <- 20
-# mirna_sample <- 6
-# isomirs_exp <- 20
-# isomirs_sample <- 6
-
-# Testing 1
-#counts_mirna <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/rna_quantification/mirna/canonical_mirna_counts.tsv"
-#counts_isomirs <- NULL
-#design_file <- NULL
-#generate_counts_only <- TRUE
-#setwd("/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/de1")
-
-# Testing 2
-#counts_mirna <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/rna_quantification/mirna/canonical_mirna_counts.tsv"
-#counts_mirna <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/GSE262424_read_counts.tsv" -> original counts from Sabine
-#counts_isomirs <-  "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/rna_quantification/mirna/isomirs_counts.tsv"
-#design_file <- "/Users/kaja/Public/nextflow/test_data/trilink_GSE262424/design_MM_PCL_EMD.txt"
-#generate_counts_only <- FALSE
-#setwd("/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_test/de_analysis_manual")
-
-# Testing 3 - DEORECATED, full design file should be always supplied?
-#counts_mirna <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/rna_quantification/mirna/canonical_mirna_counts.tsv"
-#counts_isomirs <-  "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/rna_quantification/mirna/isomirs_counts.tsv"
-#design_file <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/design_EMDvsPCL.txt"
-#generate_counts_only <- FALSE
-#setwd("/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/de3")
-
-# Testing 4
-#counts_mirna <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/rna_quantification/mirna/canonical_mirna_counts.tsv"
-#counts_isomirs <-  "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/rna_quantification/mirna/isomirs_counts.tsv"
-#design_file <- "/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/design_EMDvsPCLvsMM.txt"
-#generate_counts_only <- FALSE
-#setwd("/Users/kaja/Public/nextflow_results/docker_trilink_GSE262424_DE/de4")
+# All optional arguments must default to NULL so that the is.null() checks below
+# work when the argument is not supplied (e.g. no design file -> counts only)
+counts_mirna <- NULL
+counts_isomirs <- NULL
+design_file <- NULL
+mirna_exp <- NULL
+mirna_sample <- NULL
+isomirs_exp <- NULL
+isomirs_sample <- NULL
 
 # Parse arguments
 i <- 1
@@ -383,7 +359,7 @@ if (!is.null(design_file)) {
     }
     
     if (name == "isomirs") {
-      if (!is.null(mirna_exp) && !is.null(mirna_sample)) {
+      if (!is.null(isomirs_exp) && !is.null(isomirs_sample)) {
         message(sprintf("Filtering isomiRs counts based on expression ≥ %d in at least %d samples",
                         isomirs_exp, isomirs_sample))
         dds <- dds[rowSums(counts(dds) >= isomirs_exp) >= isomirs_sample, ]
@@ -465,8 +441,18 @@ if (!is.null(design_file)) {
       final_results <- pairwise_results[[1]]
     }
     
-    final_results <- final_results %>%
-      arrange(padj_lrt)
+    # Arrange results: prefer LRT padj if available, otherwise use first pairwise padj column
+    if ("padj_lrt" %in% colnames(final_results)) {
+      message("Arranging results by LRT adjusted p-value")
+      final_results <- final_results %>% arrange(padj_lrt)
+    } else {
+      message("Arranging results by first pairwise adjusted p-value")
+      padj_cols <- grep("^padj_", colnames(final_results), value = TRUE)
+      if (length(padj_cols) > 0) {
+        # arrange by the first padj column (the single pairwise comparison)
+        final_results <- final_results[order(final_results[[padj_cols[1]]], na.last = TRUE), ]
+      }
+    }
     
     # Save result
     output_file <- paste0("DE_analysis_", name, "_results.tsv")

@@ -77,7 +77,7 @@ $commandLine</pre
         "
       >
         <tbody style="border-bottom: 1px solid #ddd">
-          <% out << summary.collect{ k,v -> "
+          <% out << summary.collect{ k,v -> """
           <tr>
             <th
               style="
@@ -102,7 +102,7 @@ $commandLine</pre
               <pre style="white-space: pre-wrap; overflow: visible">$v</pre>
             </td>
           </tr>
-          " }.join("\n") %>
+          """ }.join("\n") %>
         </tbody>
       </table>
 

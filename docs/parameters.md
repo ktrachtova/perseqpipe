@@ -4,7 +4,7 @@
 
 | parameter              | type   | description                                    |
 | -----------------------|--------|------------------------------------------------|
-| `--input_samplesheet`  | string | (Required) Path to the comma-separated file contianing sample information |
+| `--input_samplesheet`  | string | (Required) Path to the comma-separated file containing sample information |
 | `--outdir`             | string | (Required) The output directory where all results will be saved. |
 
 ## Module control flags
@@ -14,14 +14,14 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | parameter              | type   | description                                    |
 | -----------------------|--------|------------------------------------------------|
 | `--download_reference_rrna` | boolean | Download rRNA STAR index, no actual analysis will be performed |
-| `--download_reference_genome` | boolean | Download human STAR index and custom sncRNA GTF file |
+| `--download_reference_genome` | boolean | Download the human STAR index, custom sncRNA GTF file, miRNA overlap file, and the miRNA database selected by `--miraligner_db` |
 | `--run_firstqc` | boolean | Run only FIRSTQC module |
 | `--run_preprocessing` | boolean | Run modules up to (including) PREPROCESSING module |
 | `--run_rrna` | boolean | Run modules up to (including) RRNA_QUANTIFICATION |
 | `--run_mirna` | boolean | Run modules up to (including) MIRNA_QUANTIFICATION |
-| `--run_sncrna` | boolean | Run modules up to (including) GENOME_QUANTIFICATION |
+| `--run_sncrna` | boolean | Run modules up to (including) SNCRNA_QUANTIFICATION |
 | `--run_full` | boolean | Run all modules of the PerSeqPIPE pipeline |
-
+| `--miraligner_db` | string | Database used for miRNA/isomiR quantification using miraligner tool, one of `['mirbase', 'mirgenedb']`. Default = `mirbase`. |
 
 ## Reference and annotation options
 
@@ -29,11 +29,18 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | -----------------------|--------|------------------------------------------------|
 | `--index_rrna_url`     | string | Link to .tar.gz compressed STAR rRNA index     |
 | `--index_rrna_path`    | string | Path to download STAR rRNA index               |
-| `--miraligner_db_url`  | string | Link to .tar.gz compressed miraligner database |          
+| `--mirbase_db`         | string | Link to .tar.gz compressed miRbase database    | 
+| `--mirbase_db_path`    | string | Path to downloaded miRbase database            |
+| `--mirgenedb_db`       | string | Link to tar.gz compressed MirGeneDB database   |      
+| `--mirgenedb_db_path`  | string | Path to downloaded MirGeneDB database          |
 | `--index_genome_url`   | string | Link to .tar.gz compressed STAR GRCh38 index   |
 | `--index_genome_path`  | string | Path to download STAR GRCh38 index             |
 | `--sncrna_gtf_url`     | string | Link to .tar.gz compressed custom sncRNA GTF   |
 | `--sncrna_gtf_path`    | string | Path to downloaded custom sncRNA GTF           |
+| `--mirna_overlap_url`  | string | Link to download the miRNA/sncRNA overlap static file |
+| `--mirna_overlap_path` | string | Path to the miRNA/sncRNA overlap static file   |
+| `--tdrnamer_db_url`    | string | Link to .tar.gz compressed tDRnamer database   |
+| `--tdrnamer_db_name`   | string | Name of the extracted tDRnamer database folder/prefix, e.g. `hg38` |
 
 ## Preprocessing options
 
@@ -55,6 +62,43 @@ Specifying one of the following parameters is required to run PerSeqPIPE.
 | `--sncrna_overlap` | integer | Minimum total number of base pairs that a read must overlap an annotated feature for the read to be counted (e.g., 5 requires at least 5 bp of overlap). Default = 5. |
 | `--sncrna_overlap_frac` | number | Minimum fraction of a read’s length that must overlap an annotated feature for the read to be counted (e.g., 1.0 requires full-length overlap, 0.5 requires at least 50%). |
 | `--reads_threshold` | integer | Minimal expression of a read to be counted during sncRNA quantification. Any read with expression lower than this threshold will be omitted from the sncRNA quantification results. Default = 1.|
+
+## miRNA quantification options
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--miraligner_sub`    | integer | Miraligner `-sub` mismatch allowance. Default = 1. |
+| `--miraligner_trim`   | integer | Miraligner `-trim` trimming allowance. Default = 3. |
+| `--miraligner_add`    | integer | Miraligner `-add` non-templated addition allowance. Default = 3. |
+| `--miraligner_minl`   | integer | Miraligner `-minl` minimum read length. Default = 16. |
+
+## STAR genome alignment options
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--genome_outFilterMultimapNmax` | integer | STAR `--outFilterMultimapNmax` for genome alignment. Default = 5000. |
+| `--genome_outFilterMatchNmin` | integer | STAR `--outFilterMatchNmin` for genome alignment. Default = 15. |
+| `--genome_outFilterMismatchNoverReadLmax` | number | STAR `--outFilterMismatchNoverReadLmax` for genome alignment. Default = 0.05. |
+| `--genome_outFilterMultimapScoreRange` | integer | STAR `--outFilterMultimapScoreRange` for genome alignment. Default = 0. |
+| `--genome_outFilterScoreMinOverLread` | number | STAR `--outFilterScoreMinOverLread` for genome alignment. Default = 0. |
+| `--genome_outFilterMismatchNmax` | integer | STAR `--outFilterMismatchNmax` for genome alignment. Default = 999. |
+| `--genome_alignIntronMax` | integer | STAR `--alignIntronMax` for genome alignment. Default = 1. |
+| `--genome_alignIntronMin` | integer | STAR `--alignIntronMin` for genome alignment. Default = 2. |
+
+## STAR rRNA alignment options
+
+| parameter              | type   | description                                    |
+| -----------------------|--------|------------------------------------------------|
+| `--rrna_outFilterMultimapNmax` | integer | STAR `--outFilterMultimapNmax` for rRNA alignment. Default = 5000. |
+| `--rrna_outFilterMatchNmin` | integer | STAR `--outFilterMatchNmin` for rRNA alignment. Default = 15. |
+| `--rrna_outFilterMismatchNoverReadLmax` | number | STAR `--outFilterMismatchNoverReadLmax` for rRNA alignment. Default = 0.05. |
+| `--rrna_outFilterMultimapScoreRange` | integer | STAR `--outFilterMultimapScoreRange` for rRNA alignment. Default = 0. |
+| `--rrna_outFilterScoreMinOverLread` | number | STAR `--outFilterScoreMinOverLread` for rRNA alignment. Default = 0. |
+| `--rrna_outFilterMismatchNmax` | integer | STAR `--outFilterMismatchNmax` for rRNA alignment. Default = 999. |
+| `--rrna_alignIntronMax` | integer | STAR `--alignIntronMax` for rRNA alignment. Default = 1. |
+| `--rrna_alignIntronMin` | integer | STAR `--alignIntronMin` for rRNA alignment. Default = 2. |
+| `--rrna_seedSearchStartLmax` | integer | STAR `--seedSearchStartLmax` for rRNA alignment. Default = 10. |
+| `--rrna_winAnchorMultimapNmax` | integer | STAR `--winAnchorMultimapNmax` for rRNA alignment. Default = 1000. |
 
 ## DE analysis options
 

@@ -15,7 +15,7 @@
 
 ## Output directory structure
 
-Below is a general directory structure of outputs when pipeline is executed with parameter `--full-run` (running all modules of PerSeqPIPE). In case only specific modules were run (for example, DE analysis was omitted), then output folder corresponding to that module will be missing.
+Below is a general directory structure of outputs when pipeline is executed with parameter `--run_full` (running all modules of PerSeqPIPE). In case only specific modules were run (for example, DE analysis was omitted), then output folder corresponding to that module will be missing.
 
 ```
 my_project/
@@ -36,14 +36,14 @@ my_project/
           star_genome/
           stats/
       mirna/
-          miraligner/
+          miraligner_mirna/
           stats/
       rrna/
           star_rrna/
           stats/
   de_analysis/
       mirna_isomirs/
-      srna/
+      sncrna/
   pipeline_info/
 ```
 
@@ -92,7 +92,8 @@ Other outputs of **RRNA_QUANTIFICATION** module are:
 
 *  Folder `my_project/rna_quantification/rrna/stats` contains simple TXT files (`*.rrna.multi.counts.txt`, `.rrna.uniq.counts.txt` and `.rrna.unmapped.counts.txt`) with number of aligned (uniquely and multi-mapping) and unmapped reads. These files are used to create final statistics report summarizing read numbers after rRNA contamination removal (for more information see section [Reads statistics](#reads-statistics)).
 
-> [!IMPORTANT] When examining results from the STAR, specifically its `.Log.final.out` files, please keep in mind that alignment statistics there are based on input FASTQ files which contain **collapsed** reads.
+> [!IMPORTANT]
+> When examining results from the STAR, specifically its `.Log.final.out` files, please keep in mind that alignment statistics there are based on input FASTQ files which contain **collapsed** reads.
 >
 > Number of non-collapsed aligned/unmapped reads is calculated by PerSeqPIPE using information in the header of input FASTQ files and is saved inside the various `*.counts.txt` files and then summarized into final read statistics report as described in section [Reads statistics](#reads-statistics).
 
@@ -120,13 +121,16 @@ Results from the **SNCRNA_QUANTIFICATION** module are stored inside `my_project/
 
 Main outputs of **SNCRNA_QUANTIFICATION** module are:
 
-* `{sample_id}.genome.short_rna_counts.tsv` files created by a custom quantification script contain the number of raw reads for all various sncRNAs, for more information about these files see section [**sncRNA quantification output file format**](#sncrna-quantification-output-file-format). Files are stored inside folder `my_project/rna_quantification/genome/counts/`.
+* `{sample_id}.genome.short_rna_counts.tsv` files created by a custom quantification script and further annotated with tDR names by the **TDRNAMER** process (using [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer)) contain the number of raw reads for all various sncRNAs, for more information about these files see section [**sncRNA quantification output file format**](#sncrna-quantification-output-file-format). Files are stored inside folder `my_project/rna_quantification/genome/counts/`.
+
 
 Other outputs of **SNCRNA_QUANTIFICATION** module are:
 
 * Files produced by STAR aligner, such as `*.Aligned.out.bam`, `*.Log.final.out` etc., for more information about outputs of STAR refer to its documentation. These files are stored in folder `my_project/rna_quantification/genome/star_genome/`.
 
 * Folder `my_project/rna_quantification/genome/stats` contains simple TXT files (`*.genome.multi.counts.txt`, `.genome.uniq.counts.txt` and `.genome.unmapped.counts.txt`) with number of aligned (uniquely and multi-mapping) and unmapped reads. These files are used to create final statistics report summarizing read numbers after genome alignment (for more information see section **Reads statistics**).
+
+* Folder `my_project/rna_quantification/genome/counts/intermediate_files` containing intermediate quantification results with suffix `.genome.short_rna_counts.tsv`; these are files before annotation by tDRnamer tool, otherwise identical to `.genome.short_rna_counts.tsv`.
 
 > [!IMPORTANT]
 > When examining results from the STAR, specifically its `.Log.final.out` files, please keep in mind that alignment statistics there are based on input FASTQ files which contain **collapsed** reads.
@@ -171,7 +175,7 @@ A comprehensive read statistics is automatically generated at the end of PerSeqP
   * `mirna_mapped_reads_%` is percentage of reads aligning to miRNA precursors
   * `mirna_unmapped_reads` is number of miRNA unmapped reads
   * `mirna_unmapped_reads_%` is percentage of miRNA unmapped reads
-5. From **GENOME_QUANTIFICATION** module
+5. From **SNCRNA_QUANTIFICATION** module
   * `genome_multimapped_reads` is number of reads multi-mapping to genome
   * `genome_multimapped_reads_%` is percentage of reads multi-mapping to genome
   * `genome_unique_reads` is number of reads uniquely aligning to genome
@@ -197,6 +201,8 @@ Per-sample tab-separated files with suffix `.short_rna_counts.tsv` contain resul
 * `lncrna` list of lncRNA that overlap alignment loci of given read
 * `genome_alignments` number of individual genomic loci to which given read aligned to
 * `MINT_plate` contains sequence-specific and unique identifier (license-plate), more information [here](https://github.com/TJU-CMC-Org/MINTplates)
+* `tdr_name` contains the standardized tRNA-derived RNA (tDR) name assigned by [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer); blank if the sequence was not recognized as a tDR
+
 
 For all annotation columns, the user can see none, one or multiple RNAs reported, separated by comma. Each RNA annotation can contain multiple sncRNA IDs, separated by `|` (pipe). This means that when creating the annotation GTF file, multiple sncRNAs with identical sequence were identified across different databases. For example, 1 piRNA sequence present in 3 databases (each has its own naming system) will be shown as `hsa-piR-1|piR-1|URS00000X`.
 

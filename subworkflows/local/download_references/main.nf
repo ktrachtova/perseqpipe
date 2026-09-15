@@ -11,7 +11,6 @@
 */
 process DOWNLOAD_REFERENCE_FILES {
     tag "Download reference files"
-    publishDir '.', mode: 'copy', overwrite: true
 
     input:
     val index_url
@@ -20,27 +19,40 @@ process DOWNLOAD_REFERENCE_FILES {
     val gtf_path
     val mirna_url
     val mirna_path
+    val mirna_db_url
+    val mirna_db_path
 
     output:
-    path "${index_path}", emit: star_index_dir
+    path "${index_path}", optional: true, emit: star_index_dir
     path "${gtf_path}", optional: true, emit: gtf_file
     path "${mirna_path}", optional: true, emit: mirna_path
+    path "${mirna_db_path}", optional: true, emit: mirna_db_dir
 
     script:
 
-    def index_folder = index_path.toString().tokenize('/').last()
+    def index_folder = index_path ? index_path.toString().tokenize('/').last() : null
     def gtf_file_name = gtf_path ? gtf_path.toString().tokenize('/').last() : null
     def mirna_file_name = mirna_path ? mirna_path.toString().tokenize('/').last() : null
+    def mirna_db_folder = mirna_db_path ? mirna_db_path.toString().tokenize('/').last() : null
 
     """
     mkdir -p resources
     cd resources
 
-    echo "Downloading STAR index from ${index_url}"
-    wget -S --max-redirect=20 --tries=10 --waitretry=30 --timeout=60 --retry-connrefused ${index_url} -O ${index_folder}.tar.gz
-    tar -xzf ${index_folder}.tar.gz
-    rm ${index_folder}.tar.gz
- 
+    if [ ! -z "${index_url}" ]; then
+        echo "Downloading STAR index from ${index_url}"
+        wget -S --max-redirect=20 --tries=10 --waitretry=30 --timeout=60 --retry-connrefused ${index_url} -O ${index_folder}.tar.gz
+        tar -xzf ${index_folder}.tar.gz
+        rm ${index_folder}.tar.gz
+    fi
+
+    if [ ! -z "${mirna_db_url}" ]; then
+        echo "Downloading miRNA database from ${mirna_db_url}"
+        wget -S --max-redirect=20 --tries=10 --waitretry=30 --timeout=60 --retry-connrefused ${mirna_db_url} -O ${mirna_db_folder}.tar.gz
+        tar -xzf ${mirna_db_folder}.tar.gz
+        rm ${mirna_db_folder}.tar.gz
+    fi
+
     if [ ! -z "${gtf_url}" ]; then
         echo "Downloading GTF from ${gtf_url}"
         wget -q ${gtf_url} -O ${gtf_file_name}.gz
@@ -67,7 +79,15 @@ workflow DOWNLOAD_REFERENCES {
         gtf_path
         mirna_url
         mirna_path
+        mirna_db_url
+        mirna_db_path
 
     main:
-    DOWNLOAD_REFERENCE_FILES(index_url, index_path, gtf_url, gtf_path, mirna_url, mirna_path)
+    DOWNLOAD_REFERENCE_FILES(index_url, index_path, gtf_url, gtf_path, mirna_url, mirna_path, mirna_db_url, mirna_db_path)
+
+    emit:
+    star_index_dir = DOWNLOAD_REFERENCE_FILES.out.star_index_dir
+    gtf_file       = DOWNLOAD_REFERENCE_FILES.out.gtf_file
+    mirna_path     = DOWNLOAD_REFERENCE_FILES.out.mirna_path
+    mirna_db_dir   = DOWNLOAD_REFERENCE_FILES.out.mirna_db_dir
 }

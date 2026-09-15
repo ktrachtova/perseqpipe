@@ -5,6 +5,9 @@
 #
 set -euo pipefail
 
+# Prevent Java hsperfdata conflicts when running inside containers
+export JAVA_TOOL_OPTIONS="-XX:+PerfDisableSharedMem"
+
 SAMPLE=$1
 THREADS=$2
 
@@ -85,7 +88,7 @@ echo "####################################################"
 
 echo "$(date +%s) Started collapsing reads for sample $SAMPLE"
 
-gunzip -c ./intermediate_files/r4base_trim/$(basename $SAMPLE .fastq.gz).ad3trim.r4trim.fastq.gz | fastx_collapser -Q$QUALITY | reformat.sh qfake=40 in=stdin.fa out=stdout.fq > $(basename $SAMPLE .fastq.gz).cleaned.fastq
+gunzip -c ./intermediate_files/r4base_trim/$(basename $SAMPLE .fastq.gz).ad3trim.r4trim.fastq.gz | fastx_collapser -Q$QUALITY | reformat.sh qfake=40 in=stdin.fa out=$(basename $SAMPLE .fastq.gz).cleaned.fastq
 
 echo "$(date +%s) Finished collapsing sample $SAMPLE"
 

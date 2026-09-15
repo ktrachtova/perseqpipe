@@ -43,7 +43,8 @@ Currently supported library preparation kits:
 * NEXTFLEX Small RNA-Seq Kit V4  
 * CleanTag Small RNA Library Preparation Kit (TriLink)  
 * Small RNA-Seq Library Prep Kit (Lexogen)  
-* Small RNA Sequencing Novogene  
+* Small RNA Sequencing Novogene 
+* Norgen Small RNA Library Prep Kit
 
 ## Module 3️⃣: rRNA quantification  
 
@@ -51,7 +52,7 @@ Cleaned reads from preprocessing are aligned to a custom set of rRNA sequences (
 
 ## Module 4️⃣: miRNA/isomiR quantification  
 
-Reads unmapped to rRNA are aligned to miRNA precursor sequences using the `miraligner` tool (by default miRBase v22; alternatively, v21 can be chosen using the parameter `--mirbase_version`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
+Reads unmapped to rRNA are aligned to miRNA precursor sequences using the `miraligner` tool (by default miRBase v22, MirGeneDB can be alternatively used by setting parameter `--miraligner_db mirgenedb`). The R package `isomiRs` is then used to produce raw counts for both canonical miRNAs and isomiRs.  
 
 ## Module 5️⃣: Other sncRNA quantification  
 
@@ -68,6 +69,8 @@ Distinct sncRNA classes currently quantified:
 Other RNA classes included in the reference, and therefore also quantified if fragments originate from them:  
 * mRNA  
 * lncRNA
+
+After sncRNA quantification, the counts table is further annotated by the **TDRNAMER** process using [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer). Each read sequence is matched against the tDRnamer reference database (currently `hg38`) to assign a standardized tRNA-derived RNA (tDR) name, following the naming system proposed by the tRNA research community (Holmes et al. 2023). The resulting `tdr_name` is added as an extra column to the sncRNA counts table; sequences not recognized as tDRs by tDRnamer are left blank.
 
 ### Quantification of miRNA/isomiR VS other sncRNA
 

@@ -2,11 +2,11 @@ process MIRALIGNER_MIRNA {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "${moduleDir}/environment.yml"
     container 'ktrachtok/mirna_quantification:amd64-1.0.0'
     
     input:
     path miraligner_db
+    val species
     tuple val(meta), path(reads)
 
     output:
@@ -15,12 +15,17 @@ process MIRALIGNER_MIRNA {
     tuple val(meta), path ("*.counts.txt"),              emit: mirna_counts
 
     script:
-
-    def db_dir = miraligner_db.toString().replaceFirst(/\.tar\.gz$/, '')
-
     """
-    tar -zxvf ${miraligner_db}
-    03b_miraligner_mirna.sh ${db_dir} ${reads} ${meta.id} ${params.miraligner_jar}
+    03b_miraligner_mirna.sh \
+        ${miraligner_db} \
+        ${reads} \
+        ${meta.id} \
+        ${params.miraligner_jar} \
+        ${species} \
+        ${params.miraligner_sub} \
+        ${params.miraligner_trim} \
+        ${params.miraligner_add} \
+        ${params.miraligner_minl}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

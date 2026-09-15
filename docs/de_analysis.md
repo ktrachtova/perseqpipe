@@ -15,7 +15,7 @@
   - [miRNA / isomiRs](#mirna--isomirs)
   - [Other sncRNA](#other-sncrna)
 
-The Differential Expression Analysis module (**DE_ANALYSIS**) can be executed in two modes. If no design file is provided (using the `--design` option), the module generates only raw and normalized counts (including edgeR TMM, VST, and DESeq2-normalized values). If a design file is supplied, a full differential expression analysis is performed using DESeq2.
+The Differential Expression Analysis module (**DE_ANALYSIS**) can be executed in two modes. If no design file is provided (using the `--design_file` option), the module generates only raw and normalized counts (including edgeR TMM, VST, and DESeq2-normalized values). If a design file is supplied, a full differential expression analysis is performed using DESeq2.
 
 The **DE_ANALYSIS** module is executed separately for miRNAs/isomiRs (using counts obtained from the **MIRNA_QUANTIFICATION** module) and for all other RNA classes (using counts obtained from the **SNCRNA_QUANTIFICATION** module).
 
@@ -99,7 +99,7 @@ Additionally, likelihood ratio test (LRT) will also be performed. The likelihood
 
 ## Filtering low-expressed sequences
 
-It is highly recommended to filter out low-expressed sequences (for both miRNA/isomiRs and sncRNA) prior to evaluating differentially expressed genes. This improves dispersion estimation and hence avoid unreliable fold changes and p-values. Unless specified otherwise, all sequences (for both miRNA/isomiRs and sncRNA DE analysis) are used. However, user can specify parameter `--sncrna_expression_thresholds X,Y` for sncRNA (or alternatively `—-mirna_expression_thresholds` for miRNA and `--isomirs_expression_thresholds` for isomiRs) to set expression threshold for specific number of samples. For example, `--sncrna_expression_thresholds 20,3` will filter out any sncRNA sequences that do not have expression of at least 20 in at least 3 samples. This filtering happens on raw matrix of counts before calculating DE genes. See section [Pre-filtering](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering) of DESeq2 documentation for more information.
+It is highly recommended to filter out low-expressed sequences (for both miRNA/isomiRs and sncRNA) prior to evaluating differentially expressed genes. This improves dispersion estimation and hence avoid unreliable fold changes and p-values. Unless specified otherwise, at least 20 reads in at least 3 samples are required (for both miRNA/isomiRs and sncRNA DE analysis). However, user can specify parameter `--sncrna_expression_threshold X,Y` for sncRNA (or alternatively `--mirna_expression_threshold` for miRNA and `--isomirs_expression_threshold` for isomiRs) to set expression threshold for specific number of samples. For example, `--sncrna_expression_threshold 20,3` will filter out any sncRNA sequences that do not have expression of at least 20 in at least 3 samples. This filtering happens on raw matrix of counts before calculating DE genes. See section [Pre-filtering](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html#pre-filtering) of DESeq2 documentation for more information.
 
 It is highly recommended to use this filtering when running sncRNA DE analysis as there are usually several thousands of distinct sequences which are often present in only one or two samples which introduces strong bias into the DE analysis!
 
@@ -109,7 +109,7 @@ It is highly recommended to use this filtering when running sncRNA DE analysis a
 
 Main outputs from miRNA/isomiRs DE analysis if design file provided by user:
 
-* **DE_analsis_{mirna|isomirs}\_results.tsv** is a main file with DE results for miRNA and isomiRs (separately). This file contains following columns:
+* **DE_analysis_{mirna|isomirs}\_results.tsv** is a main file with DE results for miRNA and isomiRs (separately). This file contains following columns:
 
     * `gene` column with miRNA/isomiR name
     * `baseMean` is the average of the normalized count values, dividing by size factors, taken over all samples
@@ -141,17 +141,18 @@ Additional outputs from miRNA/isomiRs DE analysis:
 
 Main outputs from sncRNA DE analysis if design file provided by user:
 
-* **DE_analsis_sncrna\_results.tsv** is a main file with DE results. This file contains following columns:
+* **DE_analysis_sncrna\_results.tsv** is a main file with DE results. This file contains following columns:
 
     * `sequence` column with sncRNA sequence
     * `pirna` column with known piRNA annotation
     * `trna` column with known tRNA annotation
     * `snorna` column with known snoRNA annotation
-    * `srna` column with other known small non-coding RNAs annotation (TO-DO: add link to documentation about reference preparation)
+    * `srna` column with other known small non-coding RNAs annotation
     * `mrna` column with known mRNA annotation
     * `lncrna` column with known lncRNA annotation
     * `genome_alignments` number of genomic alignments of a sequence
     * `MINT_plate` contains sequence-specific and unique identifier (license-plate), more information [here](https://github.com/TJU-CMC-Org/MINTplates)
+    * `tdr_name` contains the standardized tRNA-derived RNA (tDR) name assigned by [tDRnamer](https://github.com/UCSC-LoweLab/tDRnamer); blank if the sequence was not recognized as a tDR
     * `baseMean` is the average of the normalized count values, dividing by size factors, taken over all samples
     * `stat_lrt` (optional) is the value of the test statistic from LRT; present only if more there are more than 2 conditions in the design file
     * `pvalue_lrt` (optional) is the p-value of from LRT; present only if more there are more than 2 conditions in the design file

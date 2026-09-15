@@ -7,8 +7,6 @@
   - [Samplesheet input](#samplesheet-input)
   - [PerSeqPIPE module execution](#perseqpipe-module-execution)
   - [Parameters](#parameters)
-- [Updating the pipeline](#updating-the-pipeline)
-- [Reproducibility](#reproducibility)
 - [Core Nextflow arguments](#core-nextflow-arguments)
 - [Custom configuration](#custom-configuration)
   - [Resource requests](#resource-requests)
@@ -20,19 +18,22 @@
 > [!NOTE]
 > If you are new to Nextflow, please refer to [this](https://nf-co.re/docs/usage/installation) page on how to set-up Nextflow. Make sure to run a test (see section [Running tests](#running-tests)) first before processing actual data.
 
-To run PerSeqPIPE on real data, it is first required to [download reference files](#download-reference), such as the STAR index, mialigner database, and GTF file for sncRNA quantification. This step is performed separately from the actual analysis and needs to be completed only once per computational environment.
+> [!IMPORTANT]
+> As of Nextflow 26.04 and higher, a strict syntax parser is enabled by default. For the current release PerSeqPIPE, if running with Nextflow 26.04 or higher disable the strict syntax parser using command `export NXF_SYNTAX_PARSER=v1` prior to running the pipeline. Support of strict syntax parser will be added in the next release.
 
 To run PerSeqPIPE (both for downloading reference files and analysis of actual data), first download the repository locally and navigate to the `perseqpipe/` directory. Then run PerSeqPIPE using the following command:
 
 ```
 git clone https://github.com/ktrachtova/perseqpipe.git
 cd perseqpipe
+export NXF_SYNTAX_PARSER=v1
 nextflow run main.nf <OTHER_PARAMETERS>
 ```
 
 Alternatively, Nextflow can automatically download the pipeline code when executed using the following syntax:
 
 ```
+export NXF_SYNTAX_PARSER=v1
 nextflow run ktrachtova/perseqpipe <OTHER_PARAMETERS>
 ```
 
@@ -45,26 +46,30 @@ The pipeline source code itself is not copied into the current directory.
 
 For the exact commands and all required parameters, refer to the sections [Download reference](#download-reference) and [Running PerSeqPIPE](#running-perseqpipe).
 
-## Download reference
+## Download reference (optional)
 
-In order to run rRNA and sncRNA quantification modules, user must first download STAR index for rRNA database and human genome and a custom sncRNA GTF file (see [Reference databases](reference_databases.md) for a list of resources). This can be easily done by running following two commands:
+In order to run rRNA and sncRNA quantification modules, PerSeqPIPE needs the STAR index for the rRNA database and human genome and a custom sncRNA GTF file (see [Reference databases](reference_databases.md) for a list of resources).
+
+**As of 2.0.0 version, PerSeqPIPE downloads any missing reference files automatically** during a normal analysis run, hence, there is no need to run a separate step beforehand. However, if you'd rather pre-fetch them (e.g. to warm a shared cache once for multiple users/runs on an HPC system), you can still trigger the download explicitly ahead of running the actual analysis:
 
 ```
+export NXF_SYNTAX_PARSER=v1
+
 nextflow run main.nf --download_reference_rrna
 
 nextflow run main.nf --download_reference_genome
 ```
 
-This will download and unzip STAR index folder into the folder `./resources/star_rrna` and `./resources/star_genome` respectively. The sncRNA GTF file will be also downloaded and placed into `./resources/` folder. Both indexes and the GTF file will be automatically picked by PerSeqPIPE when executed on real datasets. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
+Either way, the STAR index folders are downloaded and unzipped into `./resources/star_rrna` and `./resources/star_genome` respectively. The genome reference download also places the sncRNA GTF and miRNA overlap file into `./resources/`, and downloads the miRNA database selected by `--miraligner_db` (`mirbase` by default or `mirgenedb`). On every subsequent run, PerSeqPIPE checks whether these files are already present and complete - if so it reuses them as-is, and only re-downloads whatever is still missing. Optionally, if user wishes to use own STAR index it is possible to use parameters `--index_genome_url` and `--index_genome_path` to change location and name of used index (identical parameters exist also for the rRNA index and GTF file).
 
 > [!WARNING]
-> Downloading STAR index for whole genome will take some time (based on download speed) as the compressed index has size of ~9GB.
+> Downloading STAR index for whole genome will take some time (based on download speed, can be up to 40min) as the compressed index has size of ~9GB.
 
 > [!IMPORTANT]
 > The reference files are always downloaded into the `resources/` folder within the launch directory. When analyzing real data, PerSeqPIPE expects to find the `resources/` folder in the directory from which it is launched (unless specified otherwise via the `--index_genome_path` or `--index_rrna_path` parameters). If the pipeline is launched from a different directory than the one containing the `resources/` folder and the reference path is not specified correctly, it will terminate with an error.
 
 > [!NOTE]
-> Altough no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.
+> Although no `-profile` option is required for downloading reference, an automatic warning will be shown that the pipeline was executed without any custom configuration. This warning can be ignored.
 
 ## Running PerSeqPIPE
 
@@ -88,7 +93,7 @@ The specified path can either be local or point to accessible external storage.
 
 ### PerSeqPIPE module execution
 
-To run a full PerSeqPIPE workflow (assuming you already downlaoded all reference files required and these are now located in `./resources/` folder), following command can be used:
+To run a full PerSeqPIPE workflow following command can be used:
 
 ```
 nextflow run main.nf \
@@ -105,7 +110,7 @@ For list of available library types `<LIB_TYPE>`, see [Parameters](parameters.md
 As mentioned in section [Module description](module_description.md), PerSeqPIPE consists of six sequential modules. The selected module determines the **final module in the execution chain**, and all preceding modules are executed automatically. Which module is executed can be controlled using the following parameters:
 
 
-| parameter             | decription                              |
+| parameter             | description                              |
 |-----------------------|-----------------------------------------|
 | `--run_firstqc`       | Run FIRSTQC module only                 |
 | `--run_preprocessing` | Run modules up to PREPROCESSING         |
@@ -151,6 +156,8 @@ Currently available profiles (excluding test-related profiles, for these see sec
 
 - `docker`
   - A generic configuration profile to be used with [Docker](https://docker.com/)
+- `apptainer`
+  - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
 - `arm`
   - A generic configuration profile to be used when running pipeline on ARM architecture
 
@@ -169,9 +176,21 @@ Specify the path to a specific config file (this is a core Nextflow command). Se
 
 ### Resource requests
 
-Whilst the default requirements set within the pipeline will hopefully work for most people and with most input data, you may find that you want to customise the compute resources that the pipeline requests. Each step in the pipeline has a default set of requirements for number of CPUs, memory and time, which are specified through config file `base.config` or optionally, through `local.config`. 
+Whilest the default requirements set within the pipeline should  work for most users and input datasets, you may wish to customise the requested computational resources. Each pipeline process has default CPU, memory and execution-time requirements defined in `base.config`. These can be changed to fit specific execution environments and available resources.
+
+The default `base.config` requires a system with at least 4 CPUs and 16 GB RAM to execute the most demanding individual processes. A system with 32 CPUs and 64 GB RAM is recommended, as it allows multiple sample-level processes to run in parallel.
+
+The complete reference-resource bundle requires approximately 15 GB of storage. Analysis of one sample containing approximately 10 million reads generates around 0.2 GB of final output plus 0.4 GB size `work/` directory. The average runtime is approximately 3.7 minutes per sample (tested on machine with 32 CPUs and 64 GB RAM). 
+
+The standard resource configuration in `base.config` is loaded automatically when the pipeline is executed with a container profile, for example:
+```
+nextflow run main.nf -profile docker <OTHER_PARAMETERS>
+```
 
 To change the resource requests, please see the [max resources](https://nf-co.re/docs/usage/configuration#max-resources) and [tuning workflow resources](https://nf-co.re/docs/usage/configuration#tuning-workflow-resources) section of the nf-core website.
+
+> [!IMPORTANT]
+Please note that based on whether Apptainer or Docker is being used, several GB of space will be required for the downloaded images as well.
 
 ## Running in the background
 
@@ -197,8 +216,9 @@ To test the workflow, user can select from several small test profiles, one for 
 | test_lexogen | Small RNA-Seq Library Prep Kit (Lexogen) |
 | test_novogene | Small RNA Sequencing Novogene |
 | test_norgen | Norgen Small RNA Library Prep Kit |
+| test_mirgenedb | QIAseq miRNA Library Kit (QIAGEN) + MirGeneDB for miRNA/isomiR quantification |
 
 To execute a specific minimal test, run following command (here shown example to run QIAseq-specific test):
 ```
-nextflow run main.nf -profile <docker>,test_qiaseq --outdir <OUTDIR>
+nextflow run main.nf -profile <docker/apptainer>,test_qiaseq --outdir <OUTDIR>
 ```

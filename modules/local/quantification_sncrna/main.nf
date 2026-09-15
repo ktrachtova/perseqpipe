@@ -1,18 +1,15 @@
 process QUANTIFICATION_SNCRNA {
     tag "$meta.id"
-    label 'process_low'
+    label 'process_single'
 
-    conda "${moduleDir}/environment.yml"
     container 'community.wave.seqera.io/library/htseq_pandas:52439a4c7dbfb1f0'
 
     input:
     path gtf
-    path mirna_overlap
     tuple val(meta), path(bam), path(bai)
 
     output:
     tuple val(meta), path ("*.short_rna_counts.tsv"),  emit: srna_counts_tsv
-    path mirna_overlap, emit: mirna_overlap
 
     script:
     def prefix = bam.baseName.replaceAll(/\.Aligned\..*/, "")
